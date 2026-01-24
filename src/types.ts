@@ -44,7 +44,6 @@ export interface OpenverseResult {
 }
 
 export const PexelsColours = [
-  { label: 'Color', value: '' },
   { label: 'Black', value: 'black' },
   { label: 'Blue', value: 'blue' },
   { label: 'Brown', value: 'brown' },
