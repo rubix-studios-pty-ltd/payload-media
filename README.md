@@ -66,4 +66,6 @@ Rubix Studios Pty. Ltd.
 
 ## Acknowledgments
 
+This project is based on the Image Search by Riley Langbein:
+
 - [Riley Langbein](https://github.com/rilrom)
