@@ -37,9 +37,6 @@ export interface OpenverseResult {
   creator_url: string | null
   foreign_landing_url: string | null
 
-  license: string
-  license_version: string
-  license_url: string
   source: string
 }
 
