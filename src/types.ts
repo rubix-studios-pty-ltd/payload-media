@@ -37,14 +37,10 @@ export interface OpenverseResult {
   creator_url: string | null
   foreign_landing_url: string | null
 
-  license: string
-  license_version: string
-  license_url: string
   source: string
 }
 
 export const PexelsColours = [
-  { label: 'Color', value: '' },
   { label: 'Black', value: 'black' },
   { label: 'Blue', value: 'blue' },
   { label: 'Brown', value: 'brown' },
