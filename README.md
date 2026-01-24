@@ -1,6 +1,6 @@
 # PayloadCMS Image Search Plugin
 
-Integrated Payload CMS plugin for stock image search including Unsplash, Pexel, Pixabay. Filterable search with instant import.
+Integrated Payload CMS plugin for stock image search across Unsplash, Pexels, and Pixabay, with filterable results and instant import.
 
 This project is an independent implementation derived [PayloadBites' Image Search](https://github.com/rilrom/payload-bites/tree/main/packages/image-search) extended with provider-specific image filtering and improved Windows OS compatibility.
 
