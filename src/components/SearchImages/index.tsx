@@ -114,6 +114,8 @@ export const SearchImages = (props: SearchImagesProps) => {
   }, [selectedProvider?.value, unsplashFilters, pexelsFilters, pixabayFilters])
 
   const getFeaturedPhotos = useCallback(async () => {
+    if (!selectedProvider?.value) return
+
     try {
       setLoading(true)
       resetImages()
@@ -196,14 +198,6 @@ export const SearchImages = (props: SearchImagesProps) => {
     setSelectedProvider(select)
   }, [])
 
-  const handleSearch = useCallback(() => {
-    if (value.length > 0) {
-      getPhotos(1)
-    } else {
-      getFeaturedPhotos()
-    }
-  }, [getFeaturedPhotos, getPhotos, value])
-
   const handleSelect = async (url: string, download?: string) => {
     onSelect(url)
     if (!download) return
@@ -219,12 +213,14 @@ export const SearchImages = (props: SearchImagesProps) => {
 
   useEffect(() => {
     if (!selectedProvider) {
-      getProviderOptions()
-      return
+      void getProviderOptions()
     }
+  }, [getProviderOptions, selectedProvider])
 
-    handleSearch()
-  }, [getProviderOptions, handleSearch, selectedProvider])
+  useEffect(() => {
+    if (!selectedProvider?.value) return
+    void getFeaturedPhotos()
+  }, [selectedProvider, getFeaturedPhotos])
 
   return (
     <div className={baseClass}>
