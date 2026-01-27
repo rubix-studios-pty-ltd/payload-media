@@ -185,6 +185,22 @@ export interface ProviderResult {
   }
 }
 
+export type ProviderFilters =
+  | { provider: 'unsplash'; filters: UnsplashFilters }
+  | { provider: 'pexels'; filters: PexelsFilters }
+  | { provider: 'pixabay'; filters: PixabayFilters }
+
+export type ProviderOption = {
+  label: string
+  value: string
+}
+
+export type SearchImagesProps = {
+  serverURL: string
+  api: string
+  onSelect: (value: string) => void
+}
+
 export const UnsplashColours = [
   { label: 'Black', value: 'black' },
   { label: 'Blue', value: 'blue' },

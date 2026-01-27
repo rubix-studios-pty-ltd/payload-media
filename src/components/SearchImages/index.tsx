@@ -4,18 +4,18 @@ import { LinkIcon, Pagination, SearchFilter, Select, Tooltip, toast } from '@pay
 import React, { useCallback, useEffect, useState } from 'react'
 import {
   PexelsColours,
-  type PexelsFilters,
   PexelsOrientation,
   PexelsSize,
   PixabayCategories,
   PixabayColours,
-  type PixabayFilters,
   PixabayImageType,
   PixabayOrder,
   PixabayOrientation,
+  ProviderFilters,
+  type ProviderOption,
   type ProviderResult,
+  type SearchImagesProps,
   UnsplashColours,
-  type UnsplashFilters,
   UnsplashOrientation,
 } from '../../types.js'
 import { fetchCache } from '../../utils/fetchCache.js'
@@ -26,25 +26,12 @@ const baseClass = 'search-images'
 
 export const previewImageDrawerSlug = 'preview-image'
 
-type ProviderOption = {
-  label: string
-  value: string
-}
-
-type SearchImagesProps = {
-  serverURL: string
-  api: string
-  onSelect: (value: string) => void
-}
-
 export const SearchImages = (props: SearchImagesProps) => {
   const { serverURL, api, onSelect } = props
 
+  const [providerFilters, setProviderFilters] = useState<ProviderFilters | null>(null)
   const [providerOptions, setProviderOptions] = useState<ProviderOption[]>([])
   const [selectedProvider, setSelectedProvider] = useState<ProviderOption | null>(null)
-  const [unsplashFilters, setUnsplashFilters] = useState<UnsplashFilters>({})
-  const [pexelsFilters, setPexelsFilters] = useState<PexelsFilters>({})
-  const [pixabayFilters, setPixabayFilters] = useState<PixabayFilters>({})
 
   const [images, setImages] = useState<ProviderResult[] | null>(null)
   const [totalPages, setTotalPages] = useState<number | null>(null)
@@ -80,7 +67,23 @@ export const SearchImages = (props: SearchImagesProps) => {
       }))
 
       setProviderOptions(providers)
-      setSelectedProvider(providers[0])
+
+      const first = providers[0]
+      if (!first) return
+
+      setSelectedProvider(first)
+
+      switch (first.value) {
+        case 'unsplash':
+          setProviderFilters({ provider: 'unsplash', filters: {} })
+          break
+        case 'pexels':
+          setProviderFilters({ provider: 'pexels', filters: {} })
+          break
+        case 'pixabay':
+          setProviderFilters({ provider: 'pixabay', filters: {} })
+          break
+      }
     } catch {
       setLoading(false)
       addDefaultError()
@@ -88,38 +91,42 @@ export const SearchImages = (props: SearchImagesProps) => {
   }, [serverURL, api, addDefaultError])
 
   const buildFeaturedParams = useCallback(() => {
+    if (!providerFilters) return ''
+
     const params = new URLSearchParams()
 
-    if (selectedProvider?.value === 'unsplash') {
-      if (unsplashFilters.color) params.set('color', unsplashFilters.color)
-      if (unsplashFilters.orientation) params.set('orientation', unsplashFilters.orientation)
-    }
-
-    if (selectedProvider?.value === 'pexels') {
-      if (pexelsFilters.color) params.set('color', pexelsFilters.color)
-      if (pexelsFilters.orientation) params.set('orientation', pexelsFilters.orientation)
-      if (pexelsFilters.size) params.set('size', pexelsFilters.size)
-    }
-
-    if (selectedProvider?.value === 'pixabay') {
-      if (pixabayFilters.category) params.set('category', pixabayFilters.category)
-      if (pixabayFilters.image_type) params.set('image_type', pixabayFilters.image_type)
-      if (pixabayFilters.order) params.set('order', pixabayFilters.order)
-      if (pixabayFilters.orientation) params.set('orientation', pixabayFilters.orientation)
-      if (pixabayFilters.colors) params.set('colors', pixabayFilters.colors)
+    switch (providerFilters.provider) {
+      case 'unsplash': {
+        const { color, orientation } = providerFilters.filters
+        if (color) params.set('color', color)
+        if (orientation) params.set('orientation', orientation)
+        break
+      }
+      case 'pexels': {
+        const { color, orientation, size } = providerFilters.filters
+        if (color) params.set('color', color)
+        if (orientation) params.set('orientation', orientation)
+        if (size) params.set('size', size)
+        break
+      }
+      case 'pixabay': {
+        const { category, image_type, order, orientation, colors } = providerFilters.filters
+        if (category) params.set('category', category)
+        if (image_type) params.set('image_type', image_type)
+        if (order) params.set('order', order)
+        if (orientation) params.set('orientation', orientation)
+        if (colors) params.set('colors', colors)
+        break
+      }
     }
 
     const query = params.toString()
     return query ? `?${query}` : ''
-  }, [selectedProvider?.value, unsplashFilters, pexelsFilters, pixabayFilters])
+  }, [providerFilters])
 
   const getFeaturedPhotos = useCallback(async () => {
-    if (!selectedProvider?.value) return
-
     try {
       setLoading(true)
-      resetImages()
-
       const json = await fetchCache(
         `${serverURL}${api}/providers/${selectedProvider?.value}/featured${buildFeaturedParams()}`
       )
@@ -129,48 +136,55 @@ export const SearchImages = (props: SearchImagesProps) => {
       setImages(json.data.images)
     } catch {
       addDefaultError()
-      resetImages()
     } finally {
       setLoading(false)
     }
-  }, [resetImages, serverURL, api, selectedProvider?.value, addDefaultError, buildFeaturedParams])
+  }, [serverURL, api, selectedProvider?.value, addDefaultError, buildFeaturedParams])
 
   const buildQueryParams = useCallback(
     (page = 1) => {
+      if (!providerFilters) return ''
+
       const params = new URLSearchParams()
       params.set('query', value)
       params.set('page', String(page))
 
-      if (selectedProvider?.value === 'unsplash') {
-        if (unsplashFilters.color) params.set('color', unsplashFilters.color)
-        if (unsplashFilters.orientation) params.set('orientation', unsplashFilters.orientation)
-      }
+      switch (providerFilters.provider) {
+        case 'unsplash': {
+          const { color, orientation } = providerFilters.filters
+          if (color) params.set('color', color)
+          if (orientation) params.set('orientation', orientation)
+          break
+        }
 
-      if (selectedProvider?.value === 'pexels') {
-        if (pexelsFilters.color) params.set('color', pexelsFilters.color)
-        if (pexelsFilters.orientation) params.set('orientation', pexelsFilters.orientation)
-        if (pexelsFilters.size) params.set('size', pexelsFilters.size)
-      }
+        case 'pexels': {
+          const { color, orientation, size } = providerFilters.filters
+          if (color) params.set('color', color)
+          if (orientation) params.set('orientation', orientation)
+          if (size) params.set('size', size)
+          break
+        }
 
-      if (selectedProvider?.value === 'pixabay') {
-        if (pixabayFilters.category) params.set('category', pixabayFilters.category)
-        if (pixabayFilters.image_type) params.set('image_type', pixabayFilters.image_type)
-        if (pixabayFilters.order) params.set('order', pixabayFilters.order)
-        if (pixabayFilters.orientation) params.set('orientation', pixabayFilters.orientation)
-        if (pixabayFilters.colors) params.set('colors', pixabayFilters.colors)
+        case 'pixabay': {
+          const { category, image_type, order, orientation, colors } = providerFilters.filters
+          if (category) params.set('category', category)
+          if (image_type) params.set('image_type', image_type)
+          if (order) params.set('order', order)
+          if (orientation) params.set('orientation', orientation)
+          if (colors) params.set('colors', colors)
+          break
+        }
       }
 
       return params.toString()
     },
-    [value, selectedProvider?.value, unsplashFilters, pexelsFilters, pixabayFilters]
+    [providerFilters, value]
   )
 
   const getPhotos = useCallback(
     async (page = 1) => {
       try {
         setLoading(true)
-        resetImages()
-
         const json = await fetchCache(
           `${serverURL}${api}/providers/${selectedProvider?.value}/search?${buildQueryParams(page)}`
         )
@@ -182,21 +196,40 @@ export const SearchImages = (props: SearchImagesProps) => {
         setCurrentPage(page)
       } catch {
         addDefaultError()
-        resetImages()
       } finally {
         setLoading(false)
       }
     },
-    [resetImages, serverURL, api, selectedProvider?.value, addDefaultError, buildQueryParams]
+    [serverURL, api, selectedProvider?.value, addDefaultError, buildQueryParams]
   )
 
-  const handleSearchFilterChange = useCallback((search: string) => {
-    setValue(search)
-  }, [])
+  const handleSearchFilterChange = useCallback(
+    (search: string) => {
+      setValue(search)
+      resetImages()
+    },
+    [resetImages]
+  )
 
-  const handleSelectChange = useCallback((select: ProviderOption) => {
-    setSelectedProvider(select)
-  }, [])
+  const handleSelectChange = useCallback(
+    (select: ProviderOption) => {
+      setSelectedProvider(select)
+      resetImages()
+
+      switch (select.value) {
+        case 'unsplash':
+          setProviderFilters({ provider: 'unsplash', filters: {} })
+          break
+        case 'pexels':
+          setProviderFilters({ provider: 'pexels', filters: {} })
+          break
+        case 'pixabay':
+          setProviderFilters({ provider: 'pixabay', filters: {} })
+          break
+      }
+    },
+    [resetImages]
+  )
 
   const handleSelect = async (url: string, download?: string) => {
     onSelect(url)
@@ -212,15 +245,18 @@ export const SearchImages = (props: SearchImagesProps) => {
   }
 
   useEffect(() => {
-    if (!selectedProvider) {
-      void getProviderOptions()
-    }
-  }, [getProviderOptions, selectedProvider])
+    void getProviderOptions()
+  }, [getProviderOptions])
 
   useEffect(() => {
-    if (!selectedProvider?.value) return
-    void getFeaturedPhotos()
-  }, [selectedProvider, getFeaturedPhotos])
+    if (!selectedProvider?.value || !providerFilters) return
+
+    if (value.trim().length > 0) {
+      void getPhotos(1)
+    } else {
+      void getFeaturedPhotos()
+    }
+  }, [selectedProvider?.value, providerFilters, value, getPhotos, getFeaturedPhotos])
 
   return (
     <div className={baseClass}>
@@ -236,151 +272,222 @@ export const SearchImages = (props: SearchImagesProps) => {
         />
       </div>
 
-      {selectedProvider?.value === 'pexels' && (
+      {providerFilters?.provider === 'pexels' && (
         <div className={`${baseClass}__filters`}>
           <Select
             options={PexelsColours}
-            value={PexelsColours.find((o) => o.value === pexelsFilters.color)}
+            value={PexelsColours.find((o) => o.value === providerFilters.filters.color)}
             onChange={(opt) =>
-              setPexelsFilters((prev) => ({
-                ...prev,
-                color: (opt as ProviderOption)?.value,
-              }))
+              setProviderFilters((prev) =>
+                prev?.provider === 'pexels'
+                  ? {
+                      provider: 'pexels',
+                      filters: {
+                        ...prev.filters,
+                        color: (opt as ProviderOption)?.value,
+                      },
+                    }
+                  : prev
+              )
             }
-            isClearable={true}
+            isClearable
             isSearchable={false}
             placeholder="Select color..."
           />
 
           <Select
             options={PexelsSize}
-            value={PexelsSize.find((o) => o.value === pexelsFilters.size)}
+            value={PexelsSize.find((o) => o.value === providerFilters.filters.size)}
             onChange={(opt) =>
-              setPexelsFilters((prev) => ({
-                ...prev,
-                size: (opt as ProviderOption)?.value,
-              }))
+              setProviderFilters((prev) =>
+                prev?.provider === 'pexels'
+                  ? {
+                      provider: 'pexels',
+                      filters: {
+                        ...prev.filters,
+                        size: (opt as ProviderOption)?.value,
+                      },
+                    }
+                  : prev
+              )
             }
-            isClearable={true}
+            isClearable
             isSearchable={false}
             placeholder="Select size..."
           />
 
           <Select
             options={PexelsOrientation}
-            value={PexelsOrientation.find((o) => o.value === pexelsFilters.orientation)}
+            value={PexelsOrientation.find((o) => o.value === providerFilters.filters.orientation)}
             onChange={(opt) =>
-              setPexelsFilters((prev) => ({
-                ...prev,
-                orientation: (opt as ProviderOption)?.value,
-              }))
+              setProviderFilters((prev) =>
+                prev?.provider === 'pexels'
+                  ? {
+                      provider: 'pexels',
+                      filters: {
+                        ...prev.filters,
+                        orientation: (opt as ProviderOption)?.value,
+                      },
+                    }
+                  : prev
+              )
             }
-            isClearable={true}
+            isClearable
             isSearchable={false}
             placeholder="Select orientation..."
           />
         </div>
       )}
 
-      {selectedProvider?.value === 'pixabay' && (
+      {providerFilters?.provider === 'pixabay' && (
         <div className={`${baseClass}__filters`}>
           <Select
             options={PixabayCategories}
-            value={PixabayCategories.find((o) => o.value === pixabayFilters.category)}
+            value={PixabayCategories.find((o) => o.value === providerFilters.filters.category)}
             onChange={(opt) =>
-              setPixabayFilters((prev) => ({
-                ...prev,
-                category: (opt as ProviderOption)?.value,
-              }))
+              setProviderFilters((prev) =>
+                prev?.provider === 'pixabay'
+                  ? {
+                      provider: 'pixabay',
+                      filters: {
+                        ...prev.filters,
+                        category: (opt as ProviderOption)?.value,
+                      },
+                    }
+                  : prev
+              )
             }
-            isClearable={true}
+            isClearable
             isSearchable={false}
             placeholder="Select category..."
           />
 
           <Select
             options={PixabayImageType}
-            value={PixabayImageType.find((o) => o.value === pixabayFilters.image_type)}
+            value={PixabayImageType.find((o) => o.value === providerFilters.filters.image_type)}
             onChange={(opt) =>
-              setPixabayFilters((prev) => ({
-                ...prev,
-                image_type: (opt as ProviderOption)?.value,
-              }))
+              setProviderFilters((prev) =>
+                prev?.provider === 'pixabay'
+                  ? {
+                      provider: 'pixabay',
+                      filters: {
+                        ...prev.filters,
+                        image_type: (opt as ProviderOption)?.value,
+                      },
+                    }
+                  : prev
+              )
             }
-            isClearable={true}
+            isClearable
             isSearchable={false}
             placeholder="Select type..."
           />
 
           <Select
             options={PixabayColours}
-            value={PixabayColours.find((o) => o.value === pixabayFilters.colors)}
+            value={PixabayColours.find((o) => o.value === providerFilters.filters.colors)}
             onChange={(opt) =>
-              setPixabayFilters((prev) => ({
-                ...prev,
-                colors: (opt as ProviderOption)?.value,
-              }))
+              setProviderFilters((prev) =>
+                prev?.provider === 'pixabay'
+                  ? {
+                      provider: 'pixabay',
+                      filters: {
+                        ...prev.filters,
+                        colors: (opt as ProviderOption)?.value,
+                      },
+                    }
+                  : prev
+              )
             }
-            isClearable={true}
+            isClearable
             isSearchable={false}
             placeholder="Select color..."
           />
 
           <Select
             options={PixabayOrientation}
-            value={PixabayOrientation.find((o) => o.value === pixabayFilters.orientation)}
+            value={PixabayOrientation.find((o) => o.value === providerFilters.filters.orientation)}
             onChange={(opt) =>
-              setPixabayFilters((prev) => ({
-                ...prev,
-                orientation: (opt as ProviderOption)?.value,
-              }))
+              setProviderFilters((prev) =>
+                prev?.provider === 'pixabay'
+                  ? {
+                      provider: 'pixabay',
+                      filters: {
+                        ...prev.filters,
+                        orientation: (opt as ProviderOption)?.value,
+                      },
+                    }
+                  : prev
+              )
             }
-            isClearable={true}
+            isClearable
             isSearchable={false}
             placeholder="Select orientation..."
           />
 
           <Select
             options={PixabayOrder}
-            value={PixabayOrder.find((o) => o.value === pixabayFilters.order)}
+            value={PixabayOrder.find((o) => o.value === providerFilters.filters.order)}
             onChange={(opt) =>
-              setPixabayFilters((prev) => ({
-                ...prev,
-                order: (opt as ProviderOption)?.value,
-              }))
+              setProviderFilters((prev) =>
+                prev?.provider === 'pixabay'
+                  ? {
+                      provider: 'pixabay',
+                      filters: {
+                        ...prev.filters,
+                        order: (opt as ProviderOption)?.value,
+                      },
+                    }
+                  : prev
+              )
             }
-            isClearable={true}
+            isClearable
             isSearchable={false}
             placeholder="Select order..."
           />
         </div>
       )}
-      {selectedProvider?.value === 'unsplash' && (
+
+      {providerFilters?.provider === 'unsplash' && (
         <div className={`${baseClass}__filters`}>
           <Select
             options={UnsplashColours}
-            value={UnsplashColours.find((o) => o.value === unsplashFilters.color)}
+            value={UnsplashColours.find((o) => o.value === providerFilters.filters.color)}
             onChange={(opt) =>
-              setUnsplashFilters((prev) => ({
-                ...prev,
-                color: (opt as ProviderOption)?.value,
-              }))
+              setProviderFilters((prev) =>
+                prev?.provider === 'unsplash'
+                  ? {
+                      provider: 'unsplash',
+                      filters: {
+                        ...prev.filters,
+                        color: (opt as ProviderOption)?.value,
+                      },
+                    }
+                  : prev
+              )
             }
-            isClearable={true}
+            isClearable
             isSearchable={false}
             placeholder="Select color..."
           />
 
           <Select
             options={UnsplashOrientation}
-            value={UnsplashOrientation.find((o) => o.value === unsplashFilters.orientation)}
+            value={UnsplashOrientation.find((o) => o.value === providerFilters.filters.orientation)}
             onChange={(opt) =>
-              setUnsplashFilters((prev) => ({
-                ...prev,
-                orientation: (opt as ProviderOption)?.value,
-              }))
+              setProviderFilters((prev) =>
+                prev?.provider === 'unsplash'
+                  ? {
+                      provider: 'unsplash',
+                      filters: {
+                        ...prev.filters,
+                        orientation: (opt as ProviderOption)?.value,
+                      },
+                    }
+                  : prev
+              )
             }
-            isClearable={true}
+            isClearable
             isSearchable={false}
             placeholder="Select orientation..."
           />
