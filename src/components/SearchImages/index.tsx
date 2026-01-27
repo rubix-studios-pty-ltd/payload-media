@@ -24,24 +24,22 @@ import './style.css'
 
 const baseClass = 'search-images'
 
-export const previewImageDrawerSlug = 'preview-image'
-
 export const SearchImages = (props: SearchImagesProps) => {
   const { serverURL, api, onSelect } = props
 
-  const [providerFilters, setProviderFilters] = useState<ProviderFilters | null>(null)
-  const [providerOptions, setProviderOptions] = useState<ProviderOption[]>([])
   const [selectedProvider, setSelectedProvider] = useState<ProviderOption | null>(null)
+  const [providerOptions, setProviderOptions] = useState<ProviderOption[]>([])
+  const [filters, setFilters] = useState<ProviderFilters | null>(null)
 
   const [images, setImages] = useState<ProviderResult[] | null>(null)
-  const [totalPages, setTotalPages] = useState<number | null>(null)
   const [currentPage, setCurrentPage] = useState<number | null>(null)
+  const [totalPages, setTotalPages] = useState<number | null>(null)
 
   const [loading, setLoading] = useState(true)
   const [show, setShow] = useState(false)
   const [value, setValue] = useState('')
 
-  const addDefaultError = useCallback(() => {
+  const defaultError = useCallback(() => {
     toast.error('Something went wrong.')
   }, [])
 
@@ -54,8 +52,8 @@ export const SearchImages = (props: SearchImagesProps) => {
   const getProviderOptions = useCallback(async () => {
     try {
       const response = await fetch(`${serverURL}${api}/providers`)
-      const json = await response.json()
 
+      const json = await response.json()
       if (json.error) {
         setLoading(false)
         return toast.error(json.error)
@@ -75,42 +73,42 @@ export const SearchImages = (props: SearchImagesProps) => {
 
       switch (first.value) {
         case 'unsplash':
-          setProviderFilters({ provider: 'unsplash', filters: {} })
+          setFilters({ provider: 'unsplash', options: {} })
           break
         case 'pexels':
-          setProviderFilters({ provider: 'pexels', filters: {} })
+          setFilters({ provider: 'pexels', options: {} })
           break
         case 'pixabay':
-          setProviderFilters({ provider: 'pixabay', filters: {} })
+          setFilters({ provider: 'pixabay', options: {} })
           break
       }
     } catch {
       setLoading(false)
-      addDefaultError()
+      defaultError()
     }
-  }, [serverURL, api, addDefaultError])
+  }, [serverURL, api, defaultError])
 
   const buildFeaturedParams = useCallback(() => {
-    if (!providerFilters) return ''
+    if (!filters) return ''
 
     const params = new URLSearchParams()
 
-    switch (providerFilters.provider) {
+    switch (filters.provider) {
       case 'unsplash': {
-        const { color, orientation } = providerFilters.filters
+        const { color, orientation } = filters.options
         if (color) params.set('color', color)
         if (orientation) params.set('orientation', orientation)
         break
       }
       case 'pexels': {
-        const { color, orientation, size } = providerFilters.filters
+        const { color, orientation, size } = filters.options
         if (color) params.set('color', color)
         if (orientation) params.set('orientation', orientation)
         if (size) params.set('size', size)
         break
       }
       case 'pixabay': {
-        const { category, image_type, order, orientation, colors } = providerFilters.filters
+        const { category, image_type, order, orientation, colors } = filters.options
         if (category) params.set('category', category)
         if (image_type) params.set('image_type', image_type)
         if (order) params.set('order', order)
@@ -122,51 +120,49 @@ export const SearchImages = (props: SearchImagesProps) => {
 
     const query = params.toString()
     return query ? `?${query}` : ''
-  }, [providerFilters])
+  }, [filters])
 
   const getFeaturedPhotos = useCallback(async () => {
     try {
       setLoading(true)
+
       const json = await fetchCache(
         `${serverURL}${api}/providers/${selectedProvider?.value}/featured${buildFeaturedParams()}`
       )
-
       if (json.error) return toast.error(json.error)
 
       setImages(json.data.images)
     } catch {
-      addDefaultError()
+      defaultError()
     } finally {
       setLoading(false)
     }
-  }, [serverURL, api, selectedProvider?.value, addDefaultError, buildFeaturedParams])
+  }, [serverURL, api, selectedProvider?.value, defaultError, buildFeaturedParams])
 
   const buildQueryParams = useCallback(
     (page = 1) => {
-      if (!providerFilters) return ''
+      if (!filters) return ''
 
       const params = new URLSearchParams()
       params.set('query', value)
       params.set('page', String(page))
 
-      switch (providerFilters.provider) {
+      switch (filters.provider) {
         case 'unsplash': {
-          const { color, orientation } = providerFilters.filters
+          const { color, orientation } = filters.options
           if (color) params.set('color', color)
           if (orientation) params.set('orientation', orientation)
           break
         }
-
         case 'pexels': {
-          const { color, orientation, size } = providerFilters.filters
+          const { color, orientation, size } = filters.options
           if (color) params.set('color', color)
           if (orientation) params.set('orientation', orientation)
           if (size) params.set('size', size)
           break
         }
-
         case 'pixabay': {
-          const { category, image_type, order, orientation, colors } = providerFilters.filters
+          const { category, image_type, order, orientation, colors } = filters.options
           if (category) params.set('category', category)
           if (image_type) params.set('image_type', image_type)
           if (order) params.set('order', order)
@@ -178,7 +174,7 @@ export const SearchImages = (props: SearchImagesProps) => {
 
       return params.toString()
     },
-    [providerFilters, value]
+    [filters, value]
   )
 
   const getPhotos = useCallback(
@@ -195,12 +191,12 @@ export const SearchImages = (props: SearchImagesProps) => {
         setTotalPages(json.data.totalPages)
         setCurrentPage(page)
       } catch {
-        addDefaultError()
+        defaultError()
       } finally {
         setLoading(false)
       }
     },
-    [serverURL, api, selectedProvider?.value, addDefaultError, buildQueryParams]
+    [serverURL, api, selectedProvider?.value, defaultError, buildQueryParams]
   )
 
   const handleSearchFilterChange = useCallback(
@@ -218,13 +214,13 @@ export const SearchImages = (props: SearchImagesProps) => {
 
       switch (select.value) {
         case 'unsplash':
-          setProviderFilters({ provider: 'unsplash', filters: {} })
+          setFilters({ provider: 'unsplash', options: {} })
           break
         case 'pexels':
-          setProviderFilters({ provider: 'pexels', filters: {} })
+          setFilters({ provider: 'pexels', options: {} })
           break
         case 'pixabay':
-          setProviderFilters({ provider: 'pixabay', filters: {} })
+          setFilters({ provider: 'pixabay', options: {} })
           break
       }
     },
@@ -249,14 +245,14 @@ export const SearchImages = (props: SearchImagesProps) => {
   }, [getProviderOptions])
 
   useEffect(() => {
-    if (!selectedProvider?.value || !providerFilters) return
+    if (!selectedProvider?.value || !filters) return
 
     if (value.trim().length > 0) {
       void getPhotos(1)
     } else {
       void getFeaturedPhotos()
     }
-  }, [selectedProvider?.value, providerFilters, value, getPhotos, getFeaturedPhotos])
+  }, [selectedProvider?.value, filters, value, getPhotos, getFeaturedPhotos])
 
   return (
     <div className={baseClass}>
@@ -272,18 +268,18 @@ export const SearchImages = (props: SearchImagesProps) => {
         />
       </div>
 
-      {providerFilters?.provider === 'pexels' && (
+      {filters?.provider === 'pexels' && (
         <div className={`${baseClass}__filters`}>
           <Select
             options={PexelsColours}
-            value={PexelsColours.find((o) => o.value === providerFilters.filters.color)}
+            value={PexelsColours.find((o) => o.value === filters.options.color)}
             onChange={(opt) =>
-              setProviderFilters((prev) =>
+              setFilters((prev) =>
                 prev?.provider === 'pexels'
                   ? {
                       provider: 'pexels',
-                      filters: {
-                        ...prev.filters,
+                      options: {
+                        ...prev.options,
                         color: (opt as ProviderOption)?.value,
                       },
                     }
@@ -297,14 +293,14 @@ export const SearchImages = (props: SearchImagesProps) => {
 
           <Select
             options={PexelsSize}
-            value={PexelsSize.find((o) => o.value === providerFilters.filters.size)}
+            value={PexelsSize.find((o) => o.value === filters.options.size)}
             onChange={(opt) =>
-              setProviderFilters((prev) =>
+              setFilters((prev) =>
                 prev?.provider === 'pexels'
                   ? {
                       provider: 'pexels',
-                      filters: {
-                        ...prev.filters,
+                      options: {
+                        ...prev.options,
                         size: (opt as ProviderOption)?.value,
                       },
                     }
@@ -318,14 +314,14 @@ export const SearchImages = (props: SearchImagesProps) => {
 
           <Select
             options={PexelsOrientation}
-            value={PexelsOrientation.find((o) => o.value === providerFilters.filters.orientation)}
+            value={PexelsOrientation.find((o) => o.value === filters.options.orientation)}
             onChange={(opt) =>
-              setProviderFilters((prev) =>
+              setFilters((prev) =>
                 prev?.provider === 'pexels'
                   ? {
                       provider: 'pexels',
-                      filters: {
-                        ...prev.filters,
+                      options: {
+                        ...prev.options,
                         orientation: (opt as ProviderOption)?.value,
                       },
                     }
@@ -339,18 +335,18 @@ export const SearchImages = (props: SearchImagesProps) => {
         </div>
       )}
 
-      {providerFilters?.provider === 'pixabay' && (
+      {filters?.provider === 'pixabay' && (
         <div className={`${baseClass}__filters`}>
           <Select
             options={PixabayCategories}
-            value={PixabayCategories.find((o) => o.value === providerFilters.filters.category)}
+            value={PixabayCategories.find((o) => o.value === filters.options.category)}
             onChange={(opt) =>
-              setProviderFilters((prev) =>
+              setFilters((prev) =>
                 prev?.provider === 'pixabay'
                   ? {
                       provider: 'pixabay',
-                      filters: {
-                        ...prev.filters,
+                      options: {
+                        ...prev.options,
                         category: (opt as ProviderOption)?.value,
                       },
                     }
@@ -364,14 +360,14 @@ export const SearchImages = (props: SearchImagesProps) => {
 
           <Select
             options={PixabayImageType}
-            value={PixabayImageType.find((o) => o.value === providerFilters.filters.image_type)}
+            value={PixabayImageType.find((o) => o.value === filters.options.image_type)}
             onChange={(opt) =>
-              setProviderFilters((prev) =>
+              setFilters((prev) =>
                 prev?.provider === 'pixabay'
                   ? {
                       provider: 'pixabay',
-                      filters: {
-                        ...prev.filters,
+                      options: {
+                        ...prev.options,
                         image_type: (opt as ProviderOption)?.value,
                       },
                     }
@@ -385,14 +381,14 @@ export const SearchImages = (props: SearchImagesProps) => {
 
           <Select
             options={PixabayColours}
-            value={PixabayColours.find((o) => o.value === providerFilters.filters.colors)}
+            value={PixabayColours.find((o) => o.value === filters.options.colors)}
             onChange={(opt) =>
-              setProviderFilters((prev) =>
+              setFilters((prev) =>
                 prev?.provider === 'pixabay'
                   ? {
                       provider: 'pixabay',
-                      filters: {
-                        ...prev.filters,
+                      options: {
+                        ...prev.options,
                         colors: (opt as ProviderOption)?.value,
                       },
                     }
@@ -406,14 +402,14 @@ export const SearchImages = (props: SearchImagesProps) => {
 
           <Select
             options={PixabayOrientation}
-            value={PixabayOrientation.find((o) => o.value === providerFilters.filters.orientation)}
+            value={PixabayOrientation.find((o) => o.value === filters.options.orientation)}
             onChange={(opt) =>
-              setProviderFilters((prev) =>
+              setFilters((prev) =>
                 prev?.provider === 'pixabay'
                   ? {
                       provider: 'pixabay',
-                      filters: {
-                        ...prev.filters,
+                      options: {
+                        ...prev.options,
                         orientation: (opt as ProviderOption)?.value,
                       },
                     }
@@ -427,14 +423,14 @@ export const SearchImages = (props: SearchImagesProps) => {
 
           <Select
             options={PixabayOrder}
-            value={PixabayOrder.find((o) => o.value === providerFilters.filters.order)}
+            value={PixabayOrder.find((o) => o.value === filters.options.order)}
             onChange={(opt) =>
-              setProviderFilters((prev) =>
+              setFilters((prev) =>
                 prev?.provider === 'pixabay'
                   ? {
                       provider: 'pixabay',
-                      filters: {
-                        ...prev.filters,
+                      options: {
+                        ...prev.options,
                         order: (opt as ProviderOption)?.value,
                       },
                     }
@@ -448,18 +444,18 @@ export const SearchImages = (props: SearchImagesProps) => {
         </div>
       )}
 
-      {providerFilters?.provider === 'unsplash' && (
+      {filters?.provider === 'unsplash' && (
         <div className={`${baseClass}__filters`}>
           <Select
             options={UnsplashColours}
-            value={UnsplashColours.find((o) => o.value === providerFilters.filters.color)}
+            value={UnsplashColours.find((o) => o.value === filters.options.color)}
             onChange={(opt) =>
-              setProviderFilters((prev) =>
+              setFilters((prev) =>
                 prev?.provider === 'unsplash'
                   ? {
                       provider: 'unsplash',
-                      filters: {
-                        ...prev.filters,
+                      options: {
+                        ...prev.options,
                         color: (opt as ProviderOption)?.value,
                       },
                     }
@@ -473,14 +469,14 @@ export const SearchImages = (props: SearchImagesProps) => {
 
           <Select
             options={UnsplashOrientation}
-            value={UnsplashOrientation.find((o) => o.value === providerFilters.filters.orientation)}
+            value={UnsplashOrientation.find((o) => o.value === filters.options.orientation)}
             onChange={(opt) =>
-              setProviderFilters((prev) =>
+              setFilters((prev) =>
                 prev?.provider === 'unsplash'
                   ? {
                       provider: 'unsplash',
-                      filters: {
-                        ...prev.filters,
+                      options: {
+                        ...prev.options,
                         orientation: (opt as ProviderOption)?.value,
                       },
                     }

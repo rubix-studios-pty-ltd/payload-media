@@ -186,9 +186,9 @@ export interface ProviderResult {
 }
 
 export type ProviderFilters =
-  | { provider: 'unsplash'; filters: UnsplashFilters }
-  | { provider: 'pexels'; filters: PexelsFilters }
-  | { provider: 'pixabay'; filters: PixabayFilters }
+  | { provider: 'unsplash'; options: UnsplashFilters }
+  | { provider: 'pexels'; options: PexelsFilters }
+  | { provider: 'pixabay'; options: PixabayFilters }
 
 export type ProviderOption = {
   label: string
