@@ -190,9 +190,11 @@ export type ProviderFilters =
   | { provider: 'pexels'; options: PexelsFilters }
   | { provider: 'pixabay'; options: PixabayFilters }
 
+type ProviderKey = 'unsplash' | 'pexels' | 'pixabay'
+
 export type ProviderOption = {
   label: string
-  value: string
+  value: ProviderKey
 }
 
 export type SearchImagesProps = {

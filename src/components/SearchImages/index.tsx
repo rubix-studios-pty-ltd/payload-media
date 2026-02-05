@@ -69,19 +69,8 @@ export const SearchImages = (props: SearchImagesProps) => {
       const first = providers[0]
       if (!first) return
 
+      setFilters({ provider: first.value, options: {} })
       setSelectedProvider(first)
-
-      switch (first.value) {
-        case 'unsplash':
-          setFilters({ provider: 'unsplash', options: {} })
-          break
-        case 'pexels':
-          setFilters({ provider: 'pexels', options: {} })
-          break
-        case 'pixabay':
-          setFilters({ provider: 'pixabay', options: {} })
-          break
-      }
     } catch {
       setLoading(false)
       defaultError()
@@ -123,13 +112,20 @@ export const SearchImages = (props: SearchImagesProps) => {
   }, [filters])
 
   const getFeaturedPhotos = useCallback(async () => {
+    if (!selectedProvider?.value) return
+    if (!filters) return
+
     try {
       setLoading(true)
 
       const json = await fetchCache(
-        `${serverURL}${api}/providers/${selectedProvider?.value}/featured${buildFeaturedParams()}`
+        `${serverURL}${api}/providers/${selectedProvider.value}/featured${buildFeaturedParams()}`
       )
-      if (json.error) return toast.error(json.error)
+
+      if (json.error) {
+        toast.error(json.error)
+        return
+      }
 
       setImages(json.data.images)
     } catch {
@@ -137,7 +133,7 @@ export const SearchImages = (props: SearchImagesProps) => {
     } finally {
       setLoading(false)
     }
-  }, [serverURL, api, selectedProvider?.value, defaultError, buildFeaturedParams])
+  }, [serverURL, api, selectedProvider, filters, buildFeaturedParams, defaultError])
 
   const buildQueryParams = useCallback(
     (page = 1) => {
@@ -209,20 +205,9 @@ export const SearchImages = (props: SearchImagesProps) => {
 
   const handleSelectChange = useCallback(
     (select: ProviderOption) => {
+      setFilters({ provider: select.value, options: {} })
       setSelectedProvider(select)
       resetImages()
-
-      switch (select.value) {
-        case 'unsplash':
-          setFilters({ provider: 'unsplash', options: {} })
-          break
-        case 'pexels':
-          setFilters({ provider: 'pexels', options: {} })
-          break
-        case 'pixabay':
-          setFilters({ provider: 'pixabay', options: {} })
-          break
-      }
     },
     [resetImages]
   )
