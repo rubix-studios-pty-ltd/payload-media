@@ -28,10 +28,11 @@ export const SearchImages = (props: SearchImagesProps) => {
   const { serverURL, api, onSelect } = props
 
   const [selectedProvider, setSelectedProvider] = useState<ProviderOption | null>(null)
-  const [providerOptions, setProviderOptions] = useState<ProviderOption[]>([])
-  const [filters, setFilters] = useState<ProviderFilters | null>(null)
+  const [options, setOptions] = useState<ProviderOption[]>([])
 
   const [images, setImages] = useState<ProviderResult[] | null>(null)
+  const [filters, setFilters] = useState<ProviderFilters | null>(null)
+
   const [currentPage, setCurrentPage] = useState<number | null>(null)
   const [totalPages, setTotalPages] = useState<number | null>(null)
 
@@ -49,11 +50,11 @@ export const SearchImages = (props: SearchImagesProps) => {
     setCurrentPage(1)
   }, [])
 
-  const getProviderOptions = useCallback(async () => {
+  const getOptions = useCallback(async () => {
     try {
       const response = await fetch(`${serverURL}${api}/providers`)
-
       const json = await response.json()
+
       if (json.error) {
         setLoading(false)
         return toast.error(json.error)
@@ -64,20 +65,20 @@ export const SearchImages = (props: SearchImagesProps) => {
         value: provider.key.toLowerCase(),
       }))
 
-      setProviderOptions(providers)
+      setOptions(providers)
 
-      const first = providers[0]
-      if (!first) return
+      const initial = providers[0]
+      if (!initial) return
 
-      setFilters({ provider: first.value, options: {} })
-      setSelectedProvider(first)
+      setFilters({ provider: initial.value, options: {} })
+      setSelectedProvider(initial)
     } catch {
       setLoading(false)
       defaultError()
     }
   }, [serverURL, api, defaultError])
 
-  const buildFeaturedParams = useCallback(() => {
+  const buildFeatured = useCallback(() => {
     if (!filters) return ''
 
     const params = new URLSearchParams()
@@ -111,16 +112,14 @@ export const SearchImages = (props: SearchImagesProps) => {
     return query ? `?${query}` : ''
   }, [filters])
 
-  const getFeaturedPhotos = useCallback(async () => {
-    if (!selectedProvider?.value) return
-    if (!filters) return
+  const getFeatured = useCallback(async () => {
+    if (!selectedProvider || !filters) return
 
     try {
       setLoading(true)
 
-      const json = await fetchCache(
-        `${serverURL}${api}/providers/${selectedProvider.value}/featured${buildFeaturedParams()}`
-      )
+      const json = await fetchCache(`${serverURL}${api}/providers/${selectedProvider.value}/featured${buildFeatured()}`)
+      if (!json) return
 
       if (json.error) {
         toast.error(json.error)
@@ -133,9 +132,9 @@ export const SearchImages = (props: SearchImagesProps) => {
     } finally {
       setLoading(false)
     }
-  }, [serverURL, api, selectedProvider, filters, buildFeaturedParams, defaultError])
+  }, [serverURL, api, selectedProvider, filters, buildFeatured, defaultError])
 
-  const buildQueryParams = useCallback(
+  const buildQuery = useCallback(
     (page = 1) => {
       if (!filters) return ''
 
@@ -178,7 +177,7 @@ export const SearchImages = (props: SearchImagesProps) => {
       try {
         setLoading(true)
         const json = await fetchCache(
-          `${serverURL}${api}/providers/${selectedProvider?.value}/search?${buildQueryParams(page)}`
+          `${serverURL}${api}/providers/${selectedProvider?.value}/search?${buildQuery(page)}`
         )
 
         if (json.error) return toast.error(json.error)
@@ -192,27 +191,10 @@ export const SearchImages = (props: SearchImagesProps) => {
         setLoading(false)
       }
     },
-    [serverURL, api, selectedProvider?.value, defaultError, buildQueryParams]
+    [serverURL, api, selectedProvider?.value, defaultError, buildQuery]
   )
 
-  const handleSearchFilterChange = useCallback(
-    (search: string) => {
-      setValue(search)
-      resetImages()
-    },
-    [resetImages]
-  )
-
-  const handleSelectChange = useCallback(
-    (select: ProviderOption) => {
-      setFilters({ provider: select.value, options: {} })
-      setSelectedProvider(select)
-      resetImages()
-    },
-    [resetImages]
-  )
-
-  const handleSelect = async (url: string, download?: string) => {
+  const selectImage = async (url: string, download?: string) => {
     onSelect(url)
     if (!download) return
 
@@ -225,9 +207,26 @@ export const SearchImages = (props: SearchImagesProps) => {
     }
   }
 
+  const selectFilter = useCallback(
+    (select: ProviderOption) => {
+      setFilters({ provider: select.value, options: {} })
+      setSelectedProvider(select)
+      resetImages()
+    },
+    [resetImages]
+  )
+
+  const changeFilters = useCallback(
+    (search: string) => {
+      setValue(search)
+      resetImages()
+    },
+    [resetImages]
+  )
+
   useEffect(() => {
-    void getProviderOptions()
-  }, [getProviderOptions])
+    void getOptions()
+  }, [getOptions])
 
   useEffect(() => {
     if (!selectedProvider?.value || !filters) return
@@ -235,21 +234,22 @@ export const SearchImages = (props: SearchImagesProps) => {
     if (value.trim().length > 0) {
       void getPhotos(1)
     } else {
-      void getFeaturedPhotos()
+      void getFeatured()
     }
-  }, [selectedProvider?.value, filters, value, getPhotos, getFeaturedPhotos])
+  }, [selectedProvider?.value, filters, value, getPhotos, getFeatured])
 
   return (
     <div className={baseClass}>
       <div className={`${baseClass}__fields`}>
-        <SearchFilter label="" handleChange={handleSearchFilterChange} />
+        <SearchFilter label="" handleChange={changeFilters} />
         <Select
-          options={providerOptions}
+          options={options}
           value={selectedProvider as ProviderOption}
-          onChange={(value) => handleSelectChange(value as ProviderOption)}
+          onChange={(value) => selectFilter(value as ProviderOption)}
           isClearable={false}
           isSearchable={false}
           isCreatable={false}
+          className={`${baseClass}__options`}
         />
       </div>
 
@@ -273,7 +273,7 @@ export const SearchImages = (props: SearchImagesProps) => {
             }
             isClearable
             isSearchable={false}
-            placeholder="Select color..."
+            placeholder="Colour"
           />
 
           <Select
@@ -294,7 +294,7 @@ export const SearchImages = (props: SearchImagesProps) => {
             }
             isClearable
             isSearchable={false}
-            placeholder="Select size..."
+            placeholder="Size"
           />
 
           <Select
@@ -315,7 +315,7 @@ export const SearchImages = (props: SearchImagesProps) => {
             }
             isClearable
             isSearchable={false}
-            placeholder="Select orientation..."
+            placeholder="Orientation"
           />
         </div>
       )}
@@ -340,7 +340,7 @@ export const SearchImages = (props: SearchImagesProps) => {
             }
             isClearable
             isSearchable={false}
-            placeholder="Select category..."
+            placeholder="Category"
           />
 
           <Select
@@ -361,7 +361,7 @@ export const SearchImages = (props: SearchImagesProps) => {
             }
             isClearable
             isSearchable={false}
-            placeholder="Select type..."
+            placeholder="Type"
           />
 
           <Select
@@ -382,7 +382,7 @@ export const SearchImages = (props: SearchImagesProps) => {
             }
             isClearable
             isSearchable={false}
-            placeholder="Select color..."
+            placeholder="Colour"
           />
 
           <Select
@@ -403,7 +403,7 @@ export const SearchImages = (props: SearchImagesProps) => {
             }
             isClearable
             isSearchable={false}
-            placeholder="Select orientation..."
+            placeholder="Orientation"
           />
 
           <Select
@@ -424,7 +424,7 @@ export const SearchImages = (props: SearchImagesProps) => {
             }
             isClearable
             isSearchable={false}
-            placeholder="Select order..."
+            placeholder="Order"
           />
         </div>
       )}
@@ -449,7 +449,7 @@ export const SearchImages = (props: SearchImagesProps) => {
             }
             isClearable
             isSearchable={false}
-            placeholder="Select color..."
+            placeholder="Colour"
           />
 
           <Select
@@ -470,7 +470,7 @@ export const SearchImages = (props: SearchImagesProps) => {
             }
             isClearable
             isSearchable={false}
-            placeholder="Select orientation..."
+            placeholder="Orientation"
           />
         </div>
       )}
@@ -489,7 +489,7 @@ export const SearchImages = (props: SearchImagesProps) => {
                 <button
                   type="button"
                   className={`${baseClass}__button`}
-                  onClick={() => handleSelect(data.urls.original, data.urls?.downloadLocation)}
+                  onClick={() => selectImage(data.urls.original, data.urls?.downloadLocation)}
                   style={{ backgroundColor: data.color }}
                 >
                   <img

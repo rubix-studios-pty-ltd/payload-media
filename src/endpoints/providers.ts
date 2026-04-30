@@ -12,7 +12,10 @@ export const providers: Endpoint[] = [
       if (denied) return denied
 
       const providerKeys = req.payload?.config?.custom?.providerKeys
-      const providers = getProviders(providerKeys)
+      const providers = getProviders(providerKeys).map((p) => ({
+        name: p.name,
+        key: p.key,
+      }))
 
       return Response.json({ data: providers, error: null })
     },

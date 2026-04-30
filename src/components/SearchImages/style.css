@@ -222,6 +222,10 @@ img.search-images__avatar {
   width: 100%;
 }
 
+.search-images__options {
+  min-width: 140px;
+}
+
 .search-images__provider {
   display: flex;
   justify-content: center;
