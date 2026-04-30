@@ -118,7 +118,9 @@ export const SearchImages = (props: SearchImagesProps) => {
     try {
       setLoading(true)
 
-      const json = await fetchCache(`${serverURL}${api}/providers/${selectedProvider.value}/featured${buildFeatured()}`)
+      const json = await fetchCache(
+        `${serverURL}${api}/providers/${selectedProvider.value}/featured${buildFeatured()}`
+      )
       if (!json) return
 
       if (json.error) {
