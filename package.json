@@ -45,9 +45,7 @@
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "build": "pnpm build:types && pnpm build:swc && pnpm build:assets",
     "build:swc": "swc ./src -d ./dist --config-file .swcrc --strip-leading-paths",
