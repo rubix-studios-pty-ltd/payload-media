@@ -32,6 +32,9 @@ importers:
       clean-css-cli:
         specifier: ^5.6.3
         version: 5.6.3
+      conventional-changelog-conventionalcommits:
+        specifier: ^9.3.1
+        version: 9.3.1
       payload:
         specifier: ^3.84.1
         version: 3.84.1(graphql@16.12.0)(typescript@6.0.3)
@@ -1385,6 +1388,10 @@ packages:
 
   conventional-changelog-angular@8.3.1:
     resolution: {integrity: sha512-6gfI3otXK5Ph5DfCOI1dblr+kN3FAm5a97hYoQkqNZxOaYa5WKfXH+AnpsmS+iUH2mgVC2Cg2Qw9m5OKcmNrIg==}
+    engines: {node: '>=18'}
+
+  conventional-changelog-conventionalcommits@9.3.1:
+    resolution: {integrity: sha512-dTYtpIacRpcZgrvBYvBfArMmK2xvIpv2TaxM0/ZI5CBtNUzvF2x0t15HsbRABWprS6UPmvj+PzHVjSx4qAVKyw==}
     engines: {node: '>=18'}
 
   conventional-changelog-writer@8.4.0:
@@ -4309,6 +4316,10 @@ snapshots:
   content-disposition@1.1.0: {}
 
   conventional-changelog-angular@8.3.1:
+    dependencies:
+      compare-func: 2.0.0
+
+  conventional-changelog-conventionalcommits@9.3.1:
     dependencies:
       compare-func: 2.0.0
 
