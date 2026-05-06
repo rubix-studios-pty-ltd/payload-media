@@ -68,7 +68,10 @@ export const SearchImages = (props: SearchImagesProps) => {
       setOptions(providers)
 
       const initial = providers[0]
-      if (!initial) return
+      if (!initial) {
+        setLoading(false)
+        return
+      }
 
       setFilters({ provider: initial.value, options: {} })
       setSelectedProvider(initial)

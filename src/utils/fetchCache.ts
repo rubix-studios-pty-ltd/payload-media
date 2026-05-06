@@ -9,9 +9,10 @@ export const fetchCache = async (queryPath: string) => {
   }
 
   const key = `image-search:${queryPath}`
+  const cached = cache.get(key)
 
-  if (cache.exists(key)) {
-    return cache.get(key)
+  if (cached !== null) {
+    return cached
   }
 
   const response = await fetch(queryPath)
