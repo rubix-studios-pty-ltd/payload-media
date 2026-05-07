@@ -1,4 +1,5 @@
 import type { Endpoint } from 'payload'
+import { getMediaType } from '../utils/getMediaType.js'
 import { getProviders } from '../utils/getProviders.js'
 import { requireAccess } from '../utils/requireAccess.js'
 import { resolveProvider } from '../utils/resolveProvider.js'
@@ -57,6 +58,7 @@ export const providers: Endpoint[] = [
         order: req.query.order as string | undefined,
         orientation: req.query.orientation as string | undefined,
         size: req.query.size as string | undefined,
+        media: getMediaType(req.query.media),
       })
 
       return Response.json({ data, error: null })
@@ -102,6 +104,7 @@ export const providers: Endpoint[] = [
           order: req.query.order as string | undefined,
           orientation: req.query.orientation as string | undefined,
           size: req.query.size as string | undefined,
+          media: getMediaType(req.query.media),
         }
       )
 

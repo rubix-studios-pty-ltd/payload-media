@@ -1,1 +1,1 @@
-export { ImageSearch } from '../components/ImageSearch/index.js'
+export { MediaSearch } from '../components/media-search/index.js'

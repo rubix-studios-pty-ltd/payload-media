@@ -1,5 +1,4 @@
-import type { SVGProps } from 'react'
-import React from 'react'
+import React, { type SVGProps } from 'react'
 
 export function HeartIcon(props: SVGProps<SVGSVGElement>) {
   return (

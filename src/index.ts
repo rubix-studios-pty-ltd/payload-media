@@ -1,7 +1,7 @@
 import { type Config } from 'payload'
 
 import { defaultPluginOptions } from './defaults.js'
-import { providers } from './endpoints/providers.js'
+import { providers } from './endpoints/index.js'
 import { type ImageConfig } from './types.js'
 
 export const imagePlugin =
@@ -42,7 +42,7 @@ export const imagePlugin =
               ...(uploadObj?.admin?.components || {}),
               controls: [
                 ...(uploadObj?.admin?.components?.controls || []),
-                '@rubixstudios/payload-images/client#ImageSearch',
+                '@rubixstudios/payload-images/client#MediaSearch',
               ],
             },
           },

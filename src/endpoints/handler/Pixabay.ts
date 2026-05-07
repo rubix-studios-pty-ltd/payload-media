@@ -1,6 +1,6 @@
 import type { PixabayFilters, PixabayResult, ProviderResult } from '../../types.js'
-import type { Resolver } from './Provider.js'
-import { Provider } from './Provider.js'
+import type { Resolver } from './provider.js'
+import { Provider } from './provider.js'
 
 export class Pixabay extends Provider {
   constructor(apiKey: Resolver) {
@@ -16,6 +16,19 @@ export class Pixabay extends Provider {
   }
 
   override async getFeatured(filters?: PixabayFilters): Promise<unknown> {
+    if (filters?.media === 'video') {
+      const data = await this.fetch(
+        'GET',
+        `/api/videos?key=${this.getApiKey()}&per_page=${this.getFetchLimit()}`
+      )
+
+      return {
+        images: this.formatVideoResults((data as { hits: any[] }).hits),
+        totalImages: null,
+        totalPages: null,
+      }
+    }
+
     if (
       filters?.image_type ||
       filters?.orientation ||
@@ -43,6 +56,28 @@ export class Pixabay extends Provider {
     page: number,
     filters?: PixabayFilters
   ): Promise<unknown> {
+    if (filters?.media === 'video') {
+      const params = new URLSearchParams({
+        key: this.getApiKey(),
+        q: query || '',
+        page: String(page),
+        per_page: String(this.getFetchLimit()),
+      })
+
+      if (filters?.category) params.set('category', filters.category)
+      if (filters?.order) params.set('order', filters.order)
+
+      const data = await this.fetch('GET', `/api/videos?${params.toString()}`)
+
+      const totalHits = (data as { totalHits: number }).totalHits
+
+      return {
+        images: this.formatVideoResults((data as { hits: any[] }).hits),
+        totalImages: totalHits,
+        totalPages: Math.min(Math.ceil(totalHits / this.getFetchLimit()), 100),
+      }
+    }
+
     const params = new URLSearchParams({
       key: this.getApiKey(),
       q: query || '',
@@ -65,6 +100,32 @@ export class Pixabay extends Provider {
       totalImages: totalHits,
       totalPages: Math.min(Math.ceil(totalHits / this.getFetchLimit()), 100),
     }
+  }
+
+  formatVideoResults(data: any[]): ProviderResult[] {
+    return data.map((item) => {
+      const videos = item.videos || {}
+      const video = videos.large || videos.medium || videos.small || {}
+
+      return {
+        id: item.id,
+        alt: item.tags || '',
+        width: video.width || 0,
+        height: video.height || 0,
+        color: '#000',
+        likes: item.likes,
+        urls: {
+          view: video.thumbnail || '',
+          original: video.url || '',
+          download: video.url ? `${video.url}?download=1` : '',
+        },
+        attribution: {
+          name: item.user || '',
+          link: `https://pixabay.com/users/${item.user}-${item.user_id}/`,
+        },
+        avatar: item.userImageURL,
+      }
+    })
   }
 
   override formatResults(data: PixabayResult[]): ProviderResult[] {

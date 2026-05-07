@@ -1,6 +1,6 @@
-import { Pexels } from '../endpoints/handler/Pexels.js'
-import { Pixabay } from '../endpoints/handler/Pixabay.js'
-import { Unsplash } from '../endpoints/handler/Unsplash.js'
+import { Pexels } from '../endpoints/handler/pexels.js'
+import { Pixabay } from '../endpoints/handler/pixabay.js'
+import { Unsplash } from '../endpoints/handler/unsplash.js'
 import { type ProviderKeys } from '../types.js'
 
 export const getProvider = (providerKey: string | undefined, providerKeys?: ProviderKeys) => {

@@ -52,7 +52,7 @@
     "build:types": "tsc -p tsconfig.json",
     "build:assets": "cleancss -o dist/components/SearchImages/style.css src/components/SearchImages/*.css",
     "clean": "rimraf -g {dist,*.tsbuildinfo} && pnpm exec biome check --write && pnpm biome migrate --write",
-    "update": "pnpm update --latest && pnpm install && pnpm prune && pnpm dedupe && pnpm run clean",
+    "update": "pnpm self-update && pnpm update --latest && pnpm install && pnpm prune && pnpm dedupe && pnpm run clean",
     "release": "semantic-release"
   },
   "devDependencies": {
@@ -90,5 +90,5 @@
       }
     }
   },
-  "packageManager": "pnpm@10.33.3"
+  "packageManager": "pnpm@11.0.8"
 }

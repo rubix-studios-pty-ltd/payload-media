@@ -3,11 +3,11 @@
 import { Button, Drawer, useConfig, useModal, useUploadControls } from '@payloadcms/ui'
 import React, { useCallback } from 'react'
 
-import { SearchImages } from '../SearchImages/index.js'
+import { SearchDrawer } from '../search-drawer/index.js'
 
-export const drawerSlug = 'payload-image-search'
+export const drawerSlug = 'payload-media-search'
 
-export const ImageSearch = () => {
+export const MediaSearch = () => {
   const { config } = useConfig()
   const { setUploadControlFileUrl } = useUploadControls()
   const { openModal, closeModal } = useModal()
@@ -26,10 +26,10 @@ export const ImageSearch = () => {
     <>
       <span className="file-field__orText">Or</span>
       <Button buttonStyle="pill" size="small" onClick={() => openModal(drawerSlug)}>
-        Search images
+        Search media
       </Button>
       <Drawer slug={drawerSlug}>
-        <SearchImages
+        <SearchDrawer
           serverURL={config.serverURL}
           api={config.routes.api}
           onSelect={handleSearchSubmit}

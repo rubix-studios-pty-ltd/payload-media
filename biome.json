@@ -63,7 +63,11 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": false
+      "recommended": false,
+      "a11y": {
+        "noSvgWithoutTitle": "warn",
+        "useMediaCaption": "off"
+      }
     },
     "includes": [
       "**",

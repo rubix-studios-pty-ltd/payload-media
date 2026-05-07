@@ -1,4 +1,4 @@
-import type { PayloadRequest } from 'payload'
+import { type PayloadRequest } from 'payload'
 
 export const requireAccess = async (req: PayloadRequest): Promise<Response | undefined> => {
   const allowed = await req.payload?.config?.custom?.providerAccess?.({ req })

@@ -1,6 +1,6 @@
 import type { ProviderResult, UnsplashFilters, UnsplashResult } from '../../types.js'
-import type { Resolver } from './Provider.js'
-import { Provider } from './Provider.js'
+import type { Resolver } from './provider.js'
+import { Provider } from './provider.js'
 
 const UTMParams = 'utm_source=rubixstudios-payload-images&utm_medium=referral'
 

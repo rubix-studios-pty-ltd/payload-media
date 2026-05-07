@@ -1,4 +1,4 @@
-import type { Access } from 'payload'
+import { type Access } from 'payload'
 
 export type ImageConfig = {
   access?: Access
@@ -8,6 +8,16 @@ export type ImageConfig = {
   pixabay?: string
   unsplash?: string
 }
+
+export type MediaOption = {
+  label: string
+  value: 'image' | 'video'
+}
+
+export const MediaOptions: MediaOption[] = [
+  { label: 'Images', value: 'image' },
+  { label: 'Videos', value: 'video' },
+]
 
 export type ProviderKeys = {
   unsplash?: string
@@ -58,6 +68,7 @@ export const PexelsColours = [
 export type PexelsFilters = {
   orientation?: string
   size?: string
+  media?: 'image' | 'video'
   color?: string
 }
 
@@ -71,6 +82,12 @@ export const PexelsSize = [
   { label: 'Small (4MP)', value: 'small' },
   { label: 'Medium (12MP)', value: 'medium' },
   { label: 'Large (24MP)', value: 'large' },
+]
+
+export const PexelsVideoSize = [
+  { label: 'Large (4K)', value: 'large' },
+  { label: 'Medium (Full HD)', value: 'medium' },
+  { label: 'Small (HD)', value: 'small' },
 ]
 
 export interface PexelsResult {
@@ -134,6 +151,7 @@ export type PixabayFilters = {
   category?: string
   colors?: string
   order?: string
+  media?: 'image' | 'video'
 }
 
 export const PixabayImageType = [
@@ -197,12 +215,6 @@ export type ProviderOption = {
   value: ProviderKey
 }
 
-export type SearchImagesProps = {
-  serverURL: string
-  api: string
-  onSelect: (value: string) => void
-}
-
 export const UnsplashColours = [
   { label: 'Black', value: 'black' },
   { label: 'Blue', value: 'blue' },
@@ -226,6 +238,7 @@ export const UnsplashOrientation = [
 export type UnsplashFilters = {
   color?: string
   orientation?: string
+  media?: 'image' | 'video'
 }
 
 export interface UnsplashResult {

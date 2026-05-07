@@ -8,7 +8,7 @@ export const fetchCache = async (queryPath: string) => {
     throw new Error('Invalid provider')
   }
 
-  const key = `image-search:${queryPath}`
+  const key = `media-search:${queryPath}`
   const cached = cache.get(key)
 
   if (cached !== null) {
