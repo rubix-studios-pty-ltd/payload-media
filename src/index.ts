@@ -2,14 +2,14 @@ import { type Config } from 'payload'
 
 import { defaultPluginOptions } from './defaults.js'
 import { providers } from './endpoints/index.js'
-import { type ImageConfig } from './types.js'
+import { type ProviderConfig } from './types.js'
 
 export const imagePlugin =
-  (pluginConfig: ImageConfig = {}) =>
+  (pluginConfig: ProviderConfig = {}) =>
   (incomingConfig: Config): Config => {
     if (pluginConfig.disabled) return incomingConfig
 
-    const mergedOptions: Required<ImageConfig> = {
+    const mergedOptions: Required<ProviderConfig> = {
       ...defaultPluginOptions,
       ...pluginConfig,
     }

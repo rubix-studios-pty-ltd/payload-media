@@ -1,14 +1,5 @@
 import { type Access } from 'payload'
 
-export type ImageConfig = {
-  access?: Access
-  disabled?: boolean
-  openverse?: string
-  pexels?: string
-  pixabay?: string
-  unsplash?: string
-}
-
 export type MediaOption = {
   label: string
   value: 'image' | 'video'
@@ -18,13 +9,6 @@ export const MediaOptions: MediaOption[] = [
   { label: 'Images', value: 'image' },
   { label: 'Videos', value: 'video' },
 ]
-
-export type ProviderKeys = {
-  unsplash?: string
-  openverse?: string
-  pexels?: string
-  pixabay?: string
-}
 
 export interface OpenverseResponse {
   result_count: number
@@ -183,6 +167,34 @@ export interface PixabayResult {
   userImageURL: string
 }
 
+export type ProviderConfig = {
+  access?: Access
+  disabled?: boolean
+  openverse?: string
+  pexels?: string
+  pixabay?: string
+  unsplash?: string
+}
+
+export type ProviderFilters =
+  | { provider: 'unsplash'; options: UnsplashFilters }
+  | { provider: 'pexels'; options: PexelsFilters }
+  | { provider: 'pixabay'; options: PixabayFilters }
+
+export type ProviderKeys = {
+  unsplash?: string
+  openverse?: string
+  pexels?: string
+  pixabay?: string
+}
+
+type ProviderKey = 'unsplash' | 'pexels' | 'pixabay'
+
+export type ProviderOption = {
+  label: string
+  value: ProviderKey
+}
+
 export interface ProviderResult {
   id: string
   alt: string
@@ -203,18 +215,6 @@ export interface ProviderResult {
   }
 }
 
-export type ProviderFilters =
-  | { provider: 'unsplash'; options: UnsplashFilters }
-  | { provider: 'pexels'; options: PexelsFilters }
-  | { provider: 'pixabay'; options: PixabayFilters }
-
-type ProviderKey = 'unsplash' | 'pexels' | 'pixabay'
-
-export type ProviderOption = {
-  label: string
-  value: ProviderKey
-}
-
 export const UnsplashColours = [
   { label: 'Black', value: 'black' },
   { label: 'Blue', value: 'blue' },
@@ -229,17 +229,17 @@ export const UnsplashColours = [
   { label: 'Yellow', value: 'yellow' },
 ]
 
-export const UnsplashOrientation = [
-  { label: 'Landscape', value: 'landscape' },
-  { label: 'Portrait', value: 'portrait' },
-  { label: 'Square', value: 'squarish' },
-]
-
 export type UnsplashFilters = {
   color?: string
   orientation?: string
   media?: 'image' | 'video'
 }
+
+export const UnsplashOrientation = [
+  { label: 'Landscape', value: 'landscape' },
+  { label: 'Portrait', value: 'portrait' },
+  { label: 'Square', value: 'squarish' },
+]
 
 export interface UnsplashResult {
   id: string

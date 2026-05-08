@@ -1,6 +1,6 @@
-import { type ImageConfig } from './types.js'
+import { type ProviderConfig } from './types.js'
 
-export const defaultPluginOptions: Required<ImageConfig> = {
+export const defaultPluginOptions: Required<ProviderConfig> = {
   disabled: false,
   unsplash: '',
   pexels: '',
