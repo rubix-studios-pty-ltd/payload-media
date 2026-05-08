@@ -1,4 +1,10 @@
-import { type PixabayFilters, type PixabayResult, type ProviderResult } from '../../types.js'
+import {
+  type PixabayFilters,
+  type PixabayResult,
+  PixabayVideo,
+  PixabayVideoResponse,
+  type ProviderResult,
+} from '../../types.js'
 import { Provider, type Resolver } from './provider.js'
 
 export class Pixabay extends Provider {
@@ -22,7 +28,7 @@ export class Pixabay extends Provider {
       )
 
       return {
-        images: this.formatVideoResults((data as { hits: any[] }).hits),
+        images: this.formatVideoResults((data as PixabayVideoResponse).hits),
         totalImages: null,
         totalPages: null,
       }
@@ -71,7 +77,7 @@ export class Pixabay extends Provider {
       const totalHits = (data as { totalHits: number }).totalHits
 
       return {
-        images: this.formatVideoResults((data as { hits: any[] }).hits),
+        images: this.formatVideoResults((data as PixabayVideoResponse).hits),
         totalImages: totalHits,
         totalPages: Math.min(Math.ceil(totalHits / this.getFetchLimit()), 100),
       }
@@ -101,28 +107,28 @@ export class Pixabay extends Provider {
     }
   }
 
-  formatVideoResults(data: any[]): ProviderResult[] {
-    return data.map((item) => {
-      const videos = item.videos || {}
-      const video = videos.large || videos.medium || videos.small || {}
+  formatVideoResults(data: PixabayVideo[]): ProviderResult[] {
+    return data.map((video) => {
+      const videos = video.videos || {}
+      const videoFormat = videos.large || videos.medium || videos.small || {}
 
       return {
-        id: item.id,
-        alt: item.tags || '',
-        width: video.width || 0,
-        height: video.height || 0,
+        id: video.id as unknown as string,
+        alt: video.tags || '',
+        width: videoFormat.width || 0,
+        height: videoFormat.height || 0,
         color: '#000',
-        likes: item.likes,
+        likes: video.likes,
         urls: {
-          view: video.thumbnail || '',
-          original: video.url || '',
-          download: video.url ? `${video.url}?download=1` : '',
+          view: videoFormat.thumbnail || '',
+          original: videoFormat.url || '',
+          download: videoFormat.url ? `${videoFormat.url}?download=1` : '',
         },
         attribution: {
-          name: item.user || '',
-          link: `https://pixabay.com/users/${item.user}-${item.user_id}/`,
+          name: video.user || '',
+          link: `https://pixabay.com/users/${video.user}-${video.user_id}/`,
         },
-        avatar: item.userImageURL,
+        avatar: video.userImageURL,
       }
     })
   }

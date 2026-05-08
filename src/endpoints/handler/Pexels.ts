@@ -1,4 +1,10 @@
-import { type PexelsFilters, type PexelsResult, type ProviderResult } from '../../types.js'
+import {
+  type PexelsFilters,
+  type PexelsResult,
+  PexelsVideo,
+  PexelsVideoResponse,
+  type ProviderResult,
+} from '../../types.js'
 import { Provider, type Resolver } from './provider.js'
 
 export class Pexels extends Provider {
@@ -19,7 +25,7 @@ export class Pexels extends Provider {
       const data = await this.fetch('GET', `/videos/popular?per_page=${this.getFetchLimit()}`)
 
       return {
-        images: this.formatVideoResults((data as { videos: any[] }).videos),
+        images: this.formatVideoResults((data as PexelsVideoResponse).videos),
         totalImages: null,
         totalPages: null,
       }
@@ -54,7 +60,7 @@ export class Pexels extends Provider {
       const totalResults = (data as { total_results: number }).total_results
 
       return {
-        images: this.formatVideoResults((data as { videos: any[] }).videos),
+        images: this.formatVideoResults((data as PexelsVideoResponse).videos),
         totalImages: totalResults,
         totalPages: Math.min(Math.ceil(totalResults / this.getFetchLimit()), 100),
       }
@@ -81,23 +87,22 @@ export class Pexels extends Provider {
     }
   }
 
-  formatVideoResults(data: any[]): ProviderResult[] {
+  formatVideoResults(data: PexelsVideo[]): ProviderResult[] {
     return data.map((video) => {
       const file =
-        video.video_files?.find((f: any) => f.quality === 'hd' && f.file_type === 'video/mp4') ??
-        video.video_files?.find((f: any) => f.file_type === 'video/mp4') ??
-        {}
+        video.video_files.find((f) => f.quality === 'hd' && f.file_type === 'video/mp4') ??
+        video.video_files.find((f) => f.file_type === 'video/mp4')
 
       return {
-        id: video.id,
+        id: video.id as unknown as string,
         alt: video.url || '',
-        width: video.width ?? file.width ?? 0,
-        height: video.height ?? file.height ?? 0,
-        color: video.avg_color || '#000',
+        width: file?.width || video.width || 0,
+        height: file?.height || video.height || 0,
+        color: '#000',
         urls: {
           view: video.image || '',
-          original: file.link || video.url || '',
-          download: file.link || video.url || '',
+          original: file?.link || video.url || '',
+          download: file?.link || video.url || '',
         },
         attribution: {
           name: video.user?.name || '',

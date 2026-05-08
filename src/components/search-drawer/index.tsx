@@ -83,7 +83,7 @@ export const SearchDrawer = (props: SearchDrawerProps) => {
   }, [serverURL, api, defaultError])
 
   const buildFeatured = useCallback(() => {
-    if (!filters) return ''
+    if (!filters || !mediaType) return ''
 
     const params = new URLSearchParams()
 
@@ -119,7 +119,7 @@ export const SearchDrawer = (props: SearchDrawerProps) => {
   }, [filters, mediaType])
 
   const getFeatured = useCallback(async () => {
-    if (!selectedProvider || !filters) return
+    if (!selectedProvider || !filters || !mediaType) return
 
     try {
       setLoading(true)
@@ -144,7 +144,7 @@ export const SearchDrawer = (props: SearchDrawerProps) => {
 
   const buildQuery = useCallback(
     (page = 1) => {
-      if (!filters) return ''
+      if (!filters || !mediaType) return ''
 
       const params = new URLSearchParams()
       params.set('query', value)
@@ -242,7 +242,7 @@ export const SearchDrawer = (props: SearchDrawerProps) => {
   }, [getOptions])
 
   useEffect(() => {
-    if (!selectedProvider?.value || !filters) return
+    if (!selectedProvider?.value || !filters || !mediaType) return
 
     if (value.trim().length > 0) {
       void getMedia(1)

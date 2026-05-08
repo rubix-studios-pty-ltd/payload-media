@@ -68,6 +68,48 @@ export const PexelsSize = [
   { label: 'Large (24MP)', value: 'large' },
 ]
 
+interface PexelsVideoUser {
+  id: number
+  name: string
+  url: string
+}
+
+interface PexelsVideoFile {
+  id: number
+  quality: 'hd' | 'sd'
+  file_type: string
+  width: number
+  height: number
+  fps: number
+  link: string
+}
+
+interface PexelsVideoPicture {
+  id: number
+  picture: string
+  nr: number
+}
+
+export interface PexelsVideo {
+  id: number
+  width: number
+  height: number
+  url: string
+  image: string
+  duration: number
+  user: PexelsVideoUser
+  video_files: PexelsVideoFile[]
+  video_pictures: PexelsVideoPicture[]
+}
+
+export interface PexelsVideoResponse {
+  page: number
+  per_page: number
+  total_results: number
+  url: string
+  videos: PexelsVideo[]
+}
+
 export const PexelsVideoSize = [
   { label: 'Large (4K)', value: 'large' },
   { label: 'Medium (Full HD)', value: 'medium' },
@@ -165,6 +207,47 @@ export interface PixabayResult {
   user: string
   user_id: number
   userImageURL: string
+}
+
+interface PixabayVideoFormat {
+  url: string
+  width: number
+  height: number
+  size: number
+  thumbnail: string
+}
+
+interface PixabayVideoFormats {
+  large: PixabayVideoFormat
+  medium: PixabayVideoFormat
+  small: PixabayVideoFormat
+  tiny: PixabayVideoFormat
+}
+
+export interface PixabayVideo {
+  id: number
+  pageURL: string
+
+  type?: string
+  tags?: string
+  duration?: number
+
+  videos: PixabayVideoFormats
+
+  views: number
+  downloads: number
+  likes: number
+  comments: number
+
+  user_id: number
+  user: string
+  userImageURL: string
+}
+
+export interface PixabayVideoResponse {
+  total: number
+  totalHits: number
+  hits: PixabayVideo[]
 }
 
 export type ProviderConfig = {
