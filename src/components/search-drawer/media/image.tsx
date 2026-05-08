@@ -20,12 +20,7 @@ export const ImageCard = ({ data, baseClass, onSelect }: ImageCardProps) => {
         onClick={() => onSelect(data.urls.original, data.urls?.downloadLocation)}
         style={{ backgroundColor: data.color }}
       >
-        <img
-          src={data.urls.view}
-          alt={data.alt}
-          width={data.width}
-          height={data.height}
-        />
+        <img src={data.urls.view} alt={data.alt} width={data.width} height={data.height} />
       </button>
       <div className={`${baseClass}__topOverlay`}>
         {data.likes !== undefined && (

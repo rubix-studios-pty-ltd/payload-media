@@ -16,7 +16,12 @@ type PexelsFiltersProps = {
   baseClass: string
 }
 
-export const PexelsFilters = ({ filters, mediaType, setFilters, baseClass }: PexelsFiltersProps) => {
+export const PexelsFilters = ({
+  filters,
+  mediaType,
+  setFilters,
+  baseClass,
+}: PexelsFiltersProps) => {
   if (filters?.provider !== 'pexels') return null
 
   return (

@@ -17,7 +17,12 @@ type PixabayFiltersProps = {
   baseClass: string
 }
 
-export const PixabayFilters = ({ filters, mediaType, setFilters, baseClass }: PixabayFiltersProps) => {
+export const PixabayFilters = ({
+  filters,
+  mediaType,
+  setFilters,
+  baseClass,
+}: PixabayFiltersProps) => {
   if (filters?.provider !== 'pixabay') return null
 
   return (

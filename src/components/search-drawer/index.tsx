@@ -282,11 +282,21 @@ export const SearchDrawer = (props: SearchDrawerProps) => {
       </div>
 
       {filters?.provider === 'pexels' && (
-        <PexelsFilters filters={filters} mediaType={mediaType} setFilters={setFilters} baseClass={baseClass} />
+        <PexelsFilters
+          filters={filters}
+          mediaType={mediaType}
+          setFilters={setFilters}
+          baseClass={baseClass}
+        />
       )}
 
       {filters?.provider === 'pixabay' && (
-        <PixabayFilters filters={filters} mediaType={mediaType} setFilters={setFilters} baseClass={baseClass} />
+        <PixabayFilters
+          filters={filters}
+          mediaType={mediaType}
+          setFilters={setFilters}
+          baseClass={baseClass}
+        />
       )}
 
       {filters?.provider === 'unsplash' && (

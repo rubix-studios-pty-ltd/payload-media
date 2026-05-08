@@ -1,10 +1,10 @@
 import { Select } from '@payloadcms/ui'
 import React from 'react'
 import {
-  UnsplashColours,
-  UnsplashOrientation,
   type ProviderFilters,
   type ProviderOption,
+  UnsplashColours,
+  UnsplashOrientation,
 } from '../../../types.js'
 
 type UnsplashFiltersProps = {

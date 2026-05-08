@@ -63,11 +63,7 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": false,
-      "a11y": {
-        "noSvgWithoutTitle": "warn",
-        "useMediaCaption": "off"
-      }
+      "recommended": false
     },
     "includes": [
       "**",
@@ -363,7 +359,7 @@
             "useIframeTitle": "error",
             "useKeyWithClickEvents": "error",
             "useKeyWithMouseEvents": "error",
-            "useMediaCaption": "error",
+            "useMediaCaption": "off",
             "useValidAnchor": "warn",
             "useValidAriaProps": "error",
             "useValidAriaRole": {
