@@ -1,6 +1,5 @@
-import type { PixabayFilters, PixabayResult, ProviderResult } from '../../types.js'
-import type { Resolver } from './provider.js'
-import { Provider } from './provider.js'
+import { type PixabayFilters, type PixabayResult, type ProviderResult } from '../../types.js'
+import { Provider, type Resolver } from './provider.js'
 
 export class Pixabay extends Provider {
   constructor(apiKey: Resolver) {

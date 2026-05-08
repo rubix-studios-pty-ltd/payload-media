@@ -1,6 +1,5 @@
-import type { PexelsFilters, PexelsResult, ProviderResult } from '../../types.js'
-import type { Resolver } from './provider.js'
-import { Provider } from './provider.js'
+import { type PexelsFilters, type PexelsResult, type ProviderResult } from '../../types.js'
+import { Provider, type Resolver } from './provider.js'
 
 export class Pexels extends Provider {
   constructor(apiKey: Resolver) {
