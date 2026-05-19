@@ -2,7 +2,9 @@
 
 PayloadCMS plugin for stock image and video search across Unsplash, Pexels, and Pixabay, with filterable results and instant import.
 
-<img width="1899" height="907" alt="image" src="https://github.com/user-attachments/assets/1c19f977-d075-4dfc-9f52-8d9426bc1500" />
+<img width="1912" height="914" alt="Image stock selection" src="https://github.com/user-attachments/assets/80ecb11f-65eb-4f58-a422-df9b170ac5d2" />
+
+<img width="1912" height="914" alt="Video stock selection" src="https://github.com/user-attachments/assets/28044aaa-7144-4b66-9d5f-afc58d7939d5" />
 
 This project is an independent implementation derived [PayloadBites' Image Search](https://github.com/rilrom/payload-bites/tree/main/packages/image-search) extended with provider-specific image filtering and improved Windows OS compatibility.
 
