@@ -211,7 +211,9 @@ export const SearchDrawer = (props: SearchDrawerProps) => {
 
     try {
       await fetch(
-        `${serverURL}${api}/providers/${selectedProvider?.value}/track-download?url=${download}`
+        `${serverURL}${api}/providers/${selectedProvider?.value}/track-download?url=${encodeURIComponent(
+          download
+        )}`
       )
     } catch {
       return null
