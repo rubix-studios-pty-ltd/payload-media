@@ -68,7 +68,7 @@ export const VideoCard = ({ data, baseClass, onSelect }: VideoCardProps) => {
           <button
             type="button"
             className={`${baseClass}__add`}
-            onClick={() => onSelect?.(data.urls.original, data.urls?.downloadLocation)}
+            onClick={() => onSelect?.(data.urls.download)}
           >
             <PlusIcon />
           </button>
