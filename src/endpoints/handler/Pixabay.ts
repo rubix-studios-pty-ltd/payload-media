@@ -113,7 +113,7 @@ export class Pixabay extends Provider {
       const videoFormat = videos.large || videos.medium || videos.small || {}
 
       return {
-        id: video.id as unknown as string,
+        id: String(video.id),
         alt: video.tags || '',
         width: videoFormat.width || 0,
         height: videoFormat.height || 0,

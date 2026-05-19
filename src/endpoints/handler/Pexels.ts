@@ -94,7 +94,7 @@ export class Pexels extends Provider {
         video.video_files.find((f) => f.file_type === 'video/mp4')
 
       return {
-        id: video.id as unknown as string,
+        id: String(video.id),
         alt: video.url || '',
         width: file?.width || video.width || 0,
         height: file?.height || video.height || 0,
