@@ -1,7 +1,7 @@
 import { type ProviderResult, type UnsplashFilters, type UnsplashResult } from '../../types.js'
 import { Provider, type Resolver } from './Provider.js'
 
-const UTMParams = 'utm_source=rubixstudios-payload-images&utm_medium=referral'
+const UTMParams = 'utm_source=rubixstudios-payload-media&utm_medium=referral'
 
 export class Unsplash extends Provider {
   constructor(apiKey: Resolver) {
