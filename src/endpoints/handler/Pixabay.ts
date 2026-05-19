@@ -5,7 +5,7 @@ import {
   type PixabayVideoResponse,
   type ProviderResult,
 } from '../../types.js'
-import { Provider, type Resolver } from './provider.js'
+import { Provider, type Resolver } from './Provider.js'
 
 export class Pixabay extends Provider {
   constructor(apiKey: Resolver) {
