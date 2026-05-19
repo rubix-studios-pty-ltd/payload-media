@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1](https://github.com/rubix-studios-pty-ltd/payload-media/compare/v1.1.0...v1.1.1) (2026-05-19)
+
+
+### Bug Fixes
+
+* update onClick handler in VideoCard to pass original and download URLs ([5052845](https://github.com/rubix-studios-pty-ltd/payload-media/commit/50528457063ed4e3b01eb771a7b61eb668d0af37))
+* update onSelect handler in VideoCard to use download URL ([89b2781](https://github.com/rubix-studios-pty-ltd/payload-media/commit/89b27814b0ee769c92bc482f61de8a990fe241d5))
+
 # [1.1.0](https://github.com/rubix-studios-pty-ltd/payload-media/compare/v1.0.1...v1.1.0) (2026-05-19)
 
 
