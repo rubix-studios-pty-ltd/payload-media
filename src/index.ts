@@ -42,7 +42,7 @@ export const mediaPlugin =
               ...(uploadObj?.admin?.components || {}),
               controls: [
                 ...(uploadObj?.admin?.components?.controls || []),
-                '@rubixstudios/payload-images/client#MediaSearch',
+                '@rubixstudios/payload-media/client#MediaSearch',
               ],
             },
           },
