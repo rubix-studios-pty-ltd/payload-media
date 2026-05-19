@@ -2,22 +2,23 @@
 
 import { Pagination, SearchFilter, Select, toast } from '@payloadcms/ui'
 import React, { useCallback, useEffect, useState } from 'react'
+
 import {
   type MediaOption,
   MediaOptions,
-  ProviderFilters,
+  type ProviderFilters,
   type ProviderOption,
   type ProviderResult,
 } from '../../types.js'
 import { fetchCache } from '../../utils/fetchCache.js'
-import { PexelsFilters } from './filters/pexels.jsx'
-import { PixabayFilters } from './filters/pixabay.jsx'
-import { UnsplashFilters } from './filters/unsplash.jsx'
-import { ImageCard } from './media/image.jsx'
-import { VideoCard } from './media/video.jsx'
+import { PexelsFilters } from './filters/pexels.js'
+import { PixabayFilters } from './filters/pixabay.js'
+import { UnsplashFilters } from './filters/unsplash.js'
+import { ImageCard } from './media/image.js'
+import { VideoCard } from './media/video.js'
 import './style.css'
 
-const baseClass = 'search-images'
+const baseClass = 'search-media'
 
 export type SearchDrawerProps = {
   serverURL: string

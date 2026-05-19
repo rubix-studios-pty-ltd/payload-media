@@ -1,6 +1,6 @@
-# PayloadCMS Image Search Plugin
+# PayloadCMS Media Search Plugin
 
-PayloadCMS plugin for stock image search across Unsplash, Pexels, and Pixabay, with filterable results and instant import.
+PayloadCMS plugin for stock image and video search across Unsplash, Pexels, and Pixabay, with filterable results and instant import.
 
 <img width="1899" height="907" alt="image" src="https://github.com/user-attachments/assets/1c19f977-d075-4dfc-9f52-8d9426bc1500" />
 
@@ -9,19 +9,19 @@ This project is an independent implementation derived [PayloadBites' Image Searc
 ## Installation
 
 ```sh
-pnpm add @rubixstudios/payload-images
+pnpm add @rubixstudios/payload-media
 ```
 
 ```typescript
 // payload.config.ts
 import { buildConfig } from 'payload/config'
-import { imagePlugin } from '@rubixstudios/payload-images'
+import { mediaPlugin } from '@rubixstudios/payload-media'
 
 export default buildConfig({
   plugins: [
-    imagePlugin({
+    mediaPlugin({
       disabled: false, // Optional, defaults to false
-      access: ({ req: { user } }) => Boolean(user), // Image search access control
+      access: ({ req: { user } }) => Boolean(user), // Media search access control
       pexels: process.env.API_KEY_PEXELS!,
       pixabay: process.env.API_KEY_PIXABAY!,
       unsplash: process.env.API_KEY_UNSPLASH!,
@@ -42,7 +42,7 @@ When using Unplash, utilise your Access Key for the API Token.
 
 ## Features
 
-- Stock image search inside Payload Admin
+- Stock image and video search inside Payload Admin
 - Providers: Unsplash, Pexels, Pixabay
 - Provider-specific filters (color, orientation, size, type)
 - Featured and keyword search modes

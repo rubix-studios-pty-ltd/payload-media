@@ -1,4 +1,5 @@
-import { PayloadRequest } from 'payload'
+import { type PayloadRequest } from 'payload'
+
 import { type Pexels } from '../endpoints/handler/pexels.js'
 import { type Pixabay } from '../endpoints/handler/pixabay.js'
 import { type Unsplash } from '../endpoints/handler/unsplash.js'

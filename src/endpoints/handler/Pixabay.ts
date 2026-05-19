@@ -1,8 +1,8 @@
 import {
   type PixabayFilters,
   type PixabayResult,
-  PixabayVideo,
-  PixabayVideoResponse,
+  type PixabayVideo,
+  type PixabayVideoResponse,
   type ProviderResult,
 } from '../../types.js'
 import { Provider, type Resolver } from './provider.js'

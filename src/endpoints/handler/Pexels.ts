@@ -1,8 +1,8 @@
 import {
   type PexelsFilters,
   type PexelsResult,
-  PexelsVideo,
-  PexelsVideoResponse,
+  type PexelsVideo,
+  type PexelsVideoResponse,
   type ProviderResult,
 } from '../../types.js'
 import { Provider, type Resolver } from './provider.js'

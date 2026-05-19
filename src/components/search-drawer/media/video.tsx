@@ -1,7 +1,8 @@
 import { LinkIcon, Tooltip } from '@payloadcms/ui'
 import React, { useState } from 'react'
+
 import { type ProviderResult } from '../../../types.js'
-import { HeartIcon } from './heart.jsx'
+import { HeartIcon } from './heart.js'
 
 type VideoCardProps = {
   data: ProviderResult
@@ -21,6 +22,7 @@ export const VideoCard = ({ data, baseClass }: VideoCardProps) => {
         style={{
           width: '100%',
           height: '100%',
+          aspectRatio: `${data.width} / ${data.height}`,
           objectFit: 'cover',
           display: 'block',
         }}
@@ -32,7 +34,7 @@ export const VideoCard = ({ data, baseClass }: VideoCardProps) => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          {data.avatar ? (
+          {data.avatar && (
             <img
               className={`${baseClass}__avatar`}
               src={data.avatar}
@@ -42,12 +44,10 @@ export const VideoCard = ({ data, baseClass }: VideoCardProps) => {
               loading="lazy"
               referrerPolicy="no-referrer"
             />
-          ) : (
-            <div className={`${baseClass}__avatarFallback`} aria-hidden />
           )}
           {data.attribution.name}
         </a>
-        <div>
+       <div className={`${baseClass}__actions`}>
           {data.likes !== undefined && (
             <button
               type="button"

@@ -1,16 +1,16 @@
 {
-  "name": "@rubixstudios/payload-images",
+  "name": "@rubixstudios/payload-media",
   "version": "1.0.0",
-  "description": "A Payload CMS plugin that integrates with stock image providers including Unsplash, Pexels and Pixabay.",
+  "description": "A Payload CMS plugin that integrates with stock image and video providers including Unsplash, Pexels and Pixabay.",
   "license": "MIT",
   "author": "Rubix Studios <hello@rubixstudios.com.au> (https://rubixstudios.com.au)",
   "homepage": "https://rubixstudios.com.au",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rubix-studios-pty-ltd/payload-images.git"
+    "url": "git+https://github.com/rubix-studios-pty-ltd/payload-media.git"
   },
   "bugs": {
-    "url": "https://github.com/rubix-studios-pty-ltd/payload-images/issues"
+    "url": "https://github.com/rubix-studios-pty-ltd/payload-media/issues"
   },
   "maintainers": [
     {
@@ -24,7 +24,9 @@
     "payload",
     "payloadcms",
     "stock",
-    "images",
+    "media",
+    "image",
+    "video",
     "plugin",
     "typescript",
     "react",
@@ -50,7 +52,7 @@
     "build": "pnpm build:types && pnpm build:swc && pnpm build:assets",
     "build:swc": "swc ./src -d ./dist --config-file .swcrc --strip-leading-paths",
     "build:types": "tsc -p tsconfig.json",
-    "build:assets": "cleancss -o dist/components/SearchImages/style.css src/components/SearchImages/*.css",
+    "build:assets": "cleancss -o dist/components/search-drawer/style.css src/components/search-drawer/style.css",
     "clean": "rimraf -g {dist,*.tsbuildinfo} && pnpm exec biome check --write && pnpm biome migrate --write",
     "update": "pnpm self-update && pnpm update --latest && pnpm install && pnpm prune && pnpm dedupe && pnpm run clean",
     "release": "semantic-release"
@@ -90,5 +92,5 @@
       }
     }
   },
-  "packageManager": "pnpm@11.1.1"
+  "packageManager": "pnpm@11.1.3"
 }

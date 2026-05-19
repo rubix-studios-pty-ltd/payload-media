@@ -1,7 +1,8 @@
 import { LinkIcon, Tooltip } from '@payloadcms/ui'
 import React, { useState } from 'react'
+
 import { type ProviderResult } from '../../../types.js'
-import { HeartIcon } from './heart.jsx'
+import { HeartIcon } from './heart.js'
 
 type ImageCardProps = {
   data: ProviderResult

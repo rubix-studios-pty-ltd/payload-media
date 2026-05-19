@@ -4,7 +4,7 @@ import { defaultPluginOptions } from './defaults.js'
 import { providers } from './endpoints/index.js'
 import { type ProviderConfig } from './types.js'
 
-export const imagePlugin =
+export const mediaPlugin =
   (pluginConfig: ProviderConfig = {}) =>
   (incomingConfig: Config): Config => {
     if (pluginConfig.disabled) return incomingConfig

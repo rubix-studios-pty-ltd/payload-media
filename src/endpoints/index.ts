@@ -1,4 +1,5 @@
-import type { Endpoint } from 'payload'
+import { type Endpoint } from 'payload'
+
 import { getMediaType } from '../utils/getMediaType.js'
 import { getProviders } from '../utils/getProviders.js'
 import { requireAccess } from '../utils/requireAccess.js'
