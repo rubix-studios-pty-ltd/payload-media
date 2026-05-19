@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.3](https://github.com/rubix-studios-pty-ltd/payload-media/compare/v1.1.2...v1.1.3) (2026-05-19)
+
+
+### Bug Fixes
+
+* ensure video ID is properly converted to string in Pexels and Pixabay providers ([ac4df93](https://github.com/rubix-studios-pty-ltd/payload-media/commit/ac4df93e319bfd0a879fb81d7168c7f07278f760))
+* update UTM parameters for media referral tracking ([12bf616](https://github.com/rubix-studios-pty-ltd/payload-media/commit/12bf616360c331c83878ca2722e1ef987520c004))
+
 ## [1.1.2](https://github.com/rubix-studios-pty-ltd/payload-media/compare/v1.1.1...v1.1.2) (2026-05-19)
 
 
