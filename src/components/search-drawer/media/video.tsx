@@ -3,13 +3,15 @@ import React, { useState } from 'react'
 
 import { type ProviderResult } from '../../../types.js'
 import { HeartIcon } from './heart.js'
+import { PlusIcon } from './plus.js'
 
 type VideoCardProps = {
   data: ProviderResult
   baseClass: string
+  onSelect: (url: string, download?: string) => void
 }
 
-export const VideoCard = ({ data, baseClass }: VideoCardProps) => {
+export const VideoCard = ({ data, baseClass, onSelect }: VideoCardProps) => {
   const [show, setShow] = useState(false)
 
   return (
@@ -63,6 +65,14 @@ export const VideoCard = ({ data, baseClass }: VideoCardProps) => {
               </Tooltip>
             </button>
           )}
+          <button
+            type="button"
+            className={`${baseClass}__add`}
+            onClick={() => onSelect?.(data.urls.original, data.urls?.downloadLocation)}
+          >
+            <PlusIcon />
+          </button>
+
           <a
             className={`${baseClass}__download`}
             href={data.urls.download}

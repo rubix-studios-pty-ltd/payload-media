@@ -205,7 +205,7 @@ export const SearchDrawer = (props: SearchDrawerProps) => {
     [serverURL, api, selectedProvider?.value, defaultError, buildQuery]
   )
 
-  const selectImage = async (url: string, download?: string) => {
+  const selectMedia = async (url: string, download?: string) => {
     onSelect(url)
     if (!download) return
 
@@ -316,9 +316,9 @@ export const SearchDrawer = (props: SearchDrawerProps) => {
             {media.map((data) => (
               <React.Fragment key={data.id}>
                 {mediaType === 'video' ? (
-                  <VideoCard data={data} baseClass={baseClass} />
+                  <VideoCard data={data} baseClass={baseClass} onSelect={selectMedia} />
                 ) : (
-                  <ImageCard data={data} baseClass={baseClass} onSelect={selectImage} />
+                  <ImageCard data={data} baseClass={baseClass} onSelect={selectMedia} />
                 )}
               </React.Fragment>
             ))}
