@@ -47,7 +47,7 @@ export const VideoCard = ({ data, baseClass }: VideoCardProps) => {
           )}
           {data.attribution.name}
         </a>
-       <div className={`${baseClass}__actions`}>
+        <div className={`${baseClass}__actions`}>
           {data.likes !== undefined && (
             <button
               type="button"
