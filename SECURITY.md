@@ -8,7 +8,7 @@
 
 ## Reporting a Vulnerability
 
-We take the security of PayloadCMS Image Plugin seriously. If you believe you have found a security vulnerability, please report it to us following these steps:
+We take the security of PayloadCMS Media Plugin seriously. If you believe you have found a security vulnerability, please report it to us following these steps:
 
 1. **DO NOT** create a public GitHub issue for the vulnerability.
 2. Contact us directly at one of the following:
@@ -22,7 +22,7 @@ Please include the following details in your report:
 - Steps to reproduce the issue
 - Potential impact of the vulnerability
 - Any possible mitigations
-- Version of PayloadCMS + Dub Plugin affected
+- Version of PayloadCMS + Media Plugin affected
 
 ## Response Process
 
