@@ -7,10 +7,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      next:
-        specifier: ^16.2.6
-        version: 16.2.6(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
     devDependencies:
       '@biomejs/biome':
         specifier: 2.4.15
