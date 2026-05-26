@@ -73,7 +73,6 @@
     "typescript": "6.0.3"
   },
   "peerDependencies": {
-    "next": "^16.2.6",
     "payload": "^3.85.0"
   },
   "engines": {
