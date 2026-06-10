@@ -58,13 +58,13 @@
     "release": "semantic-release"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.4.15",
+    "@biomejs/biome": "2.4.16",
     "@payloadcms/ui": "^3.85.0",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
     "@swc/cli": "^0.8.1",
     "@swc/core": "^1.15.40",
-    "@types/react": "^19.2.15",
+    "@types/react": "^19.2.17",
     "clean-css-cli": "^5.6.3",
     "conventional-changelog-conventionalcommits": "^9.3.1",
     "payload": "^3.85.0",
@@ -92,5 +92,5 @@
       }
     }
   },
-  "packageManager": "pnpm@11.3.0"
+  "packageManager": "pnpm@11.5.2"
 }
