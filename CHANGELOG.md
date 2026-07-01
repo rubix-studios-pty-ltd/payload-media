@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+# [1.2.0](https://github.com/rubix-studios-pty-ltd/payload-media/compare/v1.1.5...v1.2.0) (2026-07-01)
+
+
+### Features
+
+* add Next.js as a peer dependency and update version to 16.2.6 ([91d33a4](https://github.com/rubix-studios-pty-ltd/payload-media/commit/91d33a4d24f6b06d6793ee041d654a94fd951511))
+
+
+### Performance Improvements
+
+* trigger patch release ([d0448bf](https://github.com/rubix-studios-pty-ltd/payload-media/commit/d0448bfe11b0caee1af74d2d773f49121b880e69))
+* update devDependencies to latest versions in package.json and pnpm-lock.yaml ([e881e2a](https://github.com/rubix-studios-pty-ltd/payload-media/commit/e881e2a1197635491687cd3825ea3a4ccb8daba5))
+
 ## [1.1.5](https://github.com/rubix-studios-pty-ltd/payload-media/compare/v1.1.4...v1.1.5) (2026-05-26)
 
 
