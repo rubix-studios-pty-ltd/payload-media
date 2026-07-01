@@ -3,6 +3,5 @@ allowBuilds:
   esbuild: true
   sharp: true
 minimumReleaseAgeExclude:
-  - '@payloadcms/translations@3.85.0'
-  - '@payloadcms/ui@3.85.0'
-  - payload@3.85.0
+  - '@payloadcms/translations@3.85.2'
+  - payload@3.85.2
