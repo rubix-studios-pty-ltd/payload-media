@@ -45,7 +45,7 @@ When using PayloadCMS + Dub Plugin in production:
 2. Use secure environment variables for sensitive data
 3. Regularly backup your database
 4. Monitor your application logs for suspicious activity
-5. Follow security best practices for Next.js and MongoDB deployments
+5. Follow security best practices for Next.js deployments
 6. Implement proper authentication and authorization
 
 ## Security Monitoring
