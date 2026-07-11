@@ -1,7 +1,7 @@
 'use client'
 
-import { Pagination, SearchFilter, Select, toast } from '@payloadcms/ui'
 import React, { useCallback, useEffect, useState } from 'react'
+import { Pagination, SearchFilter, Select, toast } from '@payloadcms/ui'
 
 import {
   type MediaOption,
@@ -257,53 +257,53 @@ export const SearchDrawer = (props: SearchDrawerProps) => {
   return (
     <div className={baseClass}>
       <div className={`${baseClass}__fields`}>
-        <SearchFilter label="" handleChange={changeFilters} />
+        <SearchFilter handleChange={changeFilters} label="" />
         <Select
-          options={MediaOptions.filter((option) =>
-            filters?.provider === 'unsplash' ? option.value === 'image' : true
-          )}
-          value={{ label: mediaType === 'image' ? 'Images' : 'Videos', value: mediaType }}
+          className={`${baseClass}__mediaToggle`}
+          isClearable={false}
+          isCreatable={false}
+          isSearchable={false}
           onChange={(opt) => {
             const val = (opt as MediaOption)?.value
             setMediaType(val)
             resetMedia()
           }}
-          isClearable={false}
-          isSearchable={false}
-          isCreatable={false}
-          className={`${baseClass}__mediaToggle`}
+          options={MediaOptions.filter((option) =>
+            filters?.provider === 'unsplash' ? option.value === 'image' : true
+          )}
+          value={{ label: mediaType === 'image' ? 'Images' : 'Videos', value: mediaType }}
         />
         <Select
+          className={`${baseClass}__options`}
+          isClearable={false}
+          isCreatable={false}
+          isSearchable={false}
+          onChange={(value) => selectFilter(value as ProviderOption)}
           options={options}
           value={selectedProvider as ProviderOption}
-          onChange={(value) => selectFilter(value as ProviderOption)}
-          isClearable={false}
-          isSearchable={false}
-          isCreatable={false}
-          className={`${baseClass}__options`}
         />
       </div>
 
       {filters?.provider === 'pexels' && (
         <PexelsFilters
+          baseClass={baseClass}
           filters={filters}
           mediaType={mediaType}
           setFilters={setFilters}
-          baseClass={baseClass}
         />
       )}
 
       {filters?.provider === 'pixabay' && (
         <PixabayFilters
+          baseClass={baseClass}
           filters={filters}
           mediaType={mediaType}
           setFilters={setFilters}
-          baseClass={baseClass}
         />
       )}
 
       {filters?.provider === 'unsplash' && (
-        <UnsplashFilters filters={filters} setFilters={setFilters} baseClass={baseClass} />
+        <UnsplashFilters baseClass={baseClass} filters={filters} setFilters={setFilters} />
       )}
 
       {loading && <div className={`${baseClass}__loading`}>Loading media...</div>}
@@ -318,9 +318,9 @@ export const SearchDrawer = (props: SearchDrawerProps) => {
             {media.map((data) => (
               <React.Fragment key={data.id}>
                 {mediaType === 'video' ? (
-                  <VideoCard data={data} baseClass={baseClass} onSelect={selectMedia} />
+                  <VideoCard baseClass={baseClass} data={data} onSelect={selectMedia} />
                 ) : (
-                  <ImageCard data={data} baseClass={baseClass} onSelect={selectMedia} />
+                  <ImageCard baseClass={baseClass} data={data} onSelect={selectMedia} />
                 )}
               </React.Fragment>
             ))}
@@ -333,10 +333,10 @@ export const SearchDrawer = (props: SearchDrawerProps) => {
                 hasPrevPage={currentPage > 1}
                 nextPage={currentPage < totalPages ? currentPage + 1 : undefined}
                 numberOfNeighbors={3}
+                onChange={(page: number) => getMedia(page)}
                 page={currentPage}
                 prevPage={currentPage > 1 ? currentPage - 1 : undefined}
                 totalPages={totalPages}
-                onChange={(page: number) => getMedia(page)}
               />
             </div>
           )}
