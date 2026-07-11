@@ -1,5 +1,5 @@
-import { LinkIcon, Tooltip } from '@payloadcms/ui'
 import React, { useState } from 'react'
+import { LinkIcon, Tooltip } from '@payloadcms/ui'
 
 import { type ProviderResult } from '../../../types.js'
 import { HeartIcon } from './heart.js'
@@ -15,12 +15,12 @@ export const VideoCard = ({ data, baseClass, onSelect }: VideoCardProps) => {
   const [show, setShow] = useState(false)
 
   return (
-    <div key={data.id} className={`${baseClass}__video`}>
+    <div className={`${baseClass}__video`} key={data.id}>
       <video
-        src={data.urls.original}
-        poster={data.urls.view}
         controls
+        poster={data.urls.view}
         preload="metadata"
+        src={data.urls.original}
         style={{
           width: '100%',
           height: '100%',
@@ -33,18 +33,18 @@ export const VideoCard = ({ data, baseClass, onSelect }: VideoCardProps) => {
         <a
           className={`${baseClass}__attribution`}
           href={data.attribution.link}
-          target="_blank"
           rel="noopener noreferrer"
+          target="_blank"
         >
           {data.avatar && (
             <img
-              className={`${baseClass}__avatar`}
-              src={data.avatar}
               alt={data.attribution.name}
-              width={24}
+              className={`${baseClass}__avatar`}
               height={24}
               loading="lazy"
               referrerPolicy="no-referrer"
+              src={data.avatar}
+              width={24}
             />
           )}
           {data.attribution.name}
@@ -52,23 +52,23 @@ export const VideoCard = ({ data, baseClass, onSelect }: VideoCardProps) => {
         <div className={`${baseClass}__actions`}>
           {data.likes !== undefined && (
             <button
-              type="button"
               className={`${baseClass}__likes`}
+              onBlur={() => setShow(false)}
+              onFocus={() => setShow(true)}
               onMouseEnter={() => setShow(true)}
               onMouseLeave={() => setShow(false)}
-              onFocus={() => setShow(true)}
-              onBlur={() => setShow(false)}
+              type="button"
             >
               <HeartIcon />
-              <Tooltip position="bottom" alignCaret="center" show={show}>
+              <Tooltip alignCaret="center" position="bottom" show={show}>
                 {data.likes} likes
               </Tooltip>
             </button>
           )}
           <button
-            type="button"
             className={`${baseClass}__add`}
             onClick={() => onSelect?.(data.urls.original, data.urls.download)}
+            type="button"
           >
             <PlusIcon />
           </button>
@@ -76,8 +76,8 @@ export const VideoCard = ({ data, baseClass, onSelect }: VideoCardProps) => {
           <a
             className={`${baseClass}__download`}
             href={data.urls.download}
-            target="_blank"
             rel="noopener noreferrer"
+            target="_blank"
           >
             <LinkIcon />
           </a>

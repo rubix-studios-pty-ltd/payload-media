@@ -1,5 +1,5 @@
+import type React from 'react'
 import { Select } from '@payloadcms/ui'
-import React from 'react'
 
 import {
   PexelsColours,
@@ -29,8 +29,8 @@ export const PexelsFilters = ({
     <div className={`${baseClass}__filters`}>
       {mediaType !== 'video' && (
         <Select
-          options={PexelsColours}
-          value={PexelsColours.find((o) => o.value === filters.options.color)}
+          isClearable
+          isSearchable={false}
           onChange={(opt) =>
             setFilters((prev) =>
               prev?.provider === 'pexels'
@@ -44,17 +44,15 @@ export const PexelsFilters = ({
                 : prev
             )
           }
-          isClearable
-          isSearchable={false}
+          options={PexelsColours}
           placeholder="Colour"
+          value={PexelsColours.find((o) => o.value === filters.options.color)}
         />
       )}
 
       <Select
-        options={mediaType === 'video' ? PexelsVideoSize : PexelsSize}
-        value={(mediaType === 'video' ? PexelsVideoSize : PexelsSize).find(
-          (o) => o.value === filters.options.size
-        )}
+        isClearable
+        isSearchable={false}
         onChange={(opt) =>
           setFilters((prev) =>
             prev?.provider === 'pexels'
@@ -68,14 +66,16 @@ export const PexelsFilters = ({
               : prev
           )
         }
-        isClearable
-        isSearchable={false}
+        options={mediaType === 'video' ? PexelsVideoSize : PexelsSize}
         placeholder="Size"
+        value={(mediaType === 'video' ? PexelsVideoSize : PexelsSize).find(
+          (o) => o.value === filters.options.size
+        )}
       />
 
       <Select
-        options={PexelsOrientation}
-        value={PexelsOrientation.find((o) => o.value === filters.options.orientation)}
+        isClearable
+        isSearchable={false}
         onChange={(opt) =>
           setFilters((prev) =>
             prev?.provider === 'pexels'
@@ -89,9 +89,9 @@ export const PexelsFilters = ({
               : prev
           )
         }
-        isClearable
-        isSearchable={false}
+        options={PexelsOrientation}
         placeholder="Orientation"
+        value={PexelsOrientation.find((o) => o.value === filters.options.orientation)}
       />
     </div>
   )

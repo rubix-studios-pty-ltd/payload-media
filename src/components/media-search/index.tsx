@@ -1,7 +1,7 @@
 'use client'
 
-import { Button, Drawer, useConfig, useModal, useUploadControls } from '@payloadcms/ui'
 import React, { useCallback } from 'react'
+import { Button, Drawer, useConfig, useModal, useUploadControls } from '@payloadcms/ui'
 
 import { SearchDrawer } from '../search-drawer/index.js'
 
@@ -25,14 +25,14 @@ export const MediaSearch = () => {
   return (
     <>
       <span className="file-field__orText">Or</span>
-      <Button buttonStyle="pill" size="small" onClick={() => openModal(drawerSlug)}>
+      <Button buttonStyle="pill" onClick={() => openModal(drawerSlug)} size="small">
         Search media
       </Button>
       <Drawer slug={drawerSlug}>
         <SearchDrawer
-          serverURL={config.serverURL}
           api={config.routes.api}
           onSelect={handleSearchSubmit}
+          serverURL={config.serverURL}
         />
       </Drawer>
     </>

@@ -1,5 +1,5 @@
+import type React from 'react'
 import { Select } from '@payloadcms/ui'
-import React from 'react'
 
 import {
   PixabayCategories,
@@ -29,8 +29,8 @@ export const PixabayFilters = ({
   return (
     <div className={`${baseClass}__filters`}>
       <Select
-        options={PixabayCategories}
-        value={PixabayCategories.find((o) => o.value === filters.options.category)}
+        isClearable
+        isSearchable={false}
         onChange={(opt) =>
           setFilters((prev) =>
             prev?.provider === 'pixabay'
@@ -44,16 +44,16 @@ export const PixabayFilters = ({
               : prev
           )
         }
-        isClearable
-        isSearchable={false}
+        options={PixabayCategories}
         placeholder="Category"
+        value={PixabayCategories.find((o) => o.value === filters.options.category)}
       />
 
       {mediaType !== 'video' && (
         <>
           <Select
-            options={PixabayImageType}
-            value={PixabayImageType.find((o) => o.value === filters.options.image_type)}
+            isClearable
+            isSearchable={false}
             onChange={(opt) =>
               setFilters((prev) =>
                 prev?.provider === 'pixabay'
@@ -67,14 +67,14 @@ export const PixabayFilters = ({
                   : prev
               )
             }
-            isClearable
-            isSearchable={false}
+            options={PixabayImageType}
             placeholder="Type"
+            value={PixabayImageType.find((o) => o.value === filters.options.image_type)}
           />
 
           <Select
-            options={PixabayColours}
-            value={PixabayColours.find((o) => o.value === filters.options.colors)}
+            isClearable
+            isSearchable={false}
             onChange={(opt) =>
               setFilters((prev) =>
                 prev?.provider === 'pixabay'
@@ -88,14 +88,14 @@ export const PixabayFilters = ({
                   : prev
               )
             }
-            isClearable
-            isSearchable={false}
+            options={PixabayColours}
             placeholder="Colour"
+            value={PixabayColours.find((o) => o.value === filters.options.colors)}
           />
 
           <Select
-            options={PixabayOrientation}
-            value={PixabayOrientation.find((o) => o.value === filters.options.orientation)}
+            isClearable
+            isSearchable={false}
             onChange={(opt) =>
               setFilters((prev) =>
                 prev?.provider === 'pixabay'
@@ -109,16 +109,16 @@ export const PixabayFilters = ({
                   : prev
               )
             }
-            isClearable
-            isSearchable={false}
+            options={PixabayOrientation}
             placeholder="Orientation"
+            value={PixabayOrientation.find((o) => o.value === filters.options.orientation)}
           />
         </>
       )}
 
       <Select
-        options={PixabayOrder}
-        value={PixabayOrder.find((o) => o.value === filters.options.order)}
+        isClearable
+        isSearchable={false}
         onChange={(opt) =>
           setFilters((prev) =>
             prev?.provider === 'pixabay'
@@ -132,9 +132,9 @@ export const PixabayFilters = ({
               : prev
           )
         }
-        isClearable
-        isSearchable={false}
+        options={PixabayOrder}
         placeholder="Order"
+        value={PixabayOrder.find((o) => o.value === filters.options.order)}
       />
     </div>
   )

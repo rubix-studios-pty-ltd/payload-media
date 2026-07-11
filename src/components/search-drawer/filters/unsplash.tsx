@@ -1,5 +1,5 @@
+import type React from 'react'
 import { Select } from '@payloadcms/ui'
-import React from 'react'
 
 import {
   type ProviderFilters,
@@ -20,8 +20,8 @@ export const UnsplashFilters = ({ filters, setFilters, baseClass }: UnsplashFilt
   return (
     <div className={`${baseClass}__filters`}>
       <Select
-        options={UnsplashColours}
-        value={UnsplashColours.find((o) => o.value === filters.options.color)}
+        isClearable
+        isSearchable={false}
         onChange={(opt) =>
           setFilters((prev) =>
             prev?.provider === 'unsplash'
@@ -35,14 +35,14 @@ export const UnsplashFilters = ({ filters, setFilters, baseClass }: UnsplashFilt
               : prev
           )
         }
-        isClearable
-        isSearchable={false}
+        options={UnsplashColours}
         placeholder="Colour"
+        value={UnsplashColours.find((o) => o.value === filters.options.color)}
       />
 
       <Select
-        options={UnsplashOrientation}
-        value={UnsplashOrientation.find((o) => o.value === filters.options.orientation)}
+        isClearable
+        isSearchable={false}
         onChange={(opt) =>
           setFilters((prev) =>
             prev?.provider === 'unsplash'
@@ -56,9 +56,9 @@ export const UnsplashFilters = ({ filters, setFilters, baseClass }: UnsplashFilt
               : prev
           )
         }
-        isClearable
-        isSearchable={false}
+        options={UnsplashOrientation}
         placeholder="Orientation"
+        value={UnsplashOrientation.find((o) => o.value === filters.options.orientation)}
       />
     </div>
   )

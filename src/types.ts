@@ -11,27 +11,27 @@ export const MediaOptions: MediaOption[] = [
 ]
 
 export interface OpenverseResponse {
-  result_count: number
+  page: number
   page_count: number
   page_size: number
-  page: number
+  result_count: number
   results: OpenverseResult[]
 }
 
 export interface OpenverseResult {
-  id: string
-  title: string | null
-  width: number
-  height: number
-  thumbnail: string
-  url: string
   background_color?: string | null
 
   creator: string | null
   creator_url: string | null
   foreign_landing_url: string | null
+  height: number
+  id: string
 
   source: string
+  thumbnail: string
+  title: string | null
+  url: string
+  width: number
 }
 
 export const PexelsColours = [
@@ -75,31 +75,31 @@ interface PexelsVideoUser {
 }
 
 interface PexelsVideoFile {
-  id: number
-  quality: 'hd' | 'sd'
   file_type: string
-  width: number
-  height: number
   fps: number
+  height: number
+  id: number
   link: string
+  quality: 'hd' | 'sd'
+  width: number
 }
 
 interface PexelsVideoPicture {
   id: number
-  picture: string
   nr: number
+  picture: string
 }
 
 export interface PexelsVideo {
-  id: number
-  width: number
-  height: number
-  url: string
-  image: string
   duration: number
+  height: number
+  id: number
+  image: string
+  url: string
   user: PexelsVideoUser
   video_files: PexelsVideoFile[]
   video_pictures: PexelsVideoPicture[]
+  width: number
 }
 
 export interface PexelsVideoResponse {
@@ -117,18 +117,18 @@ export const PexelsVideoSize = [
 ]
 
 export interface PexelsResult {
-  id: string
   alt: string
-  width: number
-  height: number
   avg_color: string
-  url: string
+  height: number
+  id: string
+  photographer: string
+  photographer_url: string
   src: {
     medium: string
     original: string
   }
-  photographer: string
-  photographer_url: string
+  url: string
+  width: number
 }
 
 export const PixabayCategories = [
@@ -198,23 +198,23 @@ export const PixabayOrientation = [
 
 export interface PixabayResult {
   id: string
-  imageWidth: number
   imageHeight: number
-  webformatURL: string
+  imageURL: string
+  imageWidth: number
   largeImageURL: string
   likes: number
-  imageURL: string
   user: string
   user_id: number
   userImageURL: string
+  webformatURL: string
 }
 
 interface PixabayVideoFormat {
-  url: string
-  width: number
   height: number
   size: number
   thumbnail: string
+  url: string
+  width: number
 }
 
 interface PixabayVideoFormats {
@@ -225,29 +225,29 @@ interface PixabayVideoFormats {
 }
 
 export interface PixabayVideo {
+  comments: number
+  downloads: number
+  duration?: number
   id: number
+  likes: number
   pageURL: string
+  tags?: string
 
   type?: string
-  tags?: string
-  duration?: number
+  user: string
+
+  user_id: number
+  userImageURL: string
 
   videos: PixabayVideoFormats
 
   views: number
-  downloads: number
-  likes: number
-  comments: number
-
-  user_id: number
-  user: string
-  userImageURL: string
 }
 
 export interface PixabayVideoResponse {
+  hits: PixabayVideo[]
   total: number
   totalHits: number
-  hits: PixabayVideo[]
 }
 
 export type ProviderConfig = {
@@ -279,11 +279,15 @@ export type ProviderOption = {
 }
 
 export interface ProviderResult {
-  id: string
   alt: string
-  width: number
-  height: number
+  attribution: {
+    name: string
+    link: string
+  }
+  avatar?: string
   color: string
+  height: number
+  id: string
   likes?: number
   urls: {
     view: string
@@ -291,11 +295,7 @@ export interface ProviderResult {
     download: string
     downloadLocation?: string
   }
-  avatar?: string
-  attribution: {
-    name: string
-    link: string
-  }
+  width: number
 }
 
 export const UnsplashColours = [
@@ -325,19 +325,18 @@ export const UnsplashOrientation = [
 ]
 
 export interface UnsplashResult {
-  id: string
   alt_description: string
-  width: number
-  height: number
   color: string
+  height: number
+  id: string
   likes?: number
-  urls: {
-    thumb: string
-    full: string
-  }
   links: {
     download: string
     download_location: string
+  }
+  urls: {
+    thumb: string
+    full: string
   }
   user: {
     name: string
@@ -350,4 +349,5 @@ export interface UnsplashResult {
       html: string
     }
   }
+  width: number
 }
