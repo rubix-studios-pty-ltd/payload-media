@@ -58,7 +58,7 @@
     "release": "semantic-release"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.5.9",
+    "@biomejs/biome": "2.5.10",
     "@payloadcms/ui": "^3.88.0",
     "@semantic-release/changelog": "^7.0.0",
     "@semantic-release/git": "^11.0.1",
