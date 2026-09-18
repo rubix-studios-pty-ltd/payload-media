@@ -1,6 +1,6 @@
 {
   "name": "@rubixstudios/payload-media",
-  "version": "1.0.1",
+  "version": "1.2.2",
   "description": "A Payload CMS plugin that integrates with stock image and video providers including Unsplash, Pexels and Pixabay.",
   "license": "MIT",
   "author": "Rubix Studios <hello@rubixstudios.com.au> (https://rubixstudios.com.au)",
@@ -47,7 +47,9 @@
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "pnpm build:types && pnpm build:swc && pnpm build:assets",
     "build:swc": "swc ./src -d ./dist --config-file .swcrc --strip-leading-paths",
