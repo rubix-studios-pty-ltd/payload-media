@@ -67,20 +67,20 @@
   "linter": {
     "enabled": true,
     "rules": {
+      "preset": "recommended",
       "a11y": {
-        "useMediaCaption": "off"
+        "noSvgWithoutTitle": "off",
+        "useMediaCaption": "off",
+        "useSemanticElements": "off"
       },
       "correctness": {
         "noUnusedImports": "off"
       },
-      "preset": "recommended",
+      "suspicious": {
+        "noImplicitAnyLet": "off"
+      },
       "style": {
-        "useImportType": {
-          "level": "on",
-          "options": {
-            "style": "inlineType"
-          }
-        }
+        "useImportType": "off"
       }
     },
     "includes": [
