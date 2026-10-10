@@ -47,16 +47,14 @@
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "build": "pnpm build:types && pnpm build:swc && pnpm build:assets",
     "build:swc": "swc ./src -d ./dist --config-file .swcrc --strip-leading-paths",
     "build:types": "tsc -p tsconfig.json",
     "build:assets": "cleancss -o dist/components/search-drawer/style.css src/components/search-drawer/style.css",
     "clean": "rimraf -g {dist,*.tsbuildinfo} && pnpm exec biome check --write && pnpm biome migrate --write",
-    "update": "pnpm self-update && pnpm update --latest && pnpm install && pnpm prune && pnpm dedupe && pnpm run clean",
+    "update": "pnpm self-update && pnpm update && pnpm install && pnpm prune && pnpm dedupe && pnpm run clean",
     "release": "semantic-release"
   },
   "devDependencies": {
@@ -75,7 +73,7 @@
     "typescript": "7.0.2"
   },
   "peerDependencies": {
-    "payload": "^3.90.2"
+    "payload": "^3.90.0"
   },
   "engines": {
     "node": ">=24",

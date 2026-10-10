@@ -1,35 +1,45 @@
 const VERSION = '2'
 
+type CacheItem = {
+  value: unknown
+  expiry?: number
+}
+
 export class CacheManager {
-  private getVersionedKey(query: string) {
+  private getVersionedKey(query: string): string {
     return `${VERSION}${query}`
   }
 
-  exists(query: string) {
+  exists(query: string): boolean {
     const key = this.getVersionedKey(query)
+
     return localStorage.getItem(key) !== null
   }
 
-  get(query: string) {
+  get(query: string): unknown {
     const key = this.getVersionedKey(query)
-    const itemStr = localStorage.getItem(key)
+    const stored = localStorage.getItem(key)
 
-    if (!itemStr) return null
+    if (!stored) return null
 
-    let item: { value: unknown; expiry?: number }
     try {
-      item = JSON.parse(itemStr)
+      const item = JSON.parse(stored) as CacheItem
+
+      if (!item || typeof item !== 'object' || !('value' in item)) {
+        localStorage.removeItem(key)
+        return null
+      }
+
+      if (item.expiry && Date.now() > item.expiry) {
+        localStorage.removeItem(key)
+        return null
+      }
+
+      return item.value
     } catch {
       localStorage.removeItem(key)
       return null
     }
-
-    if (item.expiry && Date.now() > item.expiry) {
-      localStorage.removeItem(key)
-      return null
-    }
-
-    return item.value
   }
 
   set(query: string, data: unknown, ttl?: number): void {

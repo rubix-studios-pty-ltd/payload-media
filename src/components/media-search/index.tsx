@@ -12,7 +12,7 @@ export const MediaSearch = () => {
   const { setUploadControlFileUrl } = useUploadControls()
   const { openModal, closeModal } = useModal()
 
-  const handleSearchSubmit = useCallback(
+  const handleSubmit = useCallback(
     (url: string) => {
       if (!url) return
 
@@ -25,13 +25,15 @@ export const MediaSearch = () => {
   return (
     <>
       <span className="file-field__orText">Or</span>
+
       <Button buttonStyle="pill" onClick={() => openModal(drawerSlug)} size="small">
         Search media
       </Button>
-      <Drawer slug={drawerSlug}>
+
+      <Drawer slug={drawerSlug} title="Media">
         <SearchDrawer
           api={config.routes.api}
-          onSelect={handleSearchSubmit}
+          onSelect={handleSubmit}
           serverURL={config.serverURL}
         />
       </Drawer>

@@ -4,7 +4,8 @@
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 1.0.x   | :white_check_mark: |
+| 1.x.x   | :white_check_mark: |
+| 2.x.x   | :white_check_mark: |
 
 ## Reporting a Vulnerability
 
@@ -39,7 +40,7 @@ Please include the following details in your report:
 
 ## Best Practices
 
-When using PayloadCMS + Dub Plugin in production:
+When using PayloadCMS + Media Plugin in production:
 
 1. Keep all dependencies up to date
 2. Use secure environment variables for sensitive data

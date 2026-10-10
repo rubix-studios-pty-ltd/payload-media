@@ -17,7 +17,7 @@ export class Pexels extends Provider {
   }
 
   override getFetchHeaders(): Record<string, string> {
-    return { Authorization: `${this.getApiKey()}` }
+    return { Authorization: this.getApiKey() }
   }
 
   override async getFeatured(filters?: PexelsFilters): Promise<unknown> {
@@ -45,26 +45,7 @@ export class Pexels extends Provider {
   }
 
   override async getSearch(query: string, page: number, filters?: PexelsFilters): Promise<unknown> {
-    if (filters?.media === 'video') {
-      const params = new URLSearchParams({
-        query: query || 'featured',
-        page: String(page),
-        per_page: String(this.getFetchLimit()),
-      })
-
-      if (filters?.size) params.set('size', filters.size)
-      if (filters?.orientation) params.set('orientation', filters.orientation)
-
-      const data = await this.fetch('GET', `/videos/search?${params.toString()}`)
-
-      const totalResults = (data as { total_results: number }).total_results
-
-      return {
-        images: this.formatVideoResults((data as PexelsVideoResponse).videos),
-        totalImages: totalResults,
-        totalPages: Math.min(Math.ceil(totalResults / this.getFetchLimit()), 100),
-      }
-    }
+    const isVideo = filters?.media === 'video'
 
     const params = new URLSearchParams({
       query: query || 'featured',
@@ -72,16 +53,19 @@ export class Pexels extends Provider {
       per_page: String(this.getFetchLimit()),
     })
 
-    if (filters?.color) params.set('color', filters.color)
+    if (!isVideo && filters?.color) params.set('color', filters.color)
     if (filters?.size) params.set('size', filters.size)
     if (filters?.orientation) params.set('orientation', filters.orientation)
 
-    const data = await this.fetch('GET', `/v1/search?${params.toString()}`)
+    const endpoint = isVideo ? '/videos/search' : '/v1/search'
+    const data = await this.fetch('GET', `${endpoint}?${params.toString()}`)
 
     const totalResults = (data as { total_results: number }).total_results
 
     return {
-      images: this.formatResults((data as { photos: PexelsResult[] }).photos),
+      images: isVideo
+        ? this.formatVideoResults((data as PexelsVideoResponse).videos)
+        : this.formatResults((data as { photos: PexelsResult[] }).photos),
       totalImages: totalResults,
       totalPages: Math.min(Math.ceil(totalResults / this.getFetchLimit()), 100),
     }
@@ -90,8 +74,8 @@ export class Pexels extends Provider {
   formatVideoResults(data: PexelsVideo[]): ProviderResult[] {
     return data.map((video) => {
       const file =
-        video.video_files.find((f) => f.quality === 'hd' && f.file_type === 'video/mp4') ??
-        video.video_files.find((f) => f.file_type === 'video/mp4')
+        video.video_files.find((file) => file.quality === 'hd' && file.file_type === 'video/mp4') ??
+        video.video_files.find((file) => file.file_type === 'video/mp4')
 
       return {
         id: String(video.id),

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { Fragment, useCallback, useEffect, useState } from 'react'
 import { Pagination, SearchFilter, Select, toast } from '@payloadcms/ui'
 
 import {
@@ -20,20 +20,20 @@ import './style.css'
 
 const baseClass = 'search-media'
 
-export type SearchDrawerProps = {
+export type Props = {
   serverURL: string
   api: string
   onSelect: (value: string) => void
 }
 
-export const SearchDrawer = (props: SearchDrawerProps) => {
+export const SearchDrawer = (props: Props) => {
   const { serverURL, api, onSelect } = props
 
-  const [selectedProvider, setSelectedProvider] = useState<ProviderOption | null>(null)
+  const [provider, setProvider] = useState<ProviderOption | null>(null)
   const [options, setOptions] = useState<ProviderOption[]>([])
 
-  const [mediaType, setMediaType] = useState<'image' | 'video'>('image')
   const [media, setMedia] = useState<ProviderResult[] | null>(null)
+  const [mediaType, setMediaType] = useState<'image' | 'video'>('image')
   const [filters, setFilters] = useState<ProviderFilters | null>(null)
 
   const [currentPage, setCurrentPage] = useState<number | null>(null)
@@ -42,7 +42,11 @@ export const SearchDrawer = (props: SearchDrawerProps) => {
   const [loading, setLoading] = useState(true)
   const [value, setValue] = useState('')
 
-  const defaultError = useCallback(() => {
+  const mediaOptions = MediaOptions.filter((option) =>
+    filters?.provider === 'unsplash' ? option.value === 'image' : true
+  )
+
+  const error = useCallback(() => {
     toast.error('Something went wrong.')
   }, [])
 
@@ -70,20 +74,21 @@ export const SearchDrawer = (props: SearchDrawerProps) => {
       setOptions(providers)
 
       const initial = providers[0]
+
       if (!initial) {
         setLoading(false)
         return
       }
 
       setFilters({ provider: initial.value, options: {} })
-      setSelectedProvider(initial)
+      setProvider(initial)
     } catch {
       setLoading(false)
-      defaultError()
+      error()
     }
-  }, [serverURL, api, defaultError])
+  }, [serverURL, api, error])
 
-  const buildFeatured = useCallback(() => {
+  const buildFeatures = useCallback(() => {
     if (!filters || !mediaType) return ''
 
     const params = new URLSearchParams()
@@ -95,6 +100,7 @@ export const SearchDrawer = (props: SearchDrawerProps) => {
         if (orientation) params.set('orientation', orientation)
         break
       }
+
       case 'pexels': {
         const { color, orientation, size } = filters.options
         if (color) params.set('color', color)
@@ -103,6 +109,7 @@ export const SearchDrawer = (props: SearchDrawerProps) => {
         if (mediaType === 'video') params.set('media', 'video')
         break
       }
+
       case 'pixabay': {
         const { category, image_type, order, orientation, colors } = filters.options
         if (category) params.set('category', category)
@@ -119,14 +126,14 @@ export const SearchDrawer = (props: SearchDrawerProps) => {
     return query ? `?${query}` : ''
   }, [filters, mediaType])
 
-  const getFeatured = useCallback(async () => {
-    if (!selectedProvider || !filters || !mediaType) return
+  const getFeatures = useCallback(async () => {
+    if (!provider || !filters || !mediaType) return
 
     try {
       setLoading(true)
 
       const json = await fetchCache(
-        `${serverURL}${api}/providers/${selectedProvider.value}/featured${buildFeatured()}`
+        `${serverURL}${api}/providers/${provider.value}/featured${buildFeatures()}`
       )
       if (!json) return
 
@@ -137,11 +144,11 @@ export const SearchDrawer = (props: SearchDrawerProps) => {
 
       setMedia(json.data.images)
     } catch {
-      defaultError()
+      error()
     } finally {
       setLoading(false)
     }
-  }, [serverURL, api, selectedProvider, filters, buildFeatured, mediaType, defaultError])
+  }, [serverURL, api, provider, filters, buildFeatures, mediaType, error])
 
   const buildQuery = useCallback(
     (page = 1) => {
@@ -188,7 +195,7 @@ export const SearchDrawer = (props: SearchDrawerProps) => {
       try {
         setLoading(true)
         const json = await fetchCache(
-          `${serverURL}${api}/providers/${selectedProvider?.value}/search?${buildQuery(page)}`
+          `${serverURL}${api}/providers/${provider?.value}/search?${buildQuery(page)}`
         )
 
         if (json.error) return toast.error(json.error)
@@ -197,12 +204,12 @@ export const SearchDrawer = (props: SearchDrawerProps) => {
         setTotalPages(json.data.totalPages)
         setCurrentPage(page)
       } catch {
-        defaultError()
+        error()
       } finally {
         setLoading(false)
       }
     },
-    [serverURL, api, selectedProvider?.value, defaultError, buildQuery]
+    [serverURL, api, provider?.value, error, buildQuery]
   )
 
   const selectMedia = async (url: string, download?: string) => {
@@ -211,7 +218,7 @@ export const SearchDrawer = (props: SearchDrawerProps) => {
 
     try {
       await fetch(
-        `${serverURL}${api}/providers/${selectedProvider?.value}/track-download?url=${encodeURIComponent(
+        `${serverURL}${api}/providers/${provider?.value}/track-download?url=${encodeURIComponent(
           download
         )}`
       )
@@ -221,12 +228,24 @@ export const SearchDrawer = (props: SearchDrawerProps) => {
   }
 
   const selectFilter = useCallback(
-    (select: ProviderOption) => {
+    (value: unknown) => {
+      const select = value as ProviderOption
+
       setFilters({ provider: select.value, options: {} })
-      setSelectedProvider(select)
+      setProvider(select)
       if (select.value === 'unsplash') {
         setMediaType('image')
       }
+      resetMedia()
+    },
+    [resetMedia]
+  )
+
+  const selectType = useCallback(
+    (option: unknown) => {
+      const value = (option as MediaOption)?.value
+
+      setMediaType(value)
       resetMedia()
     },
     [resetMedia]
@@ -240,47 +259,53 @@ export const SearchDrawer = (props: SearchDrawerProps) => {
     [resetMedia]
   )
 
+  const renderMedia = (data: ProviderResult) => (
+    <Fragment key={data.id}>
+      {mediaType === 'video' ? (
+        <VideoCard baseClass={baseClass} data={data} onSelect={selectMedia} />
+      ) : (
+        <ImageCard baseClass={baseClass} data={data} onSelect={selectMedia} />
+      )}
+    </Fragment>
+  )
+
   useEffect(() => {
     void getOptions()
   }, [getOptions])
 
   useEffect(() => {
-    if (!selectedProvider?.value || !filters || !mediaType) return
+    if (!provider?.value || !filters || !mediaType) return
 
     if (value.trim().length > 0) {
       void getMedia(1)
     } else {
-      void getFeatured()
+      void getFeatures()
     }
-  }, [selectedProvider?.value, filters, value, mediaType, getMedia, getFeatured])
+  }, [provider?.value, filters, value, mediaType, getMedia, getFeatures])
 
   return (
     <div className={baseClass}>
       <div className={`${baseClass}__fields`}>
-        <SearchFilter handleChange={changeFilters} label="" />
+        <SearchFilter handleChange={changeFilters} label="Search..." />
+
         <Select
           className={`${baseClass}__mediaToggle`}
           isClearable={false}
           isCreatable={false}
           isSearchable={false}
-          onChange={(opt) => {
-            const val = (opt as MediaOption)?.value
-            setMediaType(val)
-            resetMedia()
-          }}
-          options={MediaOptions.filter((option) =>
-            filters?.provider === 'unsplash' ? option.value === 'image' : true
-          )}
+          onChange={selectType}
+          options={mediaOptions}
           value={{ label: mediaType === 'image' ? 'Images' : 'Videos', value: mediaType }}
         />
+
         <Select
           className={`${baseClass}__options`}
           isClearable={false}
           isCreatable={false}
           isSearchable={false}
-          onChange={(value) => selectFilter(value as ProviderOption)}
+          onChange={selectFilter}
           options={options}
-          value={selectedProvider as ProviderOption}
+          value={provider as ProviderOption}
         />
       </div>
 
@@ -314,17 +339,7 @@ export const SearchDrawer = (props: SearchDrawerProps) => {
 
       {!loading && media && media?.length > 0 && (
         <>
-          <div className={`${baseClass}__results`}>
-            {media.map((data) => (
-              <React.Fragment key={data.id}>
-                {mediaType === 'video' ? (
-                  <VideoCard baseClass={baseClass} data={data} onSelect={selectMedia} />
-                ) : (
-                  <ImageCard baseClass={baseClass} data={data} onSelect={selectMedia} />
-                )}
-              </React.Fragment>
-            ))}
-          </div>
+          <div className={`${baseClass}__results`}>{media.map(renderMedia)}</div>
 
           {currentPage && totalPages && totalPages > 1 && (
             <div className={`${baseClass}__pagination`}>
@@ -333,7 +348,7 @@ export const SearchDrawer = (props: SearchDrawerProps) => {
                 hasPrevPage={currentPage > 1}
                 nextPage={currentPage < totalPages ? currentPage + 1 : undefined}
                 numberOfNeighbors={3}
-                onChange={(page: number) => getMedia(page)}
+                onChange={getMedia}
                 page={currentPage}
                 prevPage={currentPage > 1 ? currentPage - 1 : undefined}
                 totalPages={totalPages}

@@ -5,6 +5,33 @@ import { getProviders } from '../utils/getProviders.js'
 import { requireAccess } from '../utils/requireAccess.js'
 import { resolveProvider } from '../utils/resolveProvider.js'
 
+type Request = Parameters<Endpoint['handler']>[0]
+
+const getProvider = (req: Request) => {
+  const provider = resolveProvider(req)
+
+  if (!provider) {
+    return Response.json({ data: null, error: 'Provider not supported.' }, { status: 404 })
+  }
+
+  if (!provider.isConfigured) {
+    return Response.json({ data: null, error: 'Provider not configured.' }, { status: 500 })
+  }
+
+  return provider
+}
+
+const getFilters = (query: Request['query']) => ({
+  category: query.category as string | undefined,
+  color: query.color as string | undefined,
+  colors: query.colors as string | undefined,
+  image_type: query.image_type as string | undefined,
+  order: query.order as string | undefined,
+  orientation: query.orientation as string | undefined,
+  size: query.size as string | undefined,
+  media: getMediaType(query.media),
+})
+
 export const providers: Endpoint[] = [
   {
     path: '/providers',
@@ -14,12 +41,12 @@ export const providers: Endpoint[] = [
       if (denied) return denied
 
       const providerKeys = req.payload?.config?.custom?.providerKeys
-      const providers = getProviders(providerKeys).map((p) => ({
-        name: p.name,
-        key: p.key,
+      const data = getProviders(providerKeys).map((provider) => ({
+        name: provider.name,
+        key: provider.key,
       }))
 
-      return Response.json({ data: providers, error: null })
+      return Response.json({ data, error: null })
     },
   },
   {
@@ -29,38 +56,10 @@ export const providers: Endpoint[] = [
       const denied = await requireAccess(req)
       if (denied) return denied
 
-      const provider = resolveProvider(req)
+      const provider = getProvider(req)
+      if (provider instanceof Response) return provider
 
-      if (!provider) {
-        return Response.json(
-          {
-            data: null,
-            error: 'Provider not supported.',
-          },
-          { status: 404 }
-        )
-      }
-
-      if (!provider.isConfigured) {
-        return Response.json(
-          {
-            data: null,
-            error: 'Provider not configured.',
-          },
-          { status: 500 }
-        )
-      }
-
-      const data = await provider.getFeatured({
-        category: req.query.category as string | undefined,
-        color: req.query.color as string | undefined,
-        colors: req.query.colors as string | undefined,
-        image_type: req.query.image_type as string | undefined,
-        order: req.query.order as string | undefined,
-        orientation: req.query.orientation as string | undefined,
-        size: req.query.size as string | undefined,
-        media: getMediaType(req.query.media),
-      })
+      const data = await provider.getFeatured(getFilters(req.query))
 
       return Response.json({ data, error: null })
     },
@@ -72,41 +71,13 @@ export const providers: Endpoint[] = [
       const denied = await requireAccess(req)
       if (denied) return denied
 
-      const provider = resolveProvider(req)
-
-      if (!provider) {
-        return Response.json(
-          {
-            data: null,
-            error: 'Provider not supported.',
-          },
-          { status: 404 }
-        )
-      }
-
-      if (!provider.isConfigured) {
-        return Response.json(
-          {
-            data: null,
-            error: 'Provider not configured.',
-          },
-          { status: 500 }
-        )
-      }
+      const provider = getProvider(req)
+      if (provider instanceof Response) return provider
 
       const data = await provider.getSearch(
         req.query.query as string,
         Number(req.query.page ?? 1),
-        {
-          category: req.query.category as string | undefined,
-          color: req.query.color as string | undefined,
-          colors: req.query.colors as string | undefined,
-          image_type: req.query.image_type as string | undefined,
-          order: req.query.order as string | undefined,
-          orientation: req.query.orientation as string | undefined,
-          size: req.query.size as string | undefined,
-          media: getMediaType(req.query.media),
-        }
+        getFilters(req.query)
       )
 
       return Response.json({ data, error: null })
@@ -119,27 +90,8 @@ export const providers: Endpoint[] = [
       const denied = await requireAccess(req)
       if (denied) return denied
 
-      const provider = resolveProvider(req)
-
-      if (!provider) {
-        return Response.json(
-          {
-            data: null,
-            error: 'Provider not supported.',
-          },
-          { status: 404 }
-        )
-      }
-
-      if (!provider.isConfigured) {
-        return Response.json(
-          {
-            data: null,
-            error: 'Provider not configured.',
-          },
-          { status: 500 }
-        )
-      }
+      const provider = getProvider(req)
+      if (provider instanceof Response) return provider
 
       const data = provider.trackDownload(req.query.url as string)
 

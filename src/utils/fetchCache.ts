@@ -1,7 +1,7 @@
 import { CacheManager } from '../lib/cache.js'
 
 const cache = new CacheManager()
-const defaultExpiry = 24 * 60 * 60 * 1000
+const CACHE_TTL = 24 * 60 * 60 * 1000
 
 export const fetchCache = async (queryPath: string) => {
   if (queryPath.includes('undefined')) {
@@ -21,8 +21,9 @@ export const fetchCache = async (queryPath: string) => {
     throw await response.json()
   }
 
-  const json = await response.json()
-  cache.set(key, json, defaultExpiry)
+  const data = await response.json()
 
-  return json
+  cache.set(key, data, CACHE_TTL)
+
+  return data
 }

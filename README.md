@@ -11,7 +11,7 @@ This project is an independent implementation derived [PayloadBites' Image Searc
 ## Installation
 
 ```sh
-pnpm add @rubixstudios/payload-media
+pnpm add @rubixstudios/payload-media@payload-v3
 ```
 
 ```typescript

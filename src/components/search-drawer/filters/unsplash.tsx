@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { type Dispatch, type SetStateAction } from 'react'
 import { Select } from '@payloadcms/ui'
 
 import {
@@ -8,14 +8,14 @@ import {
   UnsplashOrientation,
 } from '../../../types.js'
 
-type UnsplashFiltersProps = {
+type Props = {
   filters: ProviderFilters
-  setFilters: React.Dispatch<React.SetStateAction<ProviderFilters | null>>
+  setFilters: Dispatch<SetStateAction<ProviderFilters | null>>
   baseClass: string
 }
 
-export const UnsplashFilters = ({ filters, setFilters, baseClass }: UnsplashFiltersProps) => {
-  if (filters?.provider !== 'unsplash') return null
+export const UnsplashFilters = ({ filters, setFilters, baseClass }: Props) => {
+  if (filters.provider !== 'unsplash') return null
 
   return (
     <div className={`${baseClass}__filters`}>
@@ -26,10 +26,10 @@ export const UnsplashFilters = ({ filters, setFilters, baseClass }: UnsplashFilt
           setFilters((prev) =>
             prev?.provider === 'unsplash'
               ? {
-                  provider: 'unsplash',
+                  ...prev,
                   options: {
                     ...prev.options,
-                    color: (opt as ProviderOption)?.value,
+                    color: (opt as ProviderOption | null)?.value,
                   },
                 }
               : prev
@@ -37,7 +37,7 @@ export const UnsplashFilters = ({ filters, setFilters, baseClass }: UnsplashFilt
         }
         options={UnsplashColours}
         placeholder="Colour"
-        value={UnsplashColours.find((o) => o.value === filters.options.color)}
+        value={UnsplashColours.find((option) => option.value === filters.options.color)}
       />
 
       <Select
@@ -47,10 +47,10 @@ export const UnsplashFilters = ({ filters, setFilters, baseClass }: UnsplashFilt
           setFilters((prev) =>
             prev?.provider === 'unsplash'
               ? {
-                  provider: 'unsplash',
+                  ...prev,
                   options: {
                     ...prev.options,
-                    orientation: (opt as ProviderOption)?.value,
+                    orientation: (opt as ProviderOption | null)?.value,
                   },
                 }
               : prev
@@ -58,7 +58,7 @@ export const UnsplashFilters = ({ filters, setFilters, baseClass }: UnsplashFilt
         }
         options={UnsplashOrientation}
         placeholder="Orientation"
-        value={UnsplashOrientation.find((o) => o.value === filters.options.orientation)}
+        value={UnsplashOrientation.find((option) => option.value === filters.options.orientation)}
       />
     </div>
   )

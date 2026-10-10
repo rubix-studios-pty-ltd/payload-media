@@ -23,13 +23,8 @@ export class Unsplash extends Provider {
         query: 'featured',
       })
 
-      if (filters.color) {
-        params.set('color', filters.color)
-      }
-
-      if (filters.orientation) {
-        params.set('orientation', filters.orientation)
-      }
+      if (filters?.color) params.set('color', filters.color)
+      if (filters?.orientation) params.set('orientation', filters.orientation)
 
       const data = await this.fetch('GET', `/search/photos?${params.toString()}`)
 
@@ -66,18 +61,24 @@ export class Unsplash extends Provider {
     if (filters?.color) params.set('color', filters.color)
     if (filters?.orientation) params.set('orientation', filters.orientation)
 
-    const data = await this.fetch('GET', `/search/photos?${params.toString()}`)
+    const data = (await this.fetch('GET', `/search/photos?${params.toString()}`)) as {
+      results: UnsplashResult[]
+      total: number
+      total_pages: number
+    }
 
     return {
-      images: this.formatResults((data as { results: UnsplashResult[] }).results),
-      totalImages: (data as { total: number }).total,
-      totalPages: Math.min((data as { total_pages: number }).total_pages, 100),
+      images: this.formatResults(data.results),
+      totalImages: data.total,
+      totalPages: Math.min(data.total_pages, 100),
     }
   }
 
-  override trackDownload(url: string) {
+  override trackDownload(url: string): null {
     const downloadUrl = new URL(url)
+
     void this.fetch('GET', `${downloadUrl.pathname}${downloadUrl.search}`)
+
     return null
   }
 
