@@ -3,26 +3,19 @@ import { type ProviderResult } from '../../types.js'
 export type Resolver = () => string | undefined
 
 export class Provider {
-  protected apiKey?: Resolver
   key: string
   name: string
   url: string
 
-  constructor(key: string, name: string, url: string, apiKey?: Resolver) {
+  constructor(
+    key: string,
+    name: string,
+    url: string,
+    protected apiKey?: Resolver
+  ) {
     this.key = key
     this.name = name
     this.url = url
-    this.apiKey = apiKey
-  }
-
-  async fetch(method: string, urlPath: string, data?: object): Promise<unknown> {
-    const response = await fetch(new URL(urlPath, this.getFetchBaseUrl()), {
-      method,
-      headers: this.getFetchHeaders(),
-      ...(data && { body: JSON.stringify(data) }),
-    })
-
-    return response.json()
   }
 
   get isConfigured(): boolean {
@@ -37,6 +30,16 @@ export class Provider {
     }
 
     return key
+  }
+
+  async fetch(method: string, urlPath: string, data?: object): Promise<unknown> {
+    const response = await fetch(new URL(urlPath, this.getFetchBaseUrl()), {
+      method,
+      headers: this.getFetchHeaders(),
+      ...(data && { body: JSON.stringify(data) }),
+    })
+
+    return response.json()
   }
 
   getFetchBaseUrl(): string {

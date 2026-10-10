@@ -9,50 +9,48 @@ export const mediaPlugin =
   (incomingConfig: Config): Config => {
     if (pluginConfig.disabled) return incomingConfig
 
-    const mergedOptions: Required<ProviderConfig> = {
+    const options: Required<ProviderConfig> = {
       ...defaultPluginOptions,
       ...pluginConfig,
     }
 
-    const settings: Config = { ...incomingConfig }
+    const config: Config = { ...incomingConfig }
 
-    settings.custom = {
-      ...(settings.custom || {}),
-      providerAccess: mergedOptions.access,
+    config.custom = {
+      ...(config.custom ?? {}),
+      providerAccess: options.access,
       providerKeys: {
-        pexels: mergedOptions.pexels,
-        unsplash: mergedOptions.unsplash,
-        pixabay: mergedOptions.pixabay,
+        pexels: options.pexels,
+        unsplash: options.unsplash,
+        pixabay: options.pixabay,
       },
     }
 
-    settings.collections = (settings.collections || []).map((collection) => {
+    config.collections = (config.collections ?? []).map((collection) => {
       const upload = collection.upload
       if (!upload) return collection
 
-      const uploadObj = upload === true ? {} : typeof upload === 'object' ? upload : undefined
+      const uploadConfig = upload === true ? {} : typeof upload === 'object' ? upload : undefined
 
-      const modifiedCollection = {
+      return {
         ...collection,
         upload: {
-          ...(uploadObj || {}),
+          ...(uploadConfig ?? {}),
           admin: {
-            ...(uploadObj?.admin || {}),
+            ...(uploadConfig?.admin ?? {}),
             components: {
-              ...(uploadObj?.admin?.components || {}),
+              ...(uploadConfig?.admin?.components ?? {}),
               controls: [
-                ...(uploadObj?.admin?.components?.controls || []),
+                ...(uploadConfig?.admin?.components?.controls ?? []),
                 '@rubixstudios/payload-media/client#MediaSearch',
               ],
             },
           },
         },
       }
-
-      return modifiedCollection
     })
 
-    settings.endpoints = [...(settings.endpoints || []), ...providers]
+    config.endpoints = [...(config.endpoints ?? []), ...providers]
 
-    return settings
+    return config
   }
