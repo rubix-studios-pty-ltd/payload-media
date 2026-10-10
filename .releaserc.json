@@ -1,5 +1,12 @@
 {
-  "branches": ["main"],
+  "branches": [
+    {
+      "name": "payload-v3",
+      "range": "1.x",
+      "channel": "payload-v3"
+    },
+    "main"
+  ],
   "plugins": [
     [
       "@semantic-release/commit-analyzer",
