@@ -1,75 +1,112 @@
-# PayloadCMS Media Search Plugin
+# Payload CMS Media Plugin
 
-PayloadCMS plugin for stock image and video search across Unsplash, Pexels, and Pixabay, with filterable results and instant import.
+Payload CMS Media Plugin adds stock image and video search to the Payload Admin interface. Search Unsplash, Pexels, and Pixabay, apply provider-specific filters, preview results, and import selected media into upload collections.
 
-<img width="1912" height="914" alt="Image stock selection" src="https://github.com/user-attachments/assets/80ecb11f-65eb-4f58-a422-df9b170ac5d2" />
+![Stock image selection](https://github.com/user-attachments/assets/80ecb11f-65eb-4f58-a422-df9b170ac5d2)
 
-<img width="1912" height="914" alt="Video stock selection" src="https://github.com/user-attachments/assets/28044aaa-7144-4b66-9d5f-afc58d7939d5" />
+![Stock video selection](https://github.com/user-attachments/assets/28044aaa-7144-4b66-9d5f-afc58d7939d5)
 
-This project is an independent implementation derived [PayloadBites' Image Search](https://github.com/rilrom/payload-bites/tree/main/packages/image-search) extended with provider-specific image filtering and improved Windows OS compatibility.
+## Compatibility
+
+The plugin maintains two release lines, with Payload CMS v4 as the primary release and Payload CMS v3 maintained separately.
+
+| Payload CMS | Plugin version | Release branch | npm dist-tag |
+| --- | --- | --- | --- |
+| v4 | 2.x | `main` | `latest` |
+| v3 | 1.x | `payload-v3` | `payload-v3` |
+
+Install the release matching your Payload version. The `latest` tag targets Payload v4 after the v4 release is published.
 
 ## Installation
+
+### Payload CMS v4
+
+Install the latest release.
 
 ```sh
 pnpm add @rubixstudios/payload-media
 ```
 
+### Payload CMS v3
+
+Install from the dedicated v3 release channel.
+
+```sh
+pnpm add @rubixstudios/payload-media@payload-v3
+```
+
+## Configuration
+
+Register `mediaPlugin` in `payload.config.ts`. The plugin uses the same configuration options across both supported Payload versions.
+
 ```typescript
-// payload.config.ts
-import { buildConfig } from 'payload/config'
+import { buildConfig } from 'payload'
 import { mediaPlugin } from '@rubixstudios/payload-media'
 
 export default buildConfig({
   plugins: [
     mediaPlugin({
-      disabled: false, // Optional, defaults to false
-      access: ({ req: { user } }) => Boolean(user), // Media search access control
-      pexels: process.env.API_KEY_PEXELS!,
-      pixabay: process.env.API_KEY_PIXABAY!,
-      unsplash: process.env.API_KEY_UNSPLASH!,
+      pexels: process.env.API_KEY_PEXELS,
+      pixabay: process.env.API_KEY_PIXABAY,
+      unsplash: process.env.API_KEY_UNSPLASH,
+      access: ({ req: { user } }) => Boolean(user),
+      disabled: false,
     }),
   ],
 })
 ```
 
-## Notes
+Provide an API key only for the providers you want to enable. Configured providers appear in the search interface. The plugin adds a **Search media** control to collections with uploads enabled.
 
-API key can be obtained from the respective provider's website.
+### Options
 
-- [Unsplash](https://unsplash.com/developers)
-- [Pexels](https://www.pexels.com/api/)
-- [Pixabay](https://pixabay.com/api/docs/)
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `pexels` | `string` | `''` | Pexels API key |
+| `pixabay` | `string` | `''` | Pixabay API key |
+| `unsplash` | `string` | `''` | Unsplash access key |
+| `access` | Payload `Access` | Authenticated users | Controls who may use the media search endpoints |
+| `disabled` | `boolean` | `false` | Disables plugin registration |
 
-When using Unplash, utilise your Access Key for the API Token.
+## Provider API keys
+
+Obtain API credentials from the relevant provider.
+
+- [Unsplash Developers](https://unsplash.com/developers)
+- [Pexels API](https://www.pexels.com/api/)
+- [Pixabay API](https://pixabay.com/api/docs/)
+
+For Unsplash, use the application's **Access Key**, not its Secret Key. Keep credentials in server-side environment variables.
 
 ## Features
 
-- Stock image and video search inside Payload Admin
-- Providers: Unsplash, Pexels, Pixabay
-- Provider-specific filters (color, orientation, size, type)
-- Featured and keyword search modes
-- One-click image import
-- Permission-based access control
+- Search stock images and videos inside Payload Admin upload collections.
+- Search images from Unsplash, Pexels, and Pixabay, and videos from Pexels and Pixabay.
+- Browse featured results or search by keyword.
+- Refine searches with provider-specific controls, including colour, orientation, size, image type, category, and ordering where supported.
+- Preview images and videos before selection.
+- Import a selected asset using Payload's upload controls.
+- Restrict access using a configurable Payload access function.
+- Cache successful search responses in browser storage for 24 hours.
 
-## Liability
+## Usage and liability
 
-Rubix Studios, its developers, and contributors bear no responsibility for how images are used.
-Before using any provider, ensure you have reviewed and agreed to their terms and usage policies.
+Media availability, licensing, attribution, and permitted uses depend on the source provider. Review the applicable provider terms and licence conditions before using imported assets.
+
+Rubix Studios, its developers, and contributors bear no responsibility for how imported media is used.
 
 ## Support
 
-For support or inquiries:
+For support or enquiries, contact [Rubix Studios](https://rubixstudios.com.au) or [rubixvi on LinkedIn](https://www.linkedin.com/in/rubixvi/). You can also [open an issue on GitHub](https://github.com/rubix-studios-pty-ltd/payload-media/issues).
 
-- LinkedIn: [rubixvi](https://www.linkedin.com/in/rubixvi/)
-- Website: [Rubix Studios](https://rubixstudios.com.au)
+## License
+
+Distributed under the [MIT License](LICENSE).
 
 ## Author
 
-Rubix Studios  
-[https://rubixstudios.com.au](https://rubixstudios.com.au)
+[Rubix Studios](https://rubixstudios.com.au)
 
 ## Acknowledgments
 
-This project is based on the Image Search by Riley Langbein:
-
-- [Riley Langbein](https://github.com/rilrom)
+This project is an independent implementation derived from [PayloadBites' Image Search](https://github.com/rilrom/payload-bites/tree/main/packages/image-search) by [Riley Langbein](https://github.com/rilrom), extended with provider-specific filters, video support, and Windows compatibility improvements.

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { type Dispatch, type SetStateAction } from 'react'
 import { Select } from '@payloadcms/ui'
 
 import {
@@ -11,20 +11,15 @@ import {
   type ProviderOption,
 } from '../../../types.js'
 
-type PixabayFiltersProps = {
+type Props = {
   filters: ProviderFilters
   mediaType: 'image' | 'video'
-  setFilters: React.Dispatch<React.SetStateAction<ProviderFilters | null>>
+  setFilters: Dispatch<SetStateAction<ProviderFilters | null>>
   baseClass: string
 }
 
-export const PixabayFilters = ({
-  filters,
-  mediaType,
-  setFilters,
-  baseClass,
-}: PixabayFiltersProps) => {
-  if (filters?.provider !== 'pixabay') return null
+export const PixabayFilters = ({ filters, mediaType, setFilters, baseClass }: Props) => {
+  if (filters.provider !== 'pixabay') return null
 
   return (
     <div className={`${baseClass}__filters`}>
@@ -35,10 +30,10 @@ export const PixabayFilters = ({
           setFilters((prev) =>
             prev?.provider === 'pixabay'
               ? {
-                  provider: 'pixabay',
+                  ...prev,
                   options: {
                     ...prev.options,
-                    category: (opt as ProviderOption)?.value,
+                    category: (opt as ProviderOption | null)?.value,
                   },
                 }
               : prev
@@ -46,7 +41,7 @@ export const PixabayFilters = ({
         }
         options={PixabayCategories}
         placeholder="Category"
-        value={PixabayCategories.find((o) => o.value === filters.options.category)}
+        value={PixabayCategories.find((option) => option.value === filters.options.category)}
       />
 
       {mediaType !== 'video' && (
@@ -58,10 +53,10 @@ export const PixabayFilters = ({
               setFilters((prev) =>
                 prev?.provider === 'pixabay'
                   ? {
-                      provider: 'pixabay',
+                      ...prev,
                       options: {
                         ...prev.options,
-                        image_type: (opt as ProviderOption)?.value,
+                        image_type: (opt as ProviderOption | null)?.value,
                       },
                     }
                   : prev
@@ -69,7 +64,7 @@ export const PixabayFilters = ({
             }
             options={PixabayImageType}
             placeholder="Type"
-            value={PixabayImageType.find((o) => o.value === filters.options.image_type)}
+            value={PixabayImageType.find((option) => option.value === filters.options.image_type)}
           />
 
           <Select
@@ -79,10 +74,10 @@ export const PixabayFilters = ({
               setFilters((prev) =>
                 prev?.provider === 'pixabay'
                   ? {
-                      provider: 'pixabay',
+                      ...prev,
                       options: {
                         ...prev.options,
-                        colors: (opt as ProviderOption)?.value,
+                        colors: (opt as ProviderOption | null)?.value,
                       },
                     }
                   : prev
@@ -90,7 +85,7 @@ export const PixabayFilters = ({
             }
             options={PixabayColours}
             placeholder="Colour"
-            value={PixabayColours.find((o) => o.value === filters.options.colors)}
+            value={PixabayColours.find((option) => option.value === filters.options.colors)}
           />
 
           <Select
@@ -100,10 +95,10 @@ export const PixabayFilters = ({
               setFilters((prev) =>
                 prev?.provider === 'pixabay'
                   ? {
-                      provider: 'pixabay',
+                      ...prev,
                       options: {
                         ...prev.options,
-                        orientation: (opt as ProviderOption)?.value,
+                        orientation: (opt as ProviderOption | null)?.value,
                       },
                     }
                   : prev
@@ -111,7 +106,9 @@ export const PixabayFilters = ({
             }
             options={PixabayOrientation}
             placeholder="Orientation"
-            value={PixabayOrientation.find((o) => o.value === filters.options.orientation)}
+            value={PixabayOrientation.find(
+              (option) => option.value === filters.options.orientation
+            )}
           />
         </>
       )}
@@ -123,10 +120,10 @@ export const PixabayFilters = ({
           setFilters((prev) =>
             prev?.provider === 'pixabay'
               ? {
-                  provider: 'pixabay',
+                  ...prev,
                   options: {
                     ...prev.options,
-                    order: (opt as ProviderOption)?.value,
+                    order: (opt as ProviderOption | null)?.value,
                   },
                 }
               : prev
@@ -134,7 +131,7 @@ export const PixabayFilters = ({
         }
         options={PixabayOrder}
         placeholder="Order"
-        value={PixabayOrder.find((o) => o.value === filters.options.order)}
+        value={PixabayOrder.find((option) => option.value === filters.options.order)}
       />
     </div>
   )

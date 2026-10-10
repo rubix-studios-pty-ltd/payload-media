@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { type Dispatch, type SetStateAction } from 'react'
 import { Select } from '@payloadcms/ui'
 
 import {
@@ -10,20 +10,17 @@ import {
   type ProviderOption,
 } from '../../../types.js'
 
-type PexelsFiltersProps = {
+type Props = {
   filters: ProviderFilters
   mediaType: 'image' | 'video'
-  setFilters: React.Dispatch<React.SetStateAction<ProviderFilters | null>>
+  setFilters: Dispatch<SetStateAction<ProviderFilters | null>>
   baseClass: string
 }
 
-export const PexelsFilters = ({
-  filters,
-  mediaType,
-  setFilters,
-  baseClass,
-}: PexelsFiltersProps) => {
-  if (filters?.provider !== 'pexels') return null
+export const PexelsFilters = ({ filters, mediaType, setFilters, baseClass }: Props) => {
+  if (filters.provider !== 'pexels') return null
+
+  const sizeOptions = mediaType === 'video' ? PexelsVideoSize : PexelsSize
 
   return (
     <div className={`${baseClass}__filters`}>
@@ -35,10 +32,10 @@ export const PexelsFilters = ({
             setFilters((prev) =>
               prev?.provider === 'pexels'
                 ? {
-                    provider: 'pexels',
+                    ...prev,
                     options: {
                       ...prev.options,
-                      color: (opt as ProviderOption)?.value,
+                      color: (opt as ProviderOption | null)?.value,
                     },
                   }
                 : prev
@@ -46,7 +43,7 @@ export const PexelsFilters = ({
           }
           options={PexelsColours}
           placeholder="Colour"
-          value={PexelsColours.find((o) => o.value === filters.options.color)}
+          value={PexelsColours.find((option) => option.value === filters.options.color)}
         />
       )}
 
@@ -57,20 +54,18 @@ export const PexelsFilters = ({
           setFilters((prev) =>
             prev?.provider === 'pexels'
               ? {
-                  provider: 'pexels',
+                  ...prev,
                   options: {
                     ...prev.options,
-                    size: (opt as ProviderOption)?.value,
+                    size: (opt as ProviderOption | null)?.value,
                   },
                 }
               : prev
           )
         }
-        options={mediaType === 'video' ? PexelsVideoSize : PexelsSize}
+        options={sizeOptions}
         placeholder="Size"
-        value={(mediaType === 'video' ? PexelsVideoSize : PexelsSize).find(
-          (o) => o.value === filters.options.size
-        )}
+        value={sizeOptions.find((option) => option.value === filters.options.size)}
       />
 
       <Select
@@ -80,10 +75,10 @@ export const PexelsFilters = ({
           setFilters((prev) =>
             prev?.provider === 'pexels'
               ? {
-                  provider: 'pexels',
+                  ...prev,
                   options: {
                     ...prev.options,
-                    orientation: (opt as ProviderOption)?.value,
+                    orientation: (opt as ProviderOption | null)?.value,
                   },
                 }
               : prev
@@ -91,7 +86,7 @@ export const PexelsFilters = ({
         }
         options={PexelsOrientation}
         placeholder="Orientation"
-        value={PexelsOrientation.find((o) => o.value === filters.options.orientation)}
+        value={PexelsOrientation.find((option) => option.value === filters.options.orientation)}
       />
     </div>
   )

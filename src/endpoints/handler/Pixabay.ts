@@ -61,27 +61,7 @@ export class Pixabay extends Provider {
     page: number,
     filters?: PixabayFilters
   ): Promise<unknown> {
-    if (filters?.media === 'video') {
-      const params = new URLSearchParams({
-        key: this.getApiKey(),
-        q: query || '',
-        page: String(page),
-        per_page: String(this.getFetchLimit()),
-      })
-
-      if (filters?.category) params.set('category', filters.category)
-      if (filters?.order) params.set('order', filters.order)
-
-      const data = await this.fetch('GET', `/api/videos?${params.toString()}`)
-
-      const totalHits = (data as { totalHits: number }).totalHits
-
-      return {
-        images: this.formatVideoResults((data as PixabayVideoResponse).hits),
-        totalImages: totalHits,
-        totalPages: Math.min(Math.ceil(totalHits / this.getFetchLimit()), 100),
-      }
-    }
+    const isVideo = filters?.media === 'video'
 
     const params = new URLSearchParams({
       key: this.getApiKey(),
@@ -91,17 +71,23 @@ export class Pixabay extends Provider {
     })
 
     if (filters?.category) params.set('category', filters.category)
-    if (filters?.image_type) params.set('image_type', filters.image_type)
-    if (filters?.colors) params.set('colors', filters.colors)
-    if (filters?.orientation) params.set('orientation', filters.orientation)
     if (filters?.order) params.set('order', filters.order)
 
-    const data = await this.fetch('GET', `/api?${params.toString()}`)
+    if (!isVideo) {
+      if (filters?.image_type) params.set('image_type', filters.image_type)
+      if (filters?.colors) params.set('colors', filters.colors)
+      if (filters?.orientation) params.set('orientation', filters.orientation)
+    }
+
+    const endpoint = isVideo ? '/api/videos' : '/api'
+    const data = await this.fetch('GET', `${endpoint}?${params.toString()}`)
 
     const totalHits = (data as { totalHits: number }).totalHits
 
     return {
-      images: this.formatResults((data as { hits: PixabayResult[] }).hits),
+      images: isVideo
+        ? this.formatVideoResults((data as PixabayVideoResponse).hits)
+        : this.formatResults((data as { hits: PixabayResult[] }).hits),
       totalImages: totalHits,
       totalPages: Math.min(Math.ceil(totalHits / this.getFetchLimit()), 100),
     }

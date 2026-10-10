@@ -3,10 +3,10 @@ import { Pixabay } from '../endpoints/handler/Pixabay.js'
 import { Unsplash } from '../endpoints/handler/Unsplash.js'
 import { type ProviderKeys } from '../types.js'
 
-export function getProviders(providerKey?: ProviderKeys): Array<Pexels | Unsplash | Pixabay> {
+export const getProviders = (providerKeys?: ProviderKeys) => {
   return [
-    new Unsplash(() => providerKey?.unsplash),
-    new Pexels(() => providerKey?.pexels),
-    new Pixabay(() => providerKey?.pixabay),
-  ].filter((p) => p.isConfigured)
+    new Unsplash(() => providerKeys?.unsplash),
+    new Pexels(() => providerKeys?.pexels),
+    new Pixabay(() => providerKeys?.pixabay),
+  ].filter((provider) => provider.isConfigured)
 }

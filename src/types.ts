@@ -1,8 +1,10 @@
 import { type Access } from 'payload'
 
+export type MediaType = 'image' | 'video'
+
 export type MediaOption = {
   label: string
-  value: 'image' | 'video'
+  value: MediaType
 }
 
 export const MediaOptions: MediaOption[] = [
@@ -10,28 +12,59 @@ export const MediaOptions: MediaOption[] = [
   { label: 'Videos', value: 'video' },
 ]
 
-export interface OpenverseResponse {
-  page: number
-  page_count: number
-  page_size: number
-  result_count: number
-  results: OpenverseResult[]
+export type ProviderConfig = {
+  access?: Access
+  disabled?: boolean
+  openverse?: string
+  pexels?: string
+  pixabay?: string
+  unsplash?: string
 }
 
-export interface OpenverseResult {
-  background_color?: string | null
+export type ProviderKeys = {
+  unsplash?: string
+  openverse?: string
+  pexels?: string
+  pixabay?: string
+}
 
-  creator: string | null
-  creator_url: string | null
-  foreign_landing_url: string | null
+type ProviderKey = 'unsplash' | 'pexels' | 'pixabay'
+
+export type ProviderOption = {
+  label: string
+  value: ProviderKey
+}
+
+export type ProviderFilters =
+  | { provider: 'unsplash'; options: UnsplashFilters }
+  | { provider: 'pexels'; options: PexelsFilters }
+  | { provider: 'pixabay'; options: PixabayFilters }
+
+export interface ProviderResult {
+  alt: string
+  attribution: {
+    name: string
+    link: string
+  }
+  avatar?: string
+  color: string
   height: number
   id: string
-
-  source: string
-  thumbnail: string
-  title: string | null
-  url: string
+  likes?: number
+  urls: {
+    view: string
+    original: string
+    download: string
+    downloadLocation?: string
+  }
   width: number
+}
+
+export type PexelsFilters = {
+  orientation?: string
+  size?: string
+  media?: MediaType
+  color?: string
 }
 
 export const PexelsColours = [
@@ -49,13 +82,6 @@ export const PexelsColours = [
   { label: 'Yellow', value: 'yellow' },
 ]
 
-export type PexelsFilters = {
-  orientation?: string
-  size?: string
-  media?: 'image' | 'video'
-  color?: string
-}
-
 export const PexelsOrientation = [
   { label: 'Landscape', value: 'landscape' },
   { label: 'Portrait', value: 'portrait' },
@@ -67,6 +93,27 @@ export const PexelsSize = [
   { label: 'Medium (12MP)', value: 'medium' },
   { label: 'Large (24MP)', value: 'large' },
 ]
+
+export const PexelsVideoSize = [
+  { label: 'Large (4K)', value: 'large' },
+  { label: 'Medium (Full HD)', value: 'medium' },
+  { label: 'Small (HD)', value: 'small' },
+]
+
+export interface PexelsResult {
+  alt: string
+  avg_color: string
+  height: number
+  id: string
+  photographer: string
+  photographer_url: string
+  src: {
+    medium: string
+    original: string
+  }
+  url: string
+  width: number
+}
 
 interface PexelsVideoUser {
   id: number
@@ -110,25 +157,13 @@ export interface PexelsVideoResponse {
   videos: PexelsVideo[]
 }
 
-export const PexelsVideoSize = [
-  { label: 'Large (4K)', value: 'large' },
-  { label: 'Medium (Full HD)', value: 'medium' },
-  { label: 'Small (HD)', value: 'small' },
-]
-
-export interface PexelsResult {
-  alt: string
-  avg_color: string
-  height: number
-  id: string
-  photographer: string
-  photographer_url: string
-  src: {
-    medium: string
-    original: string
-  }
-  url: string
-  width: number
+export type PixabayFilters = {
+  image_type?: string
+  orientation?: string
+  category?: string
+  colors?: string
+  order?: string
+  media?: MediaType
 }
 
 export const PixabayCategories = [
@@ -170,15 +205,6 @@ export const PixabayColours = [
   { label: 'White', value: 'white' },
   { label: 'Yellow', value: 'yellow' },
 ]
-
-export type PixabayFilters = {
-  image_type?: string
-  orientation?: string
-  category?: string
-  colors?: string
-  order?: string
-  media?: 'image' | 'video'
-}
 
 export const PixabayImageType = [
   { label: 'Photo', value: 'photo' },
@@ -232,15 +258,11 @@ export interface PixabayVideo {
   likes: number
   pageURL: string
   tags?: string
-
   type?: string
   user: string
-
   user_id: number
   userImageURL: string
-
   videos: PixabayVideoFormats
-
   views: number
 }
 
@@ -250,52 +272,10 @@ export interface PixabayVideoResponse {
   totalHits: number
 }
 
-export type ProviderConfig = {
-  access?: Access
-  disabled?: boolean
-  openverse?: string
-  pexels?: string
-  pixabay?: string
-  unsplash?: string
-}
-
-export type ProviderFilters =
-  | { provider: 'unsplash'; options: UnsplashFilters }
-  | { provider: 'pexels'; options: PexelsFilters }
-  | { provider: 'pixabay'; options: PixabayFilters }
-
-export type ProviderKeys = {
-  unsplash?: string
-  openverse?: string
-  pexels?: string
-  pixabay?: string
-}
-
-type ProviderKey = 'unsplash' | 'pexels' | 'pixabay'
-
-export type ProviderOption = {
-  label: string
-  value: ProviderKey
-}
-
-export interface ProviderResult {
-  alt: string
-  attribution: {
-    name: string
-    link: string
-  }
-  avatar?: string
-  color: string
-  height: number
-  id: string
-  likes?: number
-  urls: {
-    view: string
-    original: string
-    download: string
-    downloadLocation?: string
-  }
-  width: number
+export type UnsplashFilters = {
+  color?: string
+  orientation?: string
+  media?: MediaType
 }
 
 export const UnsplashColours = [
@@ -311,12 +291,6 @@ export const UnsplashColours = [
   { label: 'White', value: 'white' },
   { label: 'Yellow', value: 'yellow' },
 ]
-
-export type UnsplashFilters = {
-  color?: string
-  orientation?: string
-  media?: 'image' | 'video'
-}
 
 export const UnsplashOrientation = [
   { label: 'Landscape', value: 'landscape' },
@@ -350,4 +324,26 @@ export interface UnsplashResult {
     }
   }
   width: number
+}
+
+export interface OpenverseResult {
+  background_color?: string | null
+  creator: string | null
+  creator_url: string | null
+  foreign_landing_url: string | null
+  height: number
+  id: string
+  source: string
+  thumbnail: string
+  title: string | null
+  url: string
+  width: number
+}
+
+export interface OpenverseResponse {
+  page: number
+  page_count: number
+  page_size: number
+  result_count: number
+  results: OpenverseResult[]
 }

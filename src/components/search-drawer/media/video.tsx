@@ -5,17 +5,17 @@ import { type ProviderResult } from '../../../types.js'
 import { HeartIcon } from './heart.js'
 import { PlusIcon } from './plus.js'
 
-type VideoCardProps = {
+type Props = {
   data: ProviderResult
   baseClass: string
   onSelect: (url: string, download?: string) => void
 }
 
-export const VideoCard = ({ data, baseClass, onSelect }: VideoCardProps) => {
+export const VideoCard = ({ data, baseClass, onSelect }: Props) => {
   const [show, setShow] = useState(false)
 
   return (
-    <div className={`${baseClass}__video`} key={data.id}>
+    <div className={`${baseClass}__video`}>
       <video
         controls
         poster={data.urls.view}
@@ -29,6 +29,7 @@ export const VideoCard = ({ data, baseClass, onSelect }: VideoCardProps) => {
           display: 'block',
         }}
       />
+
       <div className={`${baseClass}__topOverlay`}>
         <a
           className={`${baseClass}__attribution`}
@@ -47,11 +48,14 @@ export const VideoCard = ({ data, baseClass, onSelect }: VideoCardProps) => {
               width={24}
             />
           )}
+
           {data.attribution.name}
         </a>
+
         <div className={`${baseClass}__actions`}>
           {data.likes !== undefined && (
             <button
+              aria-label={`${data.likes} likes`}
               className={`${baseClass}__likes`}
               onBlur={() => setShow(false)}
               onFocus={() => setShow(true)}
@@ -60,20 +64,24 @@ export const VideoCard = ({ data, baseClass, onSelect }: VideoCardProps) => {
               type="button"
             >
               <HeartIcon />
+
               <Tooltip alignCaret="center" position="bottom" show={show}>
                 {data.likes} likes
               </Tooltip>
             </button>
           )}
+
           <button
+            aria-label="Select video"
             className={`${baseClass}__add`}
-            onClick={() => onSelect?.(data.urls.original, data.urls.download)}
+            onClick={() => onSelect(data.urls.original, data.urls.download)}
             type="button"
           >
             <PlusIcon />
           </button>
 
           <a
+            aria-label="Open video download"
             className={`${baseClass}__download`}
             href={data.urls.download}
             rel="noopener noreferrer"
