@@ -170,8 +170,8 @@ importers:
         specifier: 2.5.15
         version: 2.5.15
       '@payloadcms/ui':
-        specifier: 4.0.0-beta.0
-        version: 4.0.0-beta.0(@types/react@19.3.0)(monaco-editor@0.57.0)(payload@3.90.2(graphql@16.14.2)(supports-color@7.2.0)(typescript@7.0.2))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(supports-color@7.2.0)(typescript@7.0.2)
+        specifier: 4.0.0-internal.9726517
+        version: 4.0.0-internal.9726517(@types/react@19.3.0)(monaco-editor@0.57.0)(payload@3.90.2(graphql@16.14.2)(supports-color@7.2.0)(typescript@7.0.2))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(supports-color@7.2.0)(typescript@7.0.2)
       '@semantic-release/changelog':
         specifier: ^7.0.0
         version: 7.0.0(semantic-release@25.0.9(supports-color@7.2.0)(typescript@7.0.2))
@@ -253,16 +253,16 @@ packages:
     engines: {node: '>=6.0.0'}
     hasBin: true
 
-  '@babel/runtime@7.29.10':
-    resolution: {integrity: sha512-NpugTzbKgGrNe45Ui32cN8vCFFMxVtP/9rtfwv0nP5FRDAjvYBxJcLVpYA9mr1jxP6cnIT7x9LUzuDTbWYYNRA==}
+  '@babel/runtime@7.29.7':
+    resolution: {integrity: sha512-Nq8OhGWiZIZGV6hLHoyAKLLcJihP/xFeBMGJoUrxTX2psI8dCifzLhZISFb+VWS3wFMRDmCGw5R+dOySCqPLhw==}
     engines: {node: '>=6.9.0'}
 
   '@babel/template@7.29.7':
     resolution: {integrity: sha512-puq+Gf35oI24FeN11LkoUQFqv9uwNeWpxXZi/Ji3rRIoKAzKnxRaZ+Gkj0vKS9ZCiTESfng1N9LyOyXvo+m+Gg==}
     engines: {node: '>=6.9.0'}
 
-  '@babel/traverse@7.29.10':
-    resolution: {integrity: sha512-B3lYAs2nkKskbgQ1nfy8Ma9ao9Q1rntTAQHrzzyDuj+TSO+X3le6PfWwqDvodsb+OumE10eMFfuMCTQSQ5iuIQ==}
+  '@babel/traverse@7.29.8':
+    resolution: {integrity: sha512-I5z7H3bf/41ktsNVLtpN0wAa336HkqIHQ5BuPLEhTkt1jVSyZpeNKIzTgEWmlxjdg81R0IgUCcaE+Ok3NvrfZg==}
     engines: {node: '>=6.9.0'}
 
   '@babel/types@7.29.8':
@@ -565,8 +565,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@faceless-ui/modal@3.0.2':
-    resolution: {integrity: sha512-2BK5ipSTIejnpAH4MsZ8aX9g7HxQrFybPpTAPVq8/RDRXxxShfwOuuhuxOx7KyZ1nWHtMGTWFpB0wkCAtg037w==}
+  '@faceless-ui/modal@3.0.1':
+    resolution: {integrity: sha512-fRPQPXZlND6nw4ubwOmHns9kwemcrrebh2PioJ1w8T/XuRO9s0QvYSzj7y0GI/ZwD8Zl0VKSMgcQSAigw6ekrg==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
@@ -809,14 +809,14 @@ packages:
   '@payloadcms/translations@3.90.2':
     resolution: {integrity: sha512-BGpXyw22ndzL6URrK28qlk2qIsksH8mbWpU/n8vaTt8W6O87KoniX4lJ82m5o0FR/wjWqzcuVRsE0TNX3/7gHg==}
 
-  '@payloadcms/translations@4.0.0-beta.0':
-    resolution: {integrity: sha512-/7xz7eBWYvQFiUu9v8CJM2RZpISYvu7xPtBiQ7PYx1xwHOb409W6SB1toEZHLeIpUvEsQaF+J4G4M1P5/D+P9Q==}
+  '@payloadcms/translations@4.0.0-internal.9726517':
+    resolution: {integrity: sha512-K+ttewwFBuevQcvGV1P3o+1GqnLdDzyxPApnsU4N4+Cvmb4xjq7MIvHWLY3FLRXS3xcyWwoS6AwVR5g+9GPkqg==}
 
-  '@payloadcms/ui@4.0.0-beta.0':
-    resolution: {integrity: sha512-EnV4VlluR6DZUfkkfCpbQE62xGoSnsT0MhG1T7lmvMtUoOnbJ7nAtcGBtsS0n1j+G8cTl8D4J/u5IaGR5gbBTw==}
+  '@payloadcms/ui@4.0.0-internal.9726517':
+    resolution: {integrity: sha512-x+CaHnjs+dBvxgrXwP0qXgBJNT4Gu/znAfAVmY1FrV/vsY+MkmxX4You/KoX8wWSR2XECrUuKHR68tpuHKp9XA==}
     engines: {node: '>=24.15.0'}
     peerDependencies:
-      payload: 4.0.0-beta.0
+      payload: 4.0.0-internal.9726517
       react: ^19.0.1 || ^19.1.2 || ^19.2.1
       react-dom: ^19.0.1 || ^19.1.2 || ^19.2.1
 
@@ -1520,11 +1520,11 @@ packages:
   dataloader@2.2.3:
     resolution: {integrity: sha512-y2krtASINtPFS1rSDjacrFgn1dcUuoREVabwlOGOe4SdxenREqwjwjElAdwvbGM7kgZz9a3KVicWR7vcz8rnzA==}
 
+  date-fns@3.6.0:
+    resolution: {integrity: sha512-fRHTG8g/Gif+kSh50gaGEdToemgfj74aRX3swtiouboip5JDLAyDE9F11nHMIcvOaXeOC6D7SpNhi7uFyB7Uww==}
+
   date-fns@4.1.0:
     resolution: {integrity: sha512-Ukq0owbQXxa/U3EGtsdVBkR1w7KOQ5gIBqdH2hkvknzZPYvBxb/aa6E8L7tmjFtkwZBu3UXBbjIgPo/Ez4xaNg==}
-
-  date-fns@4.4.0:
-    resolution: {integrity: sha512-+1UMbeh68lH1SegH83CGWwpb6OHHbpSgr3+s5Eww5M4CAgswBpoWS0AjTOfEJ33HiYKz1hdj/KTFprzXHmq/6w==}
 
   dateformat@4.6.3:
     resolution: {integrity: sha512-2P0p0pFGzHS5EMnhdxQi7aJN+iMheud0UhG4dlE1DLAlvL8JHjJJTX/CSm4JXwV0Ka5nGk3zC5mcb5bUQUxxMA==}
@@ -2473,15 +2473,11 @@ packages:
     resolution: {integrity: sha512-y3bGgqKj3QBdxLbLkomlohkvsA8gdAiUQlSBJnBhfn+BPxg4bc62d8TcBW15wavDfgexCgccckhcZvywyQYPOw==}
     hasBin: true
 
-  react-datepicker@9.1.0:
-    resolution: {integrity: sha512-lOp+m5bc+ttgtB5MHEjwiVu4nlp4CvJLS/PG1OiOe5pmg9kV73pEqO8H0Geqvg2E8gjqTaL9eRhSe+ZpeKP3nA==}
+  react-datepicker@7.6.0:
+    resolution: {integrity: sha512-9cQH6Z/qa4LrGhzdc3XoHbhrxNcMi9MKjZmYgF/1MNNaJwvdSjv3Xd+jjvrEEbKEf71ZgCA3n7fQbdwd70qCRw==}
     peerDependencies:
-      date-fns-tz: ^3.0.0
       react: ^16.9.0 || ^17 || ^18 || ^19 || ^19.0.0-rc
       react-dom: ^16.9.0 || ^17 || ^18 || ^19 || ^19.0.0-rc
-    peerDependenciesMeta:
-      date-fns-tz:
-        optional: true
 
   react-dom@19.3.0:
     resolution: {integrity: sha512-JDk8dgif51OjFoDE70+OT9ICyYr+69HlmihNwp1+Nsfbna3t5sIiCa9ZJktDmQ4/1b/rn26hIAR2uYXDMr5r0Q==}
@@ -3104,7 +3100,7 @@ snapshots:
 
   '@babel/helper-module-imports@7.29.7(supports-color@7.2.0)':
     dependencies:
-      '@babel/traverse': 7.29.10(supports-color@7.2.0)
+      '@babel/traverse': 7.29.8(supports-color@7.2.0)
       '@babel/types': 7.29.8
     transitivePeerDependencies:
       - supports-color
@@ -3117,7 +3113,7 @@ snapshots:
     dependencies:
       '@babel/types': 7.29.8
 
-  '@babel/runtime@7.29.10': {}
+  '@babel/runtime@7.29.7': {}
 
   '@babel/template@7.29.7':
     dependencies:
@@ -3125,7 +3121,7 @@ snapshots:
       '@babel/parser': 7.29.9
       '@babel/types': 7.29.8
 
-  '@babel/traverse@7.29.10(supports-color@7.2.0)':
+  '@babel/traverse@7.29.8(supports-color@7.2.0)':
     dependencies:
       '@babel/code-frame': 7.29.7
       '@babel/generator': 7.29.8
@@ -3221,7 +3217,7 @@ snapshots:
   '@emotion/babel-plugin@11.13.5(supports-color@7.2.0)':
     dependencies:
       '@babel/helper-module-imports': 7.29.7(supports-color@7.2.0)
-      '@babel/runtime': 7.29.10
+      '@babel/runtime': 7.29.7
       '@emotion/hash': 0.9.2
       '@emotion/memoize': 0.9.0
       '@emotion/serialize': 1.3.3
@@ -3248,7 +3244,7 @@ snapshots:
 
   '@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.0)(supports-color@7.2.0)':
     dependencies:
-      '@babel/runtime': 7.29.10
+      '@babel/runtime': 7.29.7
       '@emotion/babel-plugin': 11.13.5(supports-color@7.2.0)
       '@emotion/cache': 11.14.0
       '@emotion/serialize': 1.3.3
@@ -3360,7 +3356,7 @@ snapshots:
   '@esbuild/win32-x64@0.28.2':
     optional: true
 
-  '@faceless-ui/modal@3.0.2(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@faceless-ui/modal@3.0.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
     dependencies:
       body-scroll-lock: 4.0.0-beta.0
       focus-trap: 7.5.4
@@ -3581,26 +3577,25 @@ snapshots:
     dependencies:
       date-fns: 4.1.0
 
-  '@payloadcms/translations@4.0.0-beta.0':
+  '@payloadcms/translations@4.0.0-internal.9726517':
     dependencies:
-      date-fns: 4.4.0
+      date-fns: 4.1.0
 
-  '@payloadcms/ui@4.0.0-beta.0(@types/react@19.3.0)(monaco-editor@0.57.0)(payload@3.90.2(graphql@16.14.2)(supports-color@7.2.0)(typescript@7.0.2))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(supports-color@7.2.0)(typescript@7.0.2)':
+  '@payloadcms/ui@4.0.0-internal.9726517(@types/react@19.3.0)(monaco-editor@0.57.0)(payload@3.90.2(graphql@16.14.2)(supports-color@7.2.0)(typescript@7.0.2))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(supports-color@7.2.0)(typescript@7.0.2)':
     dependencies:
       '@date-fns/tz': 1.2.0
       '@dnd-kit/core': 6.3.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@dnd-kit/modifiers': 9.0.0(@dnd-kit/core@6.3.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0)
       '@dnd-kit/sortable': 10.0.0(@dnd-kit/core@6.3.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0)
       '@dnd-kit/utilities': 3.2.2(react@19.3.0)
-      '@faceless-ui/modal': 3.0.2(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@faceless-ui/modal': 3.0.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@faceless-ui/scroll-info': 2.0.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@faceless-ui/window-info': 3.0.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@floating-ui/dom': 1.7.6
       '@monaco-editor/react': 4.7.0(monaco-editor@0.57.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@payloadcms/translations': 4.0.0-beta.0
-      '@swc/helpers': 0.5.23
+      '@payloadcms/translations': 4.0.0-internal.9726517
       bson-objectid: 2.0.4
-      date-fns: 4.4.0
+      date-fns: 4.1.0
       dequal: 2.0.3
       md5: 2.3.0
       object-to-formdata: 4.5.1
@@ -3608,7 +3603,7 @@ snapshots:
       payload: 3.90.2(graphql@16.14.2)(supports-color@7.2.0)(typescript@7.0.2)
       qs-esm: 8.0.1
       react: 19.3.0
-      react-datepicker: 9.1.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      react-datepicker: 7.6.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       react-dom: 19.3.0(react@19.3.0)
       react-image-crop: 10.1.8(react@19.3.0)
       react-select: 5.9.0(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(supports-color@7.2.0)
@@ -3619,7 +3614,6 @@ snapshots:
       uuid: 14.0.0
     transitivePeerDependencies:
       - '@types/react'
-      - date-fns-tz
       - monaco-editor
       - supports-color
       - typescript
@@ -3819,6 +3813,7 @@ snapshots:
   '@swc/helpers@0.5.23':
     dependencies:
       tslib: 2.8.1
+    optional: true
 
   '@swc/types@0.1.28':
     dependencies:
@@ -4066,7 +4061,7 @@ snapshots:
 
   babel-plugin-macros@3.1.0:
     dependencies:
-      '@babel/runtime': 7.29.10
+      '@babel/runtime': 7.29.7
       cosmiconfig: 7.1.0
       resolve: 1.22.13
 
@@ -4320,9 +4315,9 @@ snapshots:
 
   dataloader@2.2.3: {}
 
-  date-fns@4.1.0: {}
+  date-fns@3.6.0: {}
 
-  date-fns@4.4.0: {}
+  date-fns@4.1.0: {}
 
   dateformat@4.6.3: {}
 
@@ -4348,7 +4343,7 @@ snapshots:
 
   dom-helpers@5.2.1:
     dependencies:
-      '@babel/runtime': 7.29.10
+      '@babel/runtime': 7.29.7
       csstype: 3.2.3
 
   dompurify@3.4.15:
@@ -5206,11 +5201,11 @@ snapshots:
       minimist: 1.2.8
       strip-json-comments: 2.0.1
 
-  react-datepicker@9.1.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0):
+  react-datepicker@7.6.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0):
     dependencies:
       '@floating-ui/react': 0.27.20(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       clsx: 2.1.1
-      date-fns: 4.4.0
+      date-fns: 3.6.0
       react: 19.3.0
       react-dom: 19.3.0(react@19.3.0)
 
@@ -5227,7 +5222,7 @@ snapshots:
 
   react-select@5.9.0(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(supports-color@7.2.0):
     dependencies:
-      '@babel/runtime': 7.29.10
+      '@babel/runtime': 7.29.7
       '@emotion/cache': 11.14.0
       '@emotion/react': 11.14.0(@types/react@19.3.0)(react@19.3.0)(supports-color@7.2.0)
       '@floating-ui/dom': 1.7.6
@@ -5244,7 +5239,7 @@ snapshots:
 
   react-transition-group@4.4.5(react-dom@19.3.0(react@19.3.0))(react@19.3.0):
     dependencies:
-      '@babel/runtime': 7.29.10
+      '@babel/runtime': 7.29.7
       dom-helpers: 5.2.1
       loose-envify: 1.4.0
       prop-types: 15.8.1
