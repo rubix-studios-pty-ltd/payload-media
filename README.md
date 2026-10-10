@@ -2,9 +2,9 @@
 
 Payload CMS Media Plugin adds stock image and video search to the Payload Admin interface. Search Unsplash, Pexels, and Pixabay, apply provider-specific filters, preview results, and import selected media into upload collections.
 
-![Stock image selection](https://github.com/user-attachments/assets/80ecb11f-65eb-4f58-a422-df9b170ac5d2)
+![Stock image selection](https://github.com/user-attachments/assets/f5e62ede-11d9-4d93-9510-9d9dda73dae7)
 
-![Stock video selection](https://github.com/user-attachments/assets/28044aaa-7144-4b66-9d5f-afc58d7939d5)
+![Stock video selection](https://github.com/user-attachments/assets/4a1e0a7a-f593-45c4-a4c3-4b9325569a52)
 
 ## Compatibility
 
