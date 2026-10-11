@@ -59,7 +59,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.15",
-    "@payloadcms/ui": "4.0.0-beta.0",
+    "@payloadcms/ui": "^4.0.0-beta.0",
     "@semantic-release/changelog": "^7.0.0",
     "@semantic-release/git": "^11.0.1",
     "@swc/cli": "^0.8.1",
@@ -73,7 +73,7 @@
     "typescript": "7.0.2"
   },
   "peerDependencies": {
-    "payload": "4.0.0-beta.0"
+    "payload": "^4.0.0-beta.0"
   },
   "engines": {
     "node": ">=24",
@@ -92,5 +92,5 @@
       }
     }
   },
-  "packageManager": "pnpm@12.10.1"
+  "packageManager": "pnpm@12.11.2"
 }
