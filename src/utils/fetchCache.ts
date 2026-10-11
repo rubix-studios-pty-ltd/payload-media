@@ -3,7 +3,9 @@ import { CacheManager } from '../lib/cache.js'
 const cache = new CacheManager()
 const CACHE_TTL = 24 * 60 * 60 * 1000
 
-export const fetchCache = async (queryPath: string) => {
+export const fetchCache = async (queryPath: string, signal?: AbortSignal) => {
+  signal?.throwIfAborted()
+
   if (queryPath.includes('undefined')) {
     throw new Error('Invalid provider')
   }
@@ -15,13 +17,15 @@ export const fetchCache = async (queryPath: string) => {
     return cached
   }
 
-  const response = await fetch(queryPath)
+  const response = await fetch(queryPath, { signal })
 
   if (!response.ok) {
     throw await response.json()
   }
 
   const data = await response.json()
+
+  signal?.throwIfAborted()
 
   cache.set(key, data, CACHE_TTL)
 

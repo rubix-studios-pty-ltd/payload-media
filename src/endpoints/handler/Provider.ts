@@ -39,6 +39,10 @@ export class Provider {
       ...(data && { body: JSON.stringify(data) }),
     })
 
+    if (!response.ok) {
+      throw new Error(`${this.name} request failed (${response.status})`)
+    }
+
     return response.json()
   }
 
@@ -62,8 +66,8 @@ export class Provider {
     return Promise.resolve({})
   }
 
-  trackDownload(_url: string): null {
-    return null
+  trackDownload(_url: string): Promise<null> {
+    return Promise.resolve(null)
   }
 
   formatResults(_data: object): ProviderResult[] {
