@@ -74,10 +74,10 @@ export class Unsplash extends Provider {
     }
   }
 
-  override trackDownload(url: string): null {
+  override async trackDownload(url: string): Promise<null> {
     const downloadUrl = new URL(url)
 
-    void this.fetch('GET', `${downloadUrl.pathname}${downloadUrl.search}`)
+    await this.fetch('GET', `${downloadUrl.pathname}${downloadUrl.search}`)
 
     return null
   }

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { Fragment, useCallback, useEffect, useState } from 'react'
+import React, { Fragment, useCallback, useEffect, useRef, useState } from 'react'
 import { ListSearchFilter, Pagination, Select, toast } from '@payloadcms/ui'
 
 import {
@@ -42,6 +42,8 @@ export const SearchDrawer = (props: Props) => {
   const [loading, setLoading] = useState(true)
   const [value, setValue] = useState('')
 
+  const requestRef = useRef<AbortController | null>(null)
+
   const mediaOptions = MediaOptions.filter((option) =>
     filters?.provider === 'unsplash' ? option.value === 'image' : true
   )
@@ -56,37 +58,44 @@ export const SearchDrawer = (props: Props) => {
     setCurrentPage(1)
   }, [])
 
-  const getOptions = useCallback(async () => {
-    try {
-      const response = await fetch(`${serverURL}${api}/providers`)
-      const json = await response.json()
+  const getOptions = useCallback(
+    async (signal: AbortSignal) => {
+      try {
+        const response = await fetch(`${serverURL}${api}/providers`, { signal })
+        const json = await response.json()
 
-      if (json.error) {
+        if (signal.aborted) return
+
+        if (json.error) {
+          setLoading(false)
+          return toast.error(json.error)
+        }
+
+        const providers = json.data.map((provider: { name: string; key: string }) => ({
+          label: provider.name,
+          value: provider.key.toLowerCase(),
+        }))
+
+        setOptions(providers)
+
+        const initial = providers[0]
+
+        if (!initial) {
+          setLoading(false)
+          return
+        }
+
+        setFilters({ provider: initial.value, options: {} })
+        setProvider(initial)
+      } catch {
+        if (signal.aborted) return
+
         setLoading(false)
-        return toast.error(json.error)
+        error()
       }
-
-      const providers = json.data.map((provider: { name: string; key: string }) => ({
-        label: provider.name,
-        value: provider.key.toLowerCase(),
-      }))
-
-      setOptions(providers)
-
-      const initial = providers[0]
-
-      if (!initial) {
-        setLoading(false)
-        return
-      }
-
-      setFilters({ provider: initial.value, options: {} })
-      setProvider(initial)
-    } catch {
-      setLoading(false)
-      error()
-    }
-  }, [serverURL, api, error])
+    },
+    [serverURL, api, error]
+  )
 
   const buildFeatures = useCallback(() => {
     if (!filters || !mediaType) return ''
@@ -125,30 +134,6 @@ export const SearchDrawer = (props: Props) => {
     const query = params.toString()
     return query ? `?${query}` : ''
   }, [filters, mediaType])
-
-  const getFeatures = useCallback(async () => {
-    if (!provider || !filters || !mediaType) return
-
-    try {
-      setLoading(true)
-
-      const json = await fetchCache(
-        `${serverURL}${api}/providers/${provider.value}/featured${buildFeatures()}`
-      )
-      if (!json) return
-
-      if (json.error) {
-        toast.error(json.error)
-        return
-      }
-
-      setMedia(json.data.images)
-    } catch {
-      error()
-    } finally {
-      setLoading(false)
-    }
-  }, [serverURL, api, provider, filters, buildFeatures, mediaType, error])
 
   const buildQuery = useCallback(
     (page = 1) => {
@@ -191,25 +176,49 @@ export const SearchDrawer = (props: Props) => {
   )
 
   const getMedia = useCallback(
-    async (page = 1) => {
+    async (page?: number) => {
+      requestRef.current?.abort()
+      requestRef.current = null
+
+      if (!provider || !filters || !mediaType) return
+
+      const controller = new AbortController()
+      requestRef.current = controller
+
+      setLoading(true)
+      resetMedia()
+
       try {
-        setLoading(true)
+        const path =
+          page === undefined ? `featured${buildFeatures()}` : `search?${buildQuery(page)}`
+
         const json = await fetchCache(
-          `${serverURL}${api}/providers/${provider?.value}/search?${buildQuery(page)}`
+          `${serverURL}${api}/providers/${provider.value}/${path}`,
+          controller.signal
         )
 
-        if (json.error) return toast.error(json.error)
+        if (controller.signal.aborted || requestRef.current !== controller) return
+
+        if (json.error) {
+          toast.error(json.error)
+          return
+        }
 
         setMedia(json.data.images)
-        setTotalPages(json.data.totalPages)
-        setCurrentPage(page)
+        setTotalPages(page === undefined ? null : json.data.totalPages)
+        setCurrentPage(page ?? 1)
       } catch {
+        if (controller.signal.aborted || requestRef.current !== controller) return
+
         error()
       } finally {
-        setLoading(false)
+        if (requestRef.current === controller) {
+          requestRef.current = null
+          setLoading(false)
+        }
       }
     },
-    [serverURL, api, provider?.value, error, buildQuery]
+    [serverURL, api, provider, filters, mediaType, error, buildQuery, buildFeatures, resetMedia]
   )
 
   const selectMedia = async (url: string, download?: string) => {
@@ -270,18 +279,21 @@ export const SearchDrawer = (props: Props) => {
   )
 
   useEffect(() => {
-    void getOptions()
+    const controller = new AbortController()
+
+    void getOptions(controller.signal)
+
+    return () => controller.abort()
   }, [getOptions])
 
   useEffect(() => {
-    if (!provider?.value || !filters || !mediaType) return
+    void getMedia(value.trim().length > 0 ? 1 : undefined)
 
-    if (value.trim().length > 0) {
-      void getMedia(1)
-    } else {
-      void getFeatures()
+    return () => {
+      requestRef.current?.abort()
+      requestRef.current = null
     }
-  }, [provider?.value, filters, value, mediaType, getMedia, getFeatures])
+  }, [value, getMedia])
 
   return (
     <div className={baseClass}>
