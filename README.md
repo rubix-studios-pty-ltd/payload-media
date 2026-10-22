@@ -11,9 +11,9 @@ Payload CMS Media Plugin adds stock image and video search to the Payload Admin 
 The plugin maintains two release lines, with Payload CMS v4 as the primary release and Payload CMS v3 maintained separately.
 
 | Payload CMS | Plugin version | Release branch | npm dist-tag |
-| --- | --- | --- | --- |
-| v4 | 2.x | `main` | `latest` |
-| v3 | 1.x | `payload-v3` | `payload-v3` |
+| ----------- | -------------- | -------------- | ------------ |
+| v4          | 2.x            | `main`         | `latest`     |
+| v3          | 1.x            | `payload-v3`   | `payload-v3` |
 
 Install the release matching your Payload version. The `latest` tag targets Payload v4 after the v4 release is published.
 
@@ -60,18 +60,17 @@ Provide an API key only for the providers you want to enable. Configured provide
 
 ### Options
 
-| Option | Type | Default | Description |
-| --- | --- | --- | --- |
-| `pexels` | `string` | `''` | Pexels API key |
-| `pixabay` | `string` | `''` | Pixabay API key |
-| `unsplash` | `string` | `''` | Unsplash access key |
-| `access` | Payload `Access` | Authenticated users | Controls who may use the media search endpoints |
-| `disabled` | `boolean` | `false` | Disables plugin registration |
+| Option     | Type             | Default             | Description                                     |
+| ---------- | ---------------- | ------------------- | ----------------------------------------------- |
+| `pexels`   | `string`         | `''`                | Pexels API key                                  |
+| `pixabay`  | `string`         | `''`                | Pixabay API key                                 |
+| `unsplash` | `string`         | `''`                | Unsplash access key                             |
+| `access`   | Payload `Access` | Authenticated users | Controls who may use the media search endpoints |
+| `disabled` | `boolean`        | `false`             | Disables plugin registration                    |
 
 ## Provider API keys
 
 Obtain API credentials from the relevant provider.
-
 - [Unsplash Developers](https://unsplash.com/developers)
 - [Pexels API](https://www.pexels.com/api/)
 - [Pixabay API](https://pixabay.com/api/docs/)
