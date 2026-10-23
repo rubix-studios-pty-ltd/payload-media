@@ -35,7 +35,6 @@ export default buildConfig({
 ## Notes
 
 API key can be obtained from the respective provider's website.
-
 - [Unsplash](https://unsplash.com/developers)
 - [Pexels](https://www.pexels.com/api/)
 - [Pixabay](https://pixabay.com/api/docs/)
@@ -59,7 +58,6 @@ Before using any provider, ensure you have reviewed and agreed to their terms an
 ## Support
 
 For support or inquiries:
-
 - LinkedIn: [rubixvi](https://www.linkedin.com/in/rubixvi/)
 - Website: [Rubix Studios](https://rubixstudios.com.au)
 
@@ -71,5 +69,4 @@ Rubix Studios
 ## Acknowledgments
 
 This project is based on the Image Search by Riley Langbein:
-
 - [Riley Langbein](https://github.com/rilrom)
