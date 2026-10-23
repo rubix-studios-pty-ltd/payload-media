@@ -47,9 +47,7 @@
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "build": "pnpm build:types && pnpm build:swc && pnpm build:assets",
     "build:swc": "swc ./src -d ./dist --config-file .swcrc --strip-leading-paths",
@@ -78,7 +76,7 @@
     "payload": "^3.90.0"
   },
   "engines": {
-    "node": ">=24",
+    "node": ">=24.22.1 <25 || >=26.12.1",
     "pnpm": ">=10"
   },
   "publishConfig": {
