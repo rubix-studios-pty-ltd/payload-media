@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.4](https://github.com/rubix-studios-pty-ltd/payload-media/compare/v2.0.3...v2.0.4) (2026-11-02)
+
+
+### Bug Fixes
+
+* **deps:** update @payloadcms/ui and payload ([5f2a779](https://github.com/rubix-studios-pty-ltd/payload-media/commit/5f2a779bdefb531bb1b7ca9523a446c02eeaa106))
+* **payload:** 4.0.0-beta.5 ([0750228](https://github.com/rubix-studios-pty-ltd/payload-media/commit/07502285a7d99a3b4a7da059221c24420fe01c1d))
+
 ## [2.0.3](https://github.com/rubix-studios-pty-ltd/payload-media/compare/v2.0.2...v2.0.3) (2026-10-23)
 
 
