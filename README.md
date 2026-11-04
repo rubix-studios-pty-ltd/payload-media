@@ -71,6 +71,7 @@ Provide an API key only for the providers you want to enable. Configured provide
 ## Provider API keys
 
 Obtain API credentials from the relevant provider.
+
 - [Unsplash Developers](https://unsplash.com/developers)
 - [Pexels API](https://www.pexels.com/api/)
 - [Pixabay API](https://pixabay.com/api/docs/)
