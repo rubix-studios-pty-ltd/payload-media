@@ -54,7 +54,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - add Next.js as a peer dependency and update version to 16.2.6 ([91d33a4](https://github.com/rubix-studios-pty-ltd/payload-media/commit/91d33a4d24f6b06d6793ee041d654a94fd951511))
 
-
 ### Performance Improvements
 
 - trigger patch release ([d0448bf](https://github.com/rubix-studios-pty-ltd/payload-media/commit/d0448bfe11b0caee1af74d2d773f49121b880e69))
@@ -134,7 +133,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - update biome version and improve search image logic ([3c5f3db](https://github.com/rubix-studios-pty-ltd/payload-media/commit/3c5f3db8f2f53caa8a4dc1c46c7e62318f4455ce))
 - update import paths to use correct casing for provider modules ([c871890](https://github.com/rubix-studios-pty-ltd/payload-media/commit/c871890fb3b5bc3ef09a130ab3eafce2eb92f967))
 - update node type definition to version 25.9.0 in pnpm-lock.yaml ([682ccfc](https://github.com/rubix-studios-pty-ltd/payload-media/commit/682ccfcd4e1f254902051987f4726891fbee6960))
-
 
 ### Features
 
