@@ -7,10 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 # [1.3.0](https://github.com/rubix-studios-pty-ltd/payload-media/compare/v1.2.7...v1.3.0) (2026-11-04)
 
-
 ### Features
 
-* **sec:** bump mini payload ([3e6a00b](https://github.com/rubix-studios-pty-ltd/payload-media/commit/3e6a00be77c6afb700d19b5a5adbdb56fc028997))
+- **sec:** bump mini payload ([3e6a00b](https://github.com/rubix-studios-pty-ltd/payload-media/commit/3e6a00be77c6afb700d19b5a5adbdb56fc028997))
 
 ## [1.2.7](https://github.com/rubix-studios-pty-ltd/payload-media/compare/v1.2.6...v1.2.7) (2026-10-23)
 
