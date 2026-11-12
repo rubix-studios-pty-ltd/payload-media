@@ -7,17 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.3.2](https://github.com/rubix-studios-pty-ltd/payload-media/compare/v1.3.1...v1.3.2) (2026-11-12)
 
-
 ### Bug Fixes
 
-* **sec:** update node version ([3e14ae2](https://github.com/rubix-studios-pty-ltd/payload-media/commit/3e14ae24a8bc507c57d94141b0695781fe3e7ec7))
+- **sec:** update node version ([3e14ae2](https://github.com/rubix-studios-pty-ltd/payload-media/commit/3e14ae24a8bc507c57d94141b0695781fe3e7ec7))
 
 ## [1.3.1](https://github.com/rubix-studios-pty-ltd/payload-media/compare/v1.3.0...v1.3.1) (2026-11-11)
 
-
 ### Bug Fixes
 
-* **sec:** node security update ([e8a6d92](https://github.com/rubix-studios-pty-ltd/payload-media/commit/e8a6d929c175c81052580594465b3b0fe7ddad50))
+- **sec:** node security update ([e8a6d92](https://github.com/rubix-studios-pty-ltd/payload-media/commit/e8a6d929c175c81052580594465b3b0fe7ddad50))
 
 # [1.3.0](https://github.com/rubix-studios-pty-ltd/payload-media/compare/v1.2.7...v1.3.0) (2026-11-04)
 
