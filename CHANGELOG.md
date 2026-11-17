@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.3](https://github.com/rubix-studios-pty-ltd/payload-media/compare/v1.3.2...v1.3.3) (2026-11-17)
+
+### Bug Fixes
+
+* minimum node version ([a381023](https://github.com/rubix-studios-pty-ltd/payload-media/commit/a381023e09c5b66cefdc2e8c7a0ae87380d2b5fe))
+
 ## [1.3.2](https://github.com/rubix-studios-pty-ltd/payload-media/compare/v1.3.1...v1.3.2) (2026-11-12)
 
 ### Bug Fixes
