@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug Fixes
 
-* minimum node version ([a381023](https://github.com/rubix-studios-pty-ltd/payload-media/commit/a381023e09c5b66cefdc2e8c7a0ae87380d2b5fe))
+- minimum node version ([a381023](https://github.com/rubix-studios-pty-ltd/payload-media/commit/a381023e09c5b66cefdc2e8c7a0ae87380d2b5fe))
 
 ## [1.3.2](https://github.com/rubix-studios-pty-ltd/payload-media/compare/v1.3.1...v1.3.2) (2026-11-12)
 
