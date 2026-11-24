@@ -33,9 +33,23 @@ export class Provider {
   }
 
   async fetch(method: string, urlPath: string, data?: object): Promise<unknown> {
-    const response = await fetch(new URL(urlPath, this.getFetchBaseUrl()), {
+    const baseUrl = new URL(this.getFetchBaseUrl())
+    const url = new URL(urlPath, baseUrl)
+
+    if (
+      baseUrl.protocol !== 'https:' ||
+      url.origin !== baseUrl.origin ||
+      url.username ||
+      url.password
+    ) {
+      throw new Error('Invalid provider URL')
+    }
+
+    const response = await fetch(url, {
       method,
       headers: this.getFetchHeaders(),
+      redirect: 'error',
+      signal: AbortSignal.timeout(15_000),
       ...(data && { body: JSON.stringify(data) }),
     })
 
