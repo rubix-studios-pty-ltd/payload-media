@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.7](https://github.com/rubix-studios-pty-ltd/payload-media/compare/v1.3.6...v1.3.7) (2026-11-24)
+
+### Bug Fixes
+
+* harden provider requests and download tracking ([8e0081d](https://github.com/rubix-studios-pty-ltd/payload-media/commit/8e0081d8b1e6f8b278f7ce39fbf2a76b54484dab))
+
 ## [1.3.6](https://github.com/rubix-studios-pty-ltd/payload-media/compare/v1.3.5...v1.3.6) (2026-11-24)
 
 ### Bug Fixes
