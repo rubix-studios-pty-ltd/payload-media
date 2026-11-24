@@ -2,6 +2,15 @@ import { type ProviderResult, type UnsplashFilters, type UnsplashResult } from '
 import { Provider, type Resolver } from './Provider.js'
 
 const UTMParams = 'utm_source=rubixstudios-payload-media&utm_medium=referral'
+const UNSPLASH_ORIGIN = 'https://api.unsplash.com'
+const DOWNLOAD_PATH = /^\/photos\/[a-zA-Z0-9_-]+\/download$/
+
+export class InvalidError extends Error {
+  constructor() {
+    super('Invalid Unsplash download URL')
+    this.name = 'InvalidDownloadUrlError'
+  }
+}
 
 export class Unsplash extends Provider {
   constructor(apiKey: Resolver) {
@@ -9,7 +18,7 @@ export class Unsplash extends Provider {
   }
 
   override getFetchBaseUrl(): string {
-    return 'https://api.unsplash.com'
+    return UNSPLASH_ORIGIN
   }
 
   override getFetchHeaders(): Record<string, string> {
@@ -75,9 +84,23 @@ export class Unsplash extends Provider {
   }
 
   override async trackDownload(url: string): Promise<null> {
+    if (typeof url !== 'string' || url.length > 4096 || !URL.canParse(url)) {
+      throw new InvalidError()
+    }
+
     const downloadUrl = new URL(url)
 
-    await this.fetch('GET', `${downloadUrl.pathname}${downloadUrl.search}`)
+    if (
+      downloadUrl.origin !== UNSPLASH_ORIGIN ||
+      downloadUrl.username ||
+      downloadUrl.password ||
+      downloadUrl.hash ||
+      !DOWNLOAD_PATH.test(downloadUrl.pathname)
+    ) {
+      throw new InvalidError()
+    }
+
+    await this.fetch('GET', downloadUrl.href)
 
     return null
   }
@@ -95,7 +118,7 @@ export class Unsplash extends Provider {
         view: image.urls?.thumb,
         original: image.urls?.full,
         download: `${image.links?.download}?${UTMParams}`,
-        downloadLocation: `${image.links.download_location}&${UTMParams}`,
+        downloadLocation: image.links.download_location,
       },
       attribution: {
         name: image.user?.name,
