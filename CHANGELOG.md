@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug Fixes
 
-* payload security upstream ([fe13aa3](https://github.com/rubix-studios-pty-ltd/payload-media/commit/fe13aa35234dc4c56f1d037dd31406cc879d1dd7))
+- payload security upstream ([fe13aa3](https://github.com/rubix-studios-pty-ltd/payload-media/commit/fe13aa35234dc4c56f1d037dd31406cc879d1dd7))
 
 ## [1.3.4](https://github.com/rubix-studios-pty-ltd/payload-media/compare/v1.3.3...v1.3.4) (2026-11-18)
 
